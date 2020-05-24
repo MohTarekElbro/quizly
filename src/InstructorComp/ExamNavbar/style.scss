@@ -1,0 +1,150 @@
+@import '../../components/GlobalSass/variables.scss';
+.ExamNav {
+    top: 0px;
+    background: $NavColor;
+    padding: 5px 5px;
+    
+    width: 100%;
+    z-index: 100;
+}
+ul {
+    list-style-type: none;
+}
+a {
+    color: $white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.logo a{
+    padding: 5px;
+    padding-right: 8px;
+    border-radius: 15px;
+    
+}
+.logo a:hover {
+    background-color: $white;
+    color: $black;
+    transition: 0.4s ease-in-out;
+    border-color: $black;
+    text-decoration: none;
+}
+.ExamMenu li {
+    font-size: 14px;
+    padding: 15px 5px;
+    white-space: nowrap;
+}
+.logo img{
+    width: 130px;
+    height: 22px;
+}
+.logo a,
+.toggle a {
+    font-size: 30px;
+    cursor: pointer;
+}
+.button.secondary {
+    border-bottom: 1px #444 solid;
+}
+
+
+/* Mobile ExamMenu */
+.ExamMenu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between !important;
+    align-items: center;
+}
+.toggle {
+    order: 1;
+}
+.ExamItem.button {
+    order: 2;
+}
+.ExamItem {
+    width: 100%;
+    text-align: center;
+    order: 3;
+    display: none;
+}
+
+.ExamItem.active {
+    display: block;
+}
+
+@media all and (min-width: 800px) {
+    .ExamMenu {
+        justify-content: space-between;
+    }
+    .logo {
+        flex: 1;
+    }
+    .toggle {
+        flex: 1;
+        text-align: right;
+    }
+    .ExamItem.button {
+        width: auto;
+        order: 1;
+        display: block;
+    }
+    .toggle {
+        order: 2;
+    }
+    .button.secondary {
+        border: 0;
+    }
+    .button a {
+        padding: 7.5px 15px;
+        background: $loginColor;
+        border: 1px $loginColor solid;
+    }
+    .button.secondary a {
+        background: transparent;    
+    }
+    .button a:hover {
+        text-decoration: none;
+    }
+    .button:not(.secondary) a:hover {
+        background: $base-color;
+        border-color: $base-color;
+    }
+    .button.secondary a:hover {
+        color: #ddd;
+    }
+
+    .featuers{
+        padding: 30px;
+    }
+    .contact .container form{
+        height: 250px;
+    }
+   
+    
+
+}
+
+@media all and (min-width: 1170px) {
+    .ExamItem {
+        display: block;
+        width: auto;
+    }
+    .toggle {
+        display: none;
+    }
+    .logo {
+        order: 0;
+    }
+    .ExamItem {
+        order: 1;
+    }
+    .button {
+        order: 2;
+    }
+    .ExamMenu li {
+        padding: 15px 10px;
+    }
+    .ExamMenu li.button {
+        padding-right: 0;
+    }
+}

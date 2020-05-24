@@ -1,0 +1,33 @@
+.navbar2 {
+  margin-bottom: 0 !important;
+}
+
+.navbar {
+  z-index: 1000 !important;
+}
+
+#sidebarToggleTop {
+  cursor: pointer;
+}
+
+.flex1 {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-pack: start !important;
+      -ms-flex-pack: start !important;
+          justify-content: start !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.flex1 .addQuestions {
+  height: 60% !important;
+  margin: auto 0;
+  margin-left: 10px !important;
+}
+
+.addQuestions {
+  float: left !important;
+}
+/*# sourceMappingURL=style2.css.map */

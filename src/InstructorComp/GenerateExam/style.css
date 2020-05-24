@@ -1,0 +1,178 @@
+.GenerateExamContainer {
+  width: 100%;
+  padding: 10px;
+  background-color: transparent;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.GenerateExamContainer .options1 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: wrap;
+      flex-flow: wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 5px;
+  background-color: #5d77a9;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 880px) {
+  .GenerateExamContainer .options1 {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+}
+
+.GenerateExamContainer .options1 .searchExamButton {
+  margin: 0 20px;
+}
+
+.GenerateExamContainer .options1 .option1 {
+  margin: auto;
+  cursor: pointer;
+}
+
+@media (max-width: 880px) {
+  .GenerateExamContainer .options1 .option1 {
+    margin: auto 10px;
+  }
+}
+
+.GenerateExamContainer .options1 .line {
+  width: 1px;
+  margin: 5px 0;
+  height: 20px;
+  background-color: black;
+}
+
+.GenerateExamContainer .line {
+  width: 90%;
+  margin: 20px auto;
+  height: 5px;
+  background-color: black;
+}
+
+.GenerateExamContainer .following {
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.GenerateExamContainer .examHalf {
+  width: 48%;
+  height: calc(100vh - 100px);
+  background-color: transparent;
+  padding: 0px;
+}
+
+.GenerateExamContainer .examDetails {
+  background-color: white;
+  overflow: auto;
+  padding: 5px 10px;
+}
+
+.GenerateExamContainer .examDetails .ExamQuestionItem {
+  margin: 10px 0 30px;
+  padding: 5px;
+  position: relative;
+}
+
+.GenerateExamContainer .examDetails .ExamQuestionItem .deleteItem {
+  color: black;
+  font-size: 20px;
+  position: absolute;
+  top: 14px;
+  right: 48px;
+}
+
+.GenerateExamContainer .examDetails .ExamQuestionItem .question {
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.GenerateExamContainer .examDetails .ExamQuestionItem ol {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: wrap;
+      flex-flow: wrap;
+  -ms-flex-preferred-size: 50%;
+      flex-basis: 50%;
+  margin-top: 10px;
+  margin-left: 35px;
+}
+
+.GenerateExamContainer .examDetails .ExamQuestionItem ol li {
+  width: 40%;
+  margin-bottom: 5px;
+}
+
+.GenerateExamContainer .examDetails .ExamQuestionItem ol form {
+  width: 40%;
+  margin-bottom: 5px;
+}
+
+.GenerateExamContainer .examDetails .examTitle {
+  margin-top: 20px;
+  margin-left: 5px;
+  font-size: 20px;
+}
+
+.GenerateExamContainer .examDetails .examTitle p {
+  margin-bottom: 2px;
+}
+
+.GenerateExamContainer .examTools {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column;
+          flex-flow: column;
+}
+
+.GenerateExamContainer .examTools .ExamToolsNav {
+  width: 100%;
+  padding: 10px;
+  background-color: white;
+  margin-bottom: 10px;
+}
+
+.GenerateExamContainer .examTools .ExamToolBody {
+  width: 100%;
+  padding: 10px;
+  height: calc(92vh - 100px);
+  overflow: auto;
+  background-color: white;
+}
+
+.GenerateExamContainer .generateButtonContainer {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.GenerateExamContainer .generateButtonContainer .generateButton {
+  margin: 10px auto;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+/*# sourceMappingURL=style.css.map */

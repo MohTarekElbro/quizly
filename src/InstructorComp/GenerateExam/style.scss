@@ -1,0 +1,136 @@
+.GenerateExamContainer {
+    width: 100%;
+    padding: 10px;
+    background-color: transparent;
+    display: flex;
+    justify-content: space-between;
+    
+
+    .options1 {
+        display: flex;
+        flex-flow: wrap;
+        justify-content: space-between;
+        padding: 5px;
+
+        background-color: #5d77a9;
+        margin-bottom: 20px;
+        @media (max-width: 880px) {
+            justify-content: center;
+        }
+
+        .searchExamButton {
+            margin: 0 20px;
+        }
+        .option1 {
+            margin: auto;
+            cursor: pointer;
+            @media (max-width: 880px) {
+                margin: auto 10px;
+            }
+            // font-size: 16px;
+            // font-weight: bold;
+        }
+        .line {
+            width: 1px;
+            margin: 5px 0;
+            height: 20px;
+            background-color: black;
+        }
+    }
+
+    .line {
+        width: 90%;
+        margin: 20px auto;
+        height: 5px;
+        background-color: black;
+    }
+    .following {
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-size: 22px;
+    }
+    .examHalf {
+        width: 48%;
+        height: calc(100vh - 100px);
+        background-color: transparent;
+        padding: 0px;
+    }
+
+    .examDetails {
+        background-color: white;
+        overflow: auto;
+        padding: 5px 10px;
+
+        .ExamQuestionItem {
+            margin: 10px 0 30px;
+            padding: 5px;
+            position: relative;
+            .deleteItem {
+                color: black;
+                font-size: 20px;
+                position: absolute;
+                top: 14px;
+                right: 48px;
+            }
+            .question {
+                font-weight: bold;
+                font-size: 17px;
+            }
+            ol {
+                display: flex;
+                flex-flow: wrap;
+                flex-basis: 50%;
+                margin-top: 10px;
+                margin-left: 35px;
+                li {
+                    width: 40%;
+                    margin-bottom: 5px;
+                }
+                form {
+                    width: 40%;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+        .examTitle {
+            margin-top: 20px;
+            margin-left: 5px;
+            font-size: 20px;
+            p {
+                margin-bottom: 2px;
+            }
+        }
+    }
+    .examTools {
+        display: flex;
+        flex-flow: column;
+
+        .ExamToolsNav {
+            width: 100%;
+            padding: 10px;
+            background-color: white;
+            margin-bottom: 10px;
+        }
+        .ExamToolBody {
+            width: 100%;
+            padding: 10px;
+            height: calc(92vh - 100px);
+            overflow: auto;
+            background-color: white;
+        }
+    }
+    .generateButtonContainer {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        .generateButton {
+            margin: 10px auto;
+        }
+    }
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}

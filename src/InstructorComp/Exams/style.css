@@ -1,0 +1,271 @@
+.remove {
+  display: none !important;
+}
+
+.options {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: wrap;
+      flex-flow: wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 5px;
+  background-color: #cbd4e5;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 880px) {
+  .options {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+}
+
+.options .searchExamButton {
+  margin: 0 20px;
+}
+
+.options .option {
+  margin: auto;
+  cursor: pointer;
+}
+
+@media (max-width: 880px) {
+  .options .option {
+    margin: auto 10px;
+  }
+}
+
+.options .line {
+  width: 1px;
+  margin: 5px 0;
+  height: 20px;
+  background-color: black;
+}
+
+.dates {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+@media (max-width: 680px) {
+  .dates {
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    width: 400px;
+  }
+}
+
+.dates .dateInput {
+  margin: 0 20px 0 0;
+}
+
+.dates .dateDiv {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+@media (max-width: 680px) {
+  .dates .dateDiv {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+            flex-flow: column;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    height: 70px;
+  }
+}
+
+.dates p {
+  margin: auto 10px;
+}
+
+.allRange {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column;
+          flex-flow: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.allRange p {
+  margin: auto;
+}
+
+.allRange .range {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.allRange .updateShow1 {
+  margin: 0px 20px 10px 0;
+  width: 32px;
+  border: 2px solid #2e59d9;
+  text-align: center;
+}
+
+.allRange .updateShow2 {
+  margin: 0px 10px 10px 20px;
+  width: 32px;
+  border: 2px solid #2e59d9;
+  text-align: center;
+}
+
+.allRange .rangeSlider {
+  height: 20px;
+  width: 180px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column;
+          flex-flow: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.ListExamsContainer {
+  width: 100%;
+  background-color: #F0EBF8;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-preferred-size: 48%;
+      flex-basis: 48%;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+@media (max-width: 1200px) {
+  .ListExamsContainer {
+    -ms-flex-preferred-size: 90%;
+        flex-basis: 90%;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+}
+
+.ListExamsContainer .examsList {
+  width: 40%;
+  height: calc(80vh - 100px);
+  padding: 10px;
+  margin-right: 20px;
+  overflow: auto;
+}
+
+.ListExamsContainer .examsList .selectExam {
+  width: 100%;
+  height: 100px;
+  padding: 20px;
+  margin-bottom: 10px;
+  background-color: white;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.ListExamsContainer .examsList .selectExam:hover {
+  -webkit-box-shadow: 0px 19px 28px 0px rgba(188, 188, 212, 0.4);
+          box-shadow: 0px 19px 28px 0px rgba(188, 188, 212, 0.4);
+}
+
+.ListExamsContainer .line {
+  width: 90%;
+  margin: 20px auto;
+  height: 5px;
+  background-color: black;
+}
+
+.ListExamsContainer .following {
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.ListExamsContainer .examDetails {
+  background-color: white !important;
+  overflow: auto;
+  padding: 5px 10px !important;
+  width: 650px;
+  height: calc(80vh - 100px);
+  background-color: transparent;
+  padding: 0px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 1200px) {
+  .ListExamsContainer .examDetails {
+    width: 90%;
+  }
+}
+
+.ListExamsContainer .examDetails .ExamQuestionItem {
+  margin: 10px 0 30px;
+  padding: 5px;
+  position: relative;
+}
+
+.ListExamsContainer .examDetails .ExamQuestionItem .deleteItem {
+  color: black;
+  font-size: 20px;
+  position: absolute;
+  top: 14px;
+  right: 48px;
+}
+
+.ListExamsContainer .examDetails .ExamQuestionItem .question {
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.ListExamsContainer .examDetails .ExamQuestionItem ol {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: wrap;
+      flex-flow: wrap;
+  -ms-flex-preferred-size: 50%;
+      flex-basis: 50%;
+  margin-top: 10px;
+  margin-left: 35px;
+}
+
+.ListExamsContainer .examDetails .ExamQuestionItem ol li {
+  width: 40%;
+  margin-bottom: 5px;
+}
+
+.ListExamsContainer .examDetails .ExamQuestionItem ol form {
+  width: 40%;
+  margin-bottom: 5px;
+}
+
+.ListExamsContainer .examDetails .examTitle {
+  margin-top: 20px;
+  margin-left: 5px;
+  font-size: 20px;
+}
+
+.ListExamsContainer .examDetails .examTitle p {
+  margin-bottom: 2px;
+}
+/*# sourceMappingURL=style.css.map */

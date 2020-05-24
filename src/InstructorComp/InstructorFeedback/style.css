@@ -1,0 +1,35 @@
+.flex {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.form-container {
+  padding: 20px 30px;
+  background-color: #fff;
+  margin-right: 0px !important;
+  width: 500px !important;
+  -webkit-box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 20px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 20px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  font-family: "Montserrat", Arial, Helvetica, sans-serif;
+}
+
+@media (max-width: 600px) {
+  .form-container {
+    width: 100% !important;
+  }
+}
+
+.form-container .margin input {
+  margin-right: 6px;
+}
+
+.form-container .radio-inline {
+  margin-right: 20px;
+}
+/*# sourceMappingURL=style.css.map */

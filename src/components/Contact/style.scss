@@ -1,0 +1,99 @@
+@import '../GlobalSass/variables.scss';
+
+.contact{
+    text-align: center;
+    padding-top: 100px;
+    padding-bottom: 30px;
+    height: 850px;
+
+    .line{
+        height: 2px;
+        width: 70px;
+        background-color: $base-color;
+        margin: 30px auto;
+    }
+
+    .container p:first-of-type{
+        margin-bottom: 50px;
+    }
+
+    .container form{
+        display: flex;
+        flex-flow: column wrap;
+        align-items:  center;
+
+        input{
+            width: 350px;
+            height: 30px;
+            margin: 20px;
+            border: 0;
+            border-bottom: 1px solid $fromColor;
+
+            &:focus{
+                border: 0;
+                border-bottom: 1px solid $base-color;
+                outline: none;
+            }
+
+            &::placeholder{
+                color: $fromColor;
+            }
+        
+        }
+
+        .message{
+            height: 170px;
+            padding-top: 0;
+            width: 350px;
+            margin: 20px;
+            border: 0;
+            border-bottom: 1px solid $fromColor;
+            resize: none;
+
+            &:focus{
+                border: 0;
+                border-bottom: 1px solid $base-color;
+                outline: none;
+            }
+
+            &::placeholder{
+                color: $fromColor;
+            }
+        }
+
+        
+        
+    }
+
+    .downloadButton{
+        width: 140px;
+        height: 40px;
+        color: $blocksColor;
+        margin-top: 20px;
+        text-align: center;
+        padding-top: 10px;
+        border-radius: 10px;
+        background-color: $base-color;
+        cursor: not-allowed;
+        margin: 0 auto;
+        opacity: 0.5;
+        
+    }
+
+    .hover:hover{
+        background-color: $blocksColor;
+        color: $black;
+        border-radius: 10px;
+        border: solid 3px ;
+        padding-top: 7px;
+        color: $black;
+        transition: ease-in-out 200ms;
+    
+    }
+}
+
+
+
+
+
+

@@ -1,0 +1,125 @@
+@media all and (min-width: 1170px) {
+    
+
+
+    .item {
+        display: block;
+        width: auto;
+    }
+    .toggle {
+        display: none;
+    }
+    .logo {
+        order: 0;
+    }
+    .item {
+        order: 1;
+        margin-left: 40px;
+    }
+    .button {
+        order: 2;
+    }
+    .menu li {
+        padding: 15px 10px;
+    }
+    .menu li.button {
+        padding-right: 0;
+    }
+
+    header .container{
+        display: flex;
+        justify-content: space-between;
+
+    }
+
+    header .discription{
+        margin: auto 0;
+    }
+
+    header .lab-img{
+        width: 500px;
+        height: 300px;
+        background-image: url(../images/macbook.png);
+        background-size: cover;
+    }
+
+    /*Start Featuers*/
+
+    .featuers{
+        
+        background-color: #f5f5f5;
+    }
+
+    .featuers .container{
+        display: flex;
+        flex-flow: row;
+        padding-top: 80px;
+    }
+
+    .featuers .tabs{
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: start;
+        margin-right:  30px;
+    }
+
+    .featuers .contents{    
+        padding-right: 200px;
+    }
+    .featuers .mob-img{
+        display: block;
+    }
+
+    .featuers .mob-img img{
+        width: 230px;
+        height: 500px;
+        
+        
+    }
+
+    /*End Features*/
+    /*Start About*/
+
+    .about{
+        display: flex;
+        flex-flow: row;
+        padding-top: 80px;
+        align-items: flex-start;
+        justify-content: space-between;
+        
+    
+    }
+    .about .img{
+        background-image: url(../images/review.jpg);
+        max-width: 450px ;
+        min-width: 450px; 
+        height: 300px;
+        margin-top: 37px;
+    
+        background-size: cover;
+    }
+    .about .featslist{
+        width: 500px;
+    }
+
+    /*End About*/
+    /*Start Reviews*/
+    .contact .container form{
+        height: 250px;
+    }
+    /*End Reviews*/
+
+}
+
+
+
+
+
+
+
+@media all and (min-width: 1200px) {
+    .container{
+        width: 1170px;
+        margin: auto;
+    }
+}

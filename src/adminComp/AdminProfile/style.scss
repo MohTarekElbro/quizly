@@ -1,0 +1,29 @@
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: block;
+    margin-top: 20px;
+    border-radius: 10px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+input[type="file"] {
+    display: none;
+}
+.profileform{
+    padding-top: 40px;
+}
+.adminPic{
+    background-image: url('https://quizly-app.herokuapp.com/admin/5e875b9b94b8bf40ac3ab199/pic');
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 242px !important; 
+    height: 300px !important;
+}
+.saveImg{
+    margin: 10px auto 30px;
+    display: none;
+}
+
+.bord{
+    box-shadow: 2px black;
+}

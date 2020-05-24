@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "quizlyapp2",
+    "dev": "realquizly"
+  }
+}

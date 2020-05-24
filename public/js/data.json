@@ -1,0 +1,154 @@
+{
+    "features": [
+        {
+            "id" : 1,
+            "title" : "Quizly your intelligent Question generato",
+            "content" : "what ever"
+        },
+        {
+            "id" : 2,
+            "title" : "Quizly.ai your exam helper",
+            "content" : "iam looking to work in adam company because i want to have some experiance in front end field and get some moneyiam looking to work in adam company because i want to have some experiance in front end field and get some money"
+        },
+        {
+            "id" : 3,
+            "title" : "Quizly your featuers assistant",
+            "content" : "what ever what ever what ever what ever"
+        },
+        {
+            "id" : 4,
+            "title" : "Quizly your intelligent Question generato",
+            "content" : "what ever"
+        },
+        {
+            "id" : 5,
+            "title" : "Quizly.ai your exam helper",
+            "content" : "iam looking to work in adam company because i want to have some experiance in front end field and get some moneyiam looking to work in adam company because i want to have some experiance in front end field and get some money"
+        },
+        {
+            "id" : 6,
+            "title" : "Quizly your featuers assistant",
+            "content" : "what ever what ever what ever what ever"
+        }
+        
+    ],
+
+    "reviews" : [
+        {
+            "id" : 1,
+            "message" : "iam looking to work in adam company because i want to have some experiance iam looking to work in adam company because i want to have some experiance",
+            "name" : "Omar Rasmy",
+            "Job" : "Doctor"
+
+        },
+        
+        {
+            "id" : 2,
+            "message" : "iam looking to work in adam company because i want to have some experiance iam looking to work in adam company because i want to have some experiance",
+            "name" : "Omar Rasmy",
+            "Job" : "Doctor"
+
+        },
+
+        {
+            "id" : 3,
+            "message" : "iam looking to work in adam company because i want to have some experiance iam looking to work in adam company because i want to have some experiance",
+            "name" : "Omar Rasmy",
+            "Job" : "Doctor"
+
+        },
+
+        {
+            "id" : 4,
+            "message" : "iam looking to work in adam company because i want to have some experiance iam looking to work in adam company because i want to have some experiance",
+            "name" : "Omar Rasmy",
+            "Job" : "Doctor"
+
+        },
+
+        {
+            "id" : 5,
+            "message" : "iam looking to work in adam company because i want to have some experiance iam looking to work in adam company because i want to have some experiance",
+            "name" : "Omar Rasmy",
+            "Job" : "Doctor"
+
+        },
+
+        {
+            "id" : 6,
+            "message" : "iam looking to work in adam company because i want to have some experiance iam looking to work in adam company because i want to have some experiance",
+            "name" : "Omar Rasmy",
+            "Job" : "Doctor"
+
+        },
+
+        {
+            "id" : 7,
+            "message" : "iam looking to work in adam company because i want to have some experiance iam looking to work in adam company because i want to have some experiance",
+            "name" : "Omar Rasmy",
+            "Job" : "Doctor"
+
+        },
+
+        {
+            "id" : 8,
+            "message" : "iam looking to work in adam company because i want to have some experiance iam looking to work in adam company because i want to have some experiance",
+            "name" : "Omar Rasmy",
+            "Job" : "Doctor"
+
+        },
+
+        {
+            "id" : 9,
+            "message" : "iam looking to work in adam company because i want to have some experiance iam looking to work in adam company because i want to have some experiance",
+            "name" : "Omar Rasmy",
+            "Job" : "Doctor"
+
+        },
+
+        {
+            "id" : 10,
+            "message" : "iam looking to work in adam company because i want to have some experiance iam looking to work in adam company because i want to have some experiance",
+            "name" : "Omar Rasmy",
+            "Job" : "Doctor"
+
+        },
+
+        {
+            "id" : 11,
+            "message" : "iam looking to work in adam company because i want to have some experiance iam looking to work in adam company because i want to have some experiance",
+            "name" : "Omar Rasmy",
+            "Job" : "Doctor"
+
+        },
+
+        {
+            "id" : 12,
+            "message" : "iam looking to work in adam company because i want to have some experiance iam looking to work in adam company because i want to have some experiance",
+            "name" : "Omar Rasmy",
+            "Job" : "Doctor"
+
+        },
+
+        {
+            "id" : 13,
+            "message" : "iam looking to work in adam company because i want to have some experiance iam looking to work in adam company because i want to have some experiance",
+            "name" : "Omar Rasmy",
+            "Job" : "Doctor"
+
+        },
+
+        {
+            "id" : 14,
+            "message" : "iam looking to work in adam company because i want to have some experiance iam looking to work in adam company because i want to have some experiance",
+            "name" : "Omar Rasmy",
+            "Job" : "Doctor"
+
+        }
+    ]
+
+    ,
+    "url":"https://quizly-app.herokuapp.com"
+
+    
+}

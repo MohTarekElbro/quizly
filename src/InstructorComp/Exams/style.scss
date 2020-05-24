@@ -1,0 +1,194 @@
+.remove {
+    display: none !important ;
+}
+
+.options {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: space-between;
+    padding: 5px;
+    background-color: #cbd4e5;
+    margin-bottom: 20px;
+    @media (max-width: 880px) {
+        
+        justify-content: center;
+    }
+
+    .searchExamButton {
+        margin: 0 20px;
+    }
+    .option {
+        margin: auto ;
+        cursor: pointer;
+        @media (max-width: 880px) {
+            margin: auto 10px;
+
+        }
+        // font-size: 16px;
+        // font-weight: bold;
+    }
+    .line {
+        width: 1px;
+        margin: 5px 0;
+        height: 20px;
+        background-color: black;
+    }
+}
+
+.dates {
+    display: flex;
+    @media (max-width: 680px) {
+        justify-content: space-between;
+        width: 400px;
+        
+    }
+    .dateInput {
+        margin: 0 20px 0 0;
+    }
+    .dateDiv{
+        display: flex;
+        @media (max-width: 680px) {
+            flex-flow: column;
+            justify-content: space-between;
+            height: 70px;
+
+        }
+    }
+    p {
+        margin: auto 10px;
+    }
+}
+
+.allRange {
+    p {
+        margin: auto;
+    }
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    .range {
+        display: flex;
+    }
+
+    .updateShow1 {
+        margin: 0px 20px 10px 0;
+        width: 32px;
+        border: 2px solid #2e59d9;
+        text-align: center;
+    }
+    .updateShow2 {
+        margin: 0px 10px 10px 20px;
+        width: 32px;
+        border: 2px solid #2e59d9;
+        text-align: center;
+    }
+    .rangeSlider {
+        height: 20px;
+        width: 180px;
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+    }
+}
+
+.ListExamsContainer {
+    width: 100%;
+    // padding: 10px;
+    background-color: #F0EBF8;
+    display: flex;
+    flex-basis: 48%;
+    justify-content: space-between;
+    @media (max-width: 1200px) {
+        flex-basis: 90%;
+        justify-content: center;
+    }
+    .examsList{
+        width: 40%;
+        height: calc(80vh - 100px);
+        padding: 10px;
+        margin-right: 20px;
+        // background-color:#cbd4e5 ;
+        overflow: auto;
+        .selectExam{
+            width: 100%;
+            height: 100px;
+            padding: 20px;
+            margin-bottom:10px ;
+            background-color: white;
+            transition: 0.3s;
+            &:hover{
+                box-shadow: 0px 19px 28px 0px rgba(188, 188, 212, 0.4);
+            }
+        }
+    }
+
+    
+
+    .line {
+        width: 90%;
+        margin: 20px auto;
+        height: 5px;
+        background-color: black;
+    }
+    .following {
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-size: 22px;
+        
+    }
+    .examDetails {
+        background-color: white !important;
+        overflow: auto;
+        padding: 5px 10px !important;
+        width: 650px;
+        height: calc(80vh - 100px);
+        background-color: transparent;
+        padding: 0px;
+        margin-bottom: 30px;
+        @media (max-width: 1200px) {
+            width: 90%;
+            
+        }
+        .ExamQuestionItem {
+            margin: 10px 0 30px;
+            padding: 5px;
+            position: relative;
+            .deleteItem {
+                color: black;
+                font-size: 20px;
+                position: absolute;
+                top: 14px;
+                right: 48px;
+            }
+            .question {
+                font-weight: bold;
+                font-size: 17px;
+            }
+            ol {
+                display: flex;
+                flex-flow: wrap;
+                flex-basis: 50%;
+                margin-top: 10px;
+                margin-left: 35px;
+                li {
+                    width: 40%;
+                    margin-bottom: 5px;
+                }
+                form {
+                    width: 40%;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+        .examTitle {
+            margin-top: 20px;
+            margin-left: 5px;
+            font-size: 20px;
+            p {
+                margin-bottom: 2px;
+            }
+        }
+    }
+}

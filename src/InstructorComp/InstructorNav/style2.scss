@@ -1,0 +1,28 @@
+.navbar2{
+    margin-bottom: 0 !important;
+}
+.navbar {
+    z-index: 1000 !important;
+}
+
+#sidebarToggleTop{
+    cursor: pointer;
+}
+.flex1{
+    display: flex !important;
+    justify-content: start !important;
+    width: 100% !important;
+    height: 100% !important;
+    .addQuestions{
+        height: 60% !important;
+        margin: auto 0;
+        margin-left: 10px !important;
+    }
+    
+}
+
+.addQuestions{ 
+    float: left !important;
+}
+
+

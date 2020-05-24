@@ -1,0 +1,129 @@
+.QuestionsContainer1 {
+    height: calc(76vh - 100px);
+    overflow: auto;
+}
+
+.QuestionsContainer {
+    background-color: #f3f4f7 !important;
+    padding: 30px 30px;
+    display: flex;
+    overflow: auto;
+
+    flex-wrap: wrap;
+    // form{
+    //     display: flex;
+    //     width: 100%;
+    //     justify-content: space-between;
+    //     .dropDown{
+    //         display: inline-block;
+    //         border: 2px solid;
+    //         background-color: white;
+    //         width: 120px;
+    //         height: 40px;
+    //     }
+    // }
+
+    & .QuestionItem:nth-child(odd) {
+        margin-right: 4%;
+    }
+    .QuestionItem {
+        flex-basis: 48%;
+
+        width: 100%;
+        background-color: white;
+        transition: 0.3s;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 4px 0 rgba(188, 188, 211, 0.4);
+        border-radius: 10px;
+        padding: 20px;
+        display: flex;
+        flex-flow: column;
+        &:hover {
+            box-shadow: 0 9px 18px 0 rgba(188, 188, 212, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            display: block !important;
+            flex-basis: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+
+        @media (max-width: 1150px) {
+            flex-basis: 90%;
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+
+        .typeAndDomain {
+            margin-bottom: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            @media (max-width: 600px) {
+                flex-flow: column;
+                align-items: center;
+            }
+        }
+        .line {
+            width: 90%;
+            margin: 0 auto;
+            height: 1px;
+            background-color: hsla(226, 54%, 38%, 0.432);
+        }
+        .questionContent {
+            margin: 10px 0 15px 0;
+        }
+        .QuestionDistractors {
+            width: 100%;
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+
+            p {
+                flex-basis: 50%;
+            }
+            @media (max-width: 600px) {
+                flex-flow: column;
+                align-items: center;
+            }
+        }
+    }
+}
+
+.FindForm {
+    display: flex !important;
+    width: 100% !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    background-color: #f8f9fc !important;
+    @media (max-width: 600px) {
+        flex-flow: column !important;
+        align-items: center !important;
+        select,
+        input {
+            margin: 5px 0 !important;
+        }
+        .updateShow1 {
+            margin: 15px;
+        }
+        .updateShow2 {
+            margin: 15px;
+        }
+    }
+}
+
+.custom-select {
+    margin-right: 20px;
+    width: 180px !important;
+    height: 40px !important;
+}
+
+.inputSearch {
+    background-color: white !important;
+    width: 180px !important;
+    height: 40px !important;
+    font-size: 18px !important;
+    border-radius: 10px !important;
+    border: 1px solid #cdd8f5 !important;
+}

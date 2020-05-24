@@ -1,0 +1,183 @@
+.ExamNav {
+  top: 0px;
+  background: #222;
+  padding: 5px 5px;
+  width: 100%;
+  z-index: 100;
+}
+
+ul {
+  list-style-type: none;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logo a {
+  padding: 5px;
+  padding-right: 8px;
+  border-radius: 15px;
+}
+
+.logo a:hover {
+  background-color: white;
+  color: black;
+  -webkit-transition: 0.4s ease-in-out;
+  transition: 0.4s ease-in-out;
+  border-color: black;
+  text-decoration: none;
+}
+
+.ExamMenu li {
+  font-size: 14px;
+  padding: 15px 5px;
+  white-space: nowrap;
+}
+
+.logo img {
+  width: 130px;
+  height: 22px;
+}
+
+.logo a,
+.toggle a {
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.button.secondary {
+  border-bottom: 1px #444 solid;
+}
+
+/* Mobile ExamMenu */
+.ExamMenu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: justify !important;
+      -ms-flex-pack: justify !important;
+          justify-content: space-between !important;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.toggle {
+  -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+          order: 1;
+}
+
+.ExamItem.button {
+  -webkit-box-ordinal-group: 3;
+      -ms-flex-order: 2;
+          order: 2;
+}
+
+.ExamItem {
+  width: 100%;
+  text-align: center;
+  -webkit-box-ordinal-group: 4;
+      -ms-flex-order: 3;
+          order: 3;
+  display: none;
+}
+
+.ExamItem.active {
+  display: block;
+}
+
+@media all and (min-width: 800px) {
+  .ExamMenu {
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+  }
+  .logo {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+  }
+  .toggle {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    text-align: right;
+  }
+  .ExamItem.button {
+    width: auto;
+    -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1;
+    display: block;
+  }
+  .toggle {
+    -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+            order: 2;
+  }
+  .button.secondary {
+    border: 0;
+  }
+  .button a {
+    padding: 7.5px 15px;
+    background: #325e83;
+    border: 1px #325e83 solid;
+  }
+  .button.secondary a {
+    background: transparent;
+  }
+  .button a:hover {
+    text-decoration: none;
+  }
+  .button:not(.secondary) a:hover {
+    background: #007ee5;
+    border-color: #007ee5;
+  }
+  .button.secondary a:hover {
+    color: #ddd;
+  }
+  .featuers {
+    padding: 30px;
+  }
+  .contact .container form {
+    height: 250px;
+  }
+}
+
+@media all and (min-width: 1170px) {
+  .ExamItem {
+    display: block;
+    width: auto;
+  }
+  .toggle {
+    display: none;
+  }
+  .logo {
+    -webkit-box-ordinal-group: 1;
+        -ms-flex-order: 0;
+            order: 0;
+  }
+  .ExamItem {
+    -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1;
+  }
+  .button {
+    -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+            order: 2;
+  }
+  .ExamMenu li {
+    padding: 15px 10px;
+  }
+  .ExamMenu li.button {
+    padding-right: 0;
+  }
+}
+/*# sourceMappingURL=style.css.map */

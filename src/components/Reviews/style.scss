@@ -1,0 +1,65 @@
+@import "../GlobalSass/variables.scss";
+.startreviews {
+  background-color: $blocksColor;
+  text-align: center;
+  padding-top: 100px;
+
+  .line {
+    height: 2px;
+    width: 70px;
+    background-color: $base-color;
+    margin: 30px auto;
+  }
+
+  .container p:first-of-type {
+    margin-bottom: 50px;
+  }
+
+  .reviews {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+
+    .review {
+      width: 300px;
+      margin: 10px;
+      margin-bottom: 40px;
+
+      > p {
+        background-color: $white;
+        width: 300px;
+        height: 120px;
+        padding: 20px;
+        font-size: 14px;
+        margin-bottom: 30px;
+        position: relative;
+        border-radius: 10px;
+      }
+
+      > p::after {
+        content: "";
+        border: 13px solid transparent;
+        border-top: 13px solid $white;
+        left: 25px;
+        bottom: -25px;
+        position: absolute;
+      }
+    }
+  }
+}
+
+.userdata {
+  display: flex;
+  
+  img {
+    height: 80px;
+    width: 80px;
+    margin-right: 30px;
+  }
+
+  div {
+    height: 80px;
+    width: 120px;
+    padding-top: 10px;
+  }
+}

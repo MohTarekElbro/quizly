@@ -1,0 +1,480 @@
+/* Basic styling */
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: 'Raleway';
+
+}
+
+body {
+    font-family: 'Raleway';
+    padding-top: 63px;
+
+}
+nav {
+    top: 0px;
+    background: #222;
+    padding: 5px 20px;
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+}
+ul {
+    list-style-type: none;
+}
+a {
+    color: white;
+    text-decoration: none;
+}
+
+.logo a{
+    padding: 5px;
+    padding-right: 8px;
+    border-radius: 15px;
+    
+}
+.logo a:hover {
+    background-color: white;
+    color: black;
+    transition: 0.4s ease-in-out;
+    border-color: black;
+    text-decoration: none;
+}
+.menu li {
+    font-size: 14px;
+    padding: 15px 5px;
+    white-space: nowrap;
+}
+.logo img{
+    width: 130px;
+    height: 22px;
+}
+.logo a,
+.toggle a {
+    font-size: 30px;
+    cursor: pointer;
+}
+.button.secondary {
+    border-bottom: 1px #444 solid;
+}
+
+
+/* Mobile menu */
+.menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.toggle {
+    order: 1;
+}
+.item.button {
+    order: 2;
+}
+.item {
+    width: 100%;
+    text-align: center;
+    order: 3;
+    display: none;
+}
+.item.active {
+    display: block;
+}
+
+
+/*header Start*/
+header{
+    width: 100%;
+    padding: 50px;
+    
+    
+    background: linear-gradient(
+         to right,
+        rgba(0 , 0 , 0 , 0.5) , 
+        rgba(0 , 0 , 0 , 0)
+    ),url(../images/studying.webp);
+    background-size: cover;
+    display: flex;
+    flex-flow: column nowrap;
+    color: white;
+}
+
+
+header .discription{
+    width: 400px;
+    margin: auto;
+    height: 400px;
+    padding: 10px;
+}
+.cat{
+    font-size: 50px;
+
+}
+
+header .discription .far{
+    font-size: 30px;
+}
+header .discription p:nth-of-type(1){
+    padding-top: 10px;
+    font-size: 36px;
+    text-transform: capitalize;
+}
+
+header .discription .line{
+    height: 2px;
+    width: 70px;
+    background-color: white;
+    margin-top: 30px;
+}
+
+header .discription p:nth-of-type(2){
+    padding-top: 10px;
+    font-size: 20px;
+    margin-top: 20px;
+    text-transform: capitalize;
+}
+
+header .discription .downloadButton{
+    width: 110px;
+    height: 40px;
+    border: solid 3px ;
+    margin-top: 20px;
+    text-align: center;
+    padding-top: 7px;
+    cursor: pointer;
+}
+header .discription .downloadButton:hover{
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    transition: ease-in-out 200ms;
+
+}
+
+/*header End*/
+
+/*Featuers Start*/
+
+.featuers{
+    
+    background-color: #f5f5f5;
+}
+
+.featuers .container{
+    display: flex;
+    flex-flow: column;
+    padding-top:40px ;
+    
+}
+
+.featuers .tabs{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.featuers .tabs div{
+    width: 100px;
+    height: 100px;
+    border: 1px solid white;
+    text-align: center;
+    padding-top: 40px;
+    text-transform: uppercase;
+    color: white;
+    cursor: pointer;
+    background-color:#333333;
+}
+
+.active1{
+    background-color: #007ee5;
+    border-radius: 10px;
+}
+
+.featuers .tabs  .active1{
+    background-color: #007ee5;
+}
+
+.featuers .contents{
+    padding: 30px;
+}
+
+.featuers .contents h2{
+    margin-bottom: 40px;
+
+}
+
+.featuers .contents p{
+    margin-bottom: 40px;
+}
+
+
+.featuers .contents .downloadButton{
+    width: 110px;
+    height: 40px;
+    color: white;
+    margin-top: 20px;
+    text-align: center;
+    padding-top: 10px;
+    border-radius: 10px;
+    background-color: #007ee5;
+    cursor: pointer;
+}
+.featuers .contents .downloadButton:hover{
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    border: solid 3px ;
+    padding-top: 7px;
+    color: black;
+    transition: ease-in-out 200ms;
+
+}
+.featuers .contents > div:not(:first-child){
+    display: none;
+}
+
+.featuers .mob-img{
+    display: none;
+}
+
+
+/*Featuers End*/
+/*About Start*/
+
+.about{
+    display: flex;
+    flex-flow: column;
+    padding-top: 40px;
+    align-items: center;
+    
+
+}
+.about .img{
+    background-image: url(../images/review.jpg);
+    width: 300px;
+    height: 200px;
+    background-size: cover;
+}
+
+.about .featslist{
+    margin: 30px;
+}
+
+.about .featslist .line{
+    height: 2px;
+    width: 70px;
+    background-color: #017fe6;
+    margin: 30px 0;
+}
+.about .featslist >p{
+    margin: 20px 0;
+}
+.about .featslist ul li{
+    display: flex;
+    margin-bottom: 20px;
+    
+}
+.about .featslist ul li div:first-of-type{
+    margin-right: 30px;
+    
+}
+.about .featslist ul li div:first-of-type {
+    border: 3px solid #007ee4 ;
+    height: 50px;
+    width: 100px;
+    text-align: center;
+    padding-top: 12px;
+    border-radius:100%;
+    color: #007ee4;
+}
+
+.about .featslist ul li h2{
+    margin-bottom: 10px;
+}
+/*End About*/
+/*Start Reviews*/
+
+.startreviews{
+    background-color: #f5f5f5;
+    text-align: center;
+    padding-top: 100px;
+}
+.startreviews .line{
+    height: 2px;
+    width: 70px;
+    background-color: #017fe6;
+    margin: 30px auto;
+}
+.startreviews .container p:first-of-type{
+    margin-bottom: 50px;
+}
+.startreviews .reviews{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content:  center;
+}
+
+.startreviews .reviews .review{
+    width: 300px;
+    margin: 10px;
+    margin-bottom: 40px;
+}
+
+.startreviews .reviews .review >p{
+    background-color: white;
+    width: 300px;
+    height: 120px;
+    padding: 20px;
+    font-size: 14px;
+    margin-bottom: 30px;
+    position: relative;
+    border-radius: 10px;
+}
+
+.startreviews .reviews .review >p::after{
+    
+    content: "";
+    border: 13px solid transparent;
+    border-top: 13px solid white;
+    left: 25px;
+    bottom: -25px;
+    position: absolute;
+    
+    
+}
+.userdata{
+    display: flex;
+}
+.userdata img{
+    height: 80px;
+    width: 80px;
+    margin-right: 30px;
+}
+.userdata div{
+    height: 80px;
+    width: 120px;
+    padding-top: 10px;
+}
+
+/*End Reviews*/
+/* Start Contact*/
+
+.contact{
+    text-align: center;
+    padding-top: 100px;
+    padding-bottom: 30px;
+    height: 850px;
+}
+.contact .line{
+    height: 2px;
+    width: 70px;
+    background-color: #017fe6;
+    margin: 30px auto;
+}
+.contact .container p:first-of-type{
+    margin-bottom: 50px;
+}
+
+.contact .container form{
+    display: flex;
+    flex-flow: column wrap;
+    align-items:  center;
+    
+}
+
+.contact .container form input{
+    width: 350px;
+    height: 30px;
+    margin: 20px;
+    border: 0;
+    border-bottom: 1px solid #d6d6d6;
+
+}
+.contact .container form input:focus{
+    border: 0;
+    border-bottom: 1px solid #0f85e7;
+    outline: none;
+}
+
+.contact .container form input::placeholder{
+    color: #d6d6d6;
+}
+.contact .container form .message:focus{
+    border: 0;
+    border-bottom: 1px solid #0f85e7;
+    outline: none;
+}
+
+.contact .container form .message{
+    height: 170px;
+    padding-top: 0;
+    width: 350px;
+    margin: 20px;
+    border: 0;
+    border-bottom: 1px solid #d6d6d6;
+    resize: none;
+}
+.contact .container form .message::placeholder{
+    color: #d6d6d6;
+}
+
+.contact .downloadButton{
+    width: 140px;
+    height: 40px;
+    color: white;
+    margin-top: 20px;
+    text-align: center;
+    padding-top: 10px;
+    border-radius: 10px;
+    background-color: #007ee5;
+    cursor: not-allowed;
+    margin: 0 auto;
+    opacity: 0.5;
+    
+}
+.contact .hover:hover{
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    border: solid 3px ;
+    padding-top: 7px;
+    color: black;
+    transition: ease-in-out 200ms;
+
+}
+
+
+
+
+/*End Contact*/
+/*Start footer*/
+
+footer{
+    width: 100%;
+    height: 70px;
+    background-color: black;
+    color: white;
+    
+    
+}
+footer .container{
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+footer ul{
+    display: flex;
+}
+footer ul li {
+    margin: 0 14px;
+    cursor: pointer;
+}
+
+/*end footer*/
+
+

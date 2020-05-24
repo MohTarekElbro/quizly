@@ -1,0 +1,176 @@
+.QuestionsContainer1 {
+  height: calc(76vh - 100px);
+  overflow: auto;
+}
+
+.QuestionsContainer {
+  background-color: #f3f4f7 !important;
+  padding: 30px 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: auto;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.QuestionsContainer .QuestionItem:nth-child(odd) {
+  margin-right: 4%;
+}
+
+.QuestionsContainer .QuestionItem {
+  -ms-flex-preferred-size: 48%;
+      flex-basis: 48%;
+  width: 100%;
+  background-color: white;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  margin-bottom: 30px;
+  -webkit-box-shadow: 0 2px 4px 0 rgba(188, 188, 211, 0.4);
+          box-shadow: 0 2px 4px 0 rgba(188, 188, 211, 0.4);
+  border-radius: 10px;
+  padding: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column;
+          flex-flow: column;
+}
+
+.QuestionsContainer .QuestionItem:hover {
+  -webkit-box-shadow: 0 9px 18px 0 rgba(188, 188, 212, 0.4);
+          box-shadow: 0 9px 18px 0 rgba(188, 188, 212, 0.4);
+}
+
+@media (max-width: 600px) {
+  .QuestionsContainer .QuestionItem {
+    display: block !important;
+    -ms-flex-preferred-size: 100% !important;
+        flex-basis: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+@media (max-width: 1150px) {
+  .QuestionsContainer .QuestionItem {
+    -ms-flex-preferred-size: 90%;
+        flex-basis: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+}
+
+.QuestionsContainer .QuestionItem .typeAndDomain {
+  margin-bottom: 10px;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+@media (max-width: 600px) {
+  .QuestionsContainer .QuestionItem .typeAndDomain {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+            flex-flow: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+}
+
+.QuestionsContainer .QuestionItem .line {
+  width: 90%;
+  margin: 0 auto;
+  height: 1px;
+  background-color: rgba(45, 69, 149, 0.432);
+}
+
+.QuestionsContainer .QuestionItem .questionContent {
+  margin: 10px 0 15px 0;
+}
+
+.QuestionsContainer .QuestionItem .QuestionDistractors {
+  width: 100%;
+  margin-top: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.QuestionsContainer .QuestionItem .QuestionDistractors p {
+  -ms-flex-preferred-size: 50%;
+      flex-basis: 50%;
+}
+
+@media (max-width: 600px) {
+  .QuestionsContainer .QuestionItem .QuestionDistractors {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+            flex-flow: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+}
+
+.FindForm {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  width: 100% !important;
+  -webkit-box-pack: center !important;
+      -ms-flex-pack: center !important;
+          justify-content: center !important;
+  -ms-flex-wrap: wrap !important;
+      flex-wrap: wrap !important;
+  background-color: #f8f9fc !important;
+}
+
+@media (max-width: 600px) {
+  .FindForm {
+    -webkit-box-orient: vertical !important;
+    -webkit-box-direction: normal !important;
+        -ms-flex-flow: column !important;
+            flex-flow: column !important;
+    -webkit-box-align: center !important;
+        -ms-flex-align: center !important;
+            align-items: center !important;
+  }
+  .FindForm select,
+  .FindForm input {
+    margin: 5px 0 !important;
+  }
+  .FindForm .updateShow1 {
+    margin: 15px;
+  }
+  .FindForm .updateShow2 {
+    margin: 15px;
+  }
+}
+
+.custom-select {
+  margin-right: 20px;
+  width: 180px !important;
+  height: 40px !important;
+}
+
+.inputSearch {
+  background-color: white !important;
+  width: 180px !important;
+  height: 40px !important;
+  font-size: 18px !important;
+  border-radius: 10px !important;
+  border: 1px solid #cdd8f5 !important;
+}
+/*# sourceMappingURL=style.css.map */

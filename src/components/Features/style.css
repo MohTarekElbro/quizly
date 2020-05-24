@@ -1,0 +1,138 @@
+.featuers {
+  background-color: white;
+}
+
+.featuers .container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row;
+          flex-flow: row;
+  padding-top: 40px;
+}
+
+.featuers .tabs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+  margin-bottom: 20px;
+}
+
+.featuers .tabs div {
+  width: 50px;
+  height: 50px;
+  border: 1px solid white;
+  text-align: center;
+  padding-top: 15px;
+  margin: 5px;
+  margin-left: 15px;
+  text-transform: uppercase;
+  color: white;
+  cursor: pointer;
+  background-color: #333333;
+}
+
+.featuers .tabs .active1 {
+  background-color: #007ee5;
+  border-radius: 15px;
+}
+
+.featuers .contents {
+  padding: 30px;
+}
+
+.featuers .contents h2 {
+  margin-bottom: 40px;
+}
+
+.featuers .contents h2 {
+  margin-bottom: 40px;
+}
+
+.featuers .contents p {
+  margin-bottom: 40px;
+}
+
+.featuers .contents .downloadButton {
+  width: 110px;
+  height: 40px;
+  color: white;
+  margin-top: 20px;
+  text-align: center;
+  padding-top: 10px;
+  border-radius: 10px;
+  background-color: #007ee5;
+  cursor: pointer;
+}
+
+.featuers .contents .downloadButton:hover {
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+  border: solid 3px;
+  padding-top: 7px;
+  color: black;
+  -webkit-transition: ease-in-out 200ms;
+  transition: ease-in-out 200ms;
+}
+
+.featuers .contents > div:not(:first-child) {
+  display: none;
+}
+
+.featuers .mob-img {
+  display: none;
+}
+
+@media all and (min-width: 1170px) {
+  /*Start Featuers*/
+  .featuers .container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+            flex-flow: column;
+    padding-top: 80px;
+  }
+  .featuers .tabs {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row nowrap;
+            flex-flow: row nowrap;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    margin-right: 30px;
+  }
+  .featuers .tabs div {
+    width: 100px;
+    height: 100px;
+    padding-top: 40px;
+    margin: 0;
+  }
+  .featuers .contents {
+    padding-right: 200px;
+  }
+  .featuers .mob-img {
+    display: block;
+  }
+  .featuers .mob-img img {
+    width: 230px;
+    height: 500px;
+  }
+}
+/*# sourceMappingURL=style.css.map */
