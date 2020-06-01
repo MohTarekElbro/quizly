@@ -115,7 +115,13 @@ class Exams extends Component {
         var { endDate } = this.state
         var { university } = this.state
         var { faculty } = this.state
-        console.log("durationValues: ", countValues)
+        console.log("domainName: ", domainName)
+        console.log("durationValues: ", durationValues)
+        console.log("countValues: ", countValues)
+        console.log("startDate: ", startDate)
+        console.log("endDate: ", endDate)
+        console.log("university: ", university)
+        console.log("faculty: ", faculty)
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },

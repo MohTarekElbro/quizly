@@ -5,7 +5,7 @@ import ExamNavbar from '../ExamNavbar'
 import Questions from '../../components/Questions'
 import $ from 'jquery'
 import { read_cookie } from 'sfcookies'
-
+import jsPDF from 'jspdf'
 
 class GenerateExam extends Component {
     state = {
@@ -13,15 +13,15 @@ class GenerateExam extends Component {
         Questions: [],
         deletedQuestions: [],
         currentPage: "",
-        subject: "",
-        university: "",
-        faculty: "",
-        duration: "",
+        subject: "SW",
+        university: "Helwan",
+        faculty: "Computer science",
+        duration: 120,
 
     }
     componentDidMount = () => {
         this.titlesValidation()
-        
+
     }
     componentDidUpdate = () => {
         this.titlesValidation()
@@ -256,6 +256,7 @@ class GenerateExam extends Component {
     }
 
     generateExam = async () => {
+        $("*").css("cursor", "progress");
         var Questions = []
         var { deletedQuestions } = this.state
         deletedQuestions.forEach(element => {
@@ -284,10 +285,17 @@ class GenerateExam extends Component {
             api1 = await fetch('http://localhost:3500/exam/create', requestOptions1)
             let data = await api1.json();
             console.log(data)
+            
         }
         catch (e) {
             console.log(e)
         }
+
+        this.generatePdf()
+        $("*").css("cursor", "default");
+        this.setState({
+            deletedQuestions:[]
+        })
     }
 
     shuffleArray = (array) => {
@@ -314,10 +322,54 @@ class GenerateExam extends Component {
         })
     }
 
+    generatePdf = () => {
+        var doc = new jsPDF('p' , 'pt')
+        // doc.fromHTML($('#examhalf').get(0), 5, 10)
+        let text = "Answer The Following Questions"
+        let xOffset = (doc.internal.pageSize.width / 2) - (doc.getStringUnitWidth(text) * doc.internal.getFontSize() / 2); 
+        doc.text(15,30 , "Subject: " + this.state.subject)
+        doc.text(15,50 , "University: " + this.state.university)
+        doc.text(15,70 , "Faculty: " + this.state.faculty)
+        doc.text(15,90 , "Duration: " + this.state.duration)
+
+        doc.text(40 ,120 , "__________________________________________________________")
+        doc.text(40 ,121 , "__________________________________________________________")
+        doc.text(40 ,122 , "__________________________________________________________")
+        doc.text(40 ,123 , "__________________________________________________________")
+        let leng = 190 
+        doc.text(xOffset,160 , text )
+        var Questions = []
+        
+        Questions = this.state.deletedQuestions.map((Question, index) => {
+            let splitTitle = doc.splitTextToSize(Question.Question, 550);
+            for(let i=0 ; i<splitTitle.length ; i++){
+                if(i==0){
+                    doc.text(15 , leng , index+1 + "- " + splitTitle[i] )
+                }
+                else{
+                    doc.text(15 , leng , splitTitle[i] )
+                }
+                leng+=25
+            }
+
+            
+            if (Question.kind == "MCQ") {
+                Question.distructor.map((dis , index) => {
+                    doc.text(30 , leng , index+1 + "- " + dis )
+                    leng+=20
+                })
+            }
+            leng+=30
+        })
+
+        
+        doc.save("exam.pdf")
+    }
+
     render() {
         $('form').on('keydown', 'input[type=number]', function (e) {
             if (e.which == 38 || e.which == 40)
-                e.css("color" , "red")
+                e.css("color", "red")
         });
         var { examToolContent } = this.state
         var Questions = []
@@ -366,10 +418,12 @@ class GenerateExam extends Component {
 
 
         return (
+
             <div className="GenerateExamContainer" >
-                <div className="examHalf examDetails">
+
+                <div className="examHalf examDetails" id="examhalf">
                     <div className="examTitle">
-                        <ExamTitle title="Subject" addTitle={this.addTitle} />
+                        {/* <ExamTitle title="Subject" addTitle={this.addTitle} /> */}
                         <ExamTitle title="University" addTitle={this.addTitle} />
                         <ExamTitle title="Faculty" addTitle={this.addTitle} />
                         <ExamTitle title="Duration" addTitle={this.addTitle} />
@@ -382,6 +436,7 @@ class GenerateExam extends Component {
                         {Questions}
                     </div>
                     <div className="generateButtonContainer">
+
                         <button onClick={() => this.generateExam()} type="submit" className="btn btn-primary btn-icon-split btn-md generateButton " >
                             <span className="text">GenerateExam</span>
                         </button>
@@ -404,7 +459,7 @@ class GenerateExam extends Component {
                         {examToolContent}
                     </div>
                 </div>
-            </div>
+            </div >
         )
 
 

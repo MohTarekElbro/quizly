@@ -84,6 +84,7 @@
 
 .GenerateExamContainer .examDetails .ExamQuestionItem {
   margin: 10px 0 30px;
+  width: 90%;
   padding: 5px;
   position: relative;
 }
@@ -93,7 +94,7 @@
   font-size: 20px;
   position: absolute;
   top: 14px;
-  right: 48px;
+  right: -10px;
 }
 
 .GenerateExamContainer .examDetails .ExamQuestionItem .question {
@@ -107,19 +108,19 @@
   display: flex;
   -ms-flex-flow: wrap;
       flex-flow: wrap;
-  -ms-flex-preferred-size: 50%;
-      flex-basis: 50%;
+  -ms-flex-preferred-size: 90%;
+      flex-basis: 90%;
   margin-top: 10px;
   margin-left: 35px;
 }
 
 .GenerateExamContainer .examDetails .ExamQuestionItem ol li {
-  width: 40%;
+  width: 80%;
   margin-bottom: 5px;
 }
 
 .GenerateExamContainer .examDetails .ExamQuestionItem ol form {
-  width: 40%;
+  width: 80%;
   margin-bottom: 5px;
 }
 
@@ -168,7 +169,7 @@
           justify-content: center;
 }
 
-.GenerateExamContainer .generateButtonContainer .generateButton {
+.GenerateExamContainer .generateButtonContainer .generateButton, .GenerateExamContainer .generateButtonContainer .selectButton {
   margin: 10px auto;
 }
 

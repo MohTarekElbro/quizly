@@ -99,7 +99,6 @@ class InstructorProfile extends React.Component {
     }
 
     saveImage = async () => {
-
         let file = this.instructorPic.files[0]
         console.log(file)
         let formData = new FormData()
@@ -123,17 +122,10 @@ class InstructorProfile extends React.Component {
                 this.props.history.push('/instructorHome/instructorProfile')
                 // window.location.reload(false)
             })
-
-
-
-
-
         }
         catch (e) {
             console.log(e);
         }
-
-
     }
 
 

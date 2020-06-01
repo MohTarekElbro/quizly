@@ -65,6 +65,7 @@
 
         .ExamQuestionItem {
             margin: 10px 0 30px;
+            width: 90%;
             padding: 5px;
             position: relative;
             .deleteItem {
@@ -72,7 +73,7 @@
                 font-size: 20px;
                 position: absolute;
                 top: 14px;
-                right: 48px;
+                right: -10px;
             }
             .question {
                 font-weight: bold;
@@ -81,15 +82,15 @@
             ol {
                 display: flex;
                 flex-flow: wrap;
-                flex-basis: 50%;
+                flex-basis: 90%;
                 margin-top: 10px;
                 margin-left: 35px;
                 li {
-                    width: 40%;
+                    width: 80%;
                     margin-bottom: 5px;
                 }
                 form {
-                    width: 40%;
+                    width: 80%;
                     margin-bottom: 5px;
                 }
             }
@@ -125,7 +126,7 @@
         width: 100%;
         display: flex;
         justify-content: center;
-        .generateButton {
+        .generateButton , .selectButton {
             margin: 10px auto;
         }
     }

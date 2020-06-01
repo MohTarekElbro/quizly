@@ -73,6 +73,11 @@
     .custom-file-upload {
         text-align: center;
     }
+
+    .generateQuestionsButton{
+        display: flex;
+        justify-content: center;
+    }
 }
 
 .loading {
@@ -87,3 +92,121 @@
         margin: auto;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.generatedsContainer1 {
+    height: calc(105vh - 100px);
+    overflow: auto;
+    margin-bottom: 10px;
+}
+
+.generatedsContainer {
+    background-color: #f3f4f7 !important;
+    padding: 30px 30px;
+    display: flex;
+
+    flex-wrap: wrap;
+    // form{
+    //     display: flex;
+    //     width: 100%;
+    //     justify-content: space-between;
+    //     .dropDown{
+    //         display: inline-block;
+    //         border: 2px solid;
+    //         background-color: white;
+    //         width: 120px;
+    //         height: 40px;
+    //     }
+    // }
+    .selected{
+        background-color: #0c0cc040 !important;
+    }
+
+    & .generatedItem:nth-child(odd) {
+        margin-right: 4%;
+    }
+    .generatedItem {
+        flex-basis: 48%;
+        cursor: pointer;
+        width: 100%;
+        background-color: white;
+        transition: 0.3s;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 4px 0 rgba(188, 188, 211, 0.4);
+        border-radius: 10px;
+        padding: 20px;
+        display: flex;
+        flex-flow: column;
+        &:hover {
+            box-shadow: 0 9px 18px 0 rgba(188, 188, 212, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            display: block !important;
+            flex-basis: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+
+        @media (max-width: 1150px) {
+            flex-basis: 90%;
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+
+        .typeAndDomain {
+            margin-bottom: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            @media (max-width: 600px) {
+                flex-flow: column;
+                align-items: center;
+            }
+        }
+        .line {
+            width: 90%;
+            margin: 0px auto 15px;
+            height: 1px;
+            background-color: hsla(226, 54%, 38%, 0.432);
+        }
+        .generatedContent {
+            margin: 10px 0 15px 0;
+        }
+        .generatedDistractors {
+            width: 100%;
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+
+            p {
+                flex-basis: 50%;
+            }
+            @media (max-width: 600px) {
+                flex-flow: column;
+                align-items: center;
+            }
+        }
+    }
+}
+
+.saveQuestionsButton{
+    width: 100%;
+    margin: 20px 0px ;
+    display: flex;
+    justify-content: center;
+}
+
+
