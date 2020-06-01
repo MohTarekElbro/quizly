@@ -283,7 +283,7 @@ class GenerateExam extends Component {
         let api1;
 
         try {
-            api1 = await fetch('http://localhost:3500/exam/create', requestOptions1)
+            api1 = await fetch('https://quizly-app.herokuapp.com/exam/create', requestOptions1)
             let data = await api1.json();
             console.log(data)
 
@@ -375,6 +375,10 @@ class GenerateExam extends Component {
                     doc.text(15, leng, splitTitle[i])
                 }
                 leng += 25
+                if (leng >= pageHeight) {
+                    doc.addPage()
+                    leng = newStart
+                }
             }
             if (leng > pageHeight) {
                 doc.addPage()
