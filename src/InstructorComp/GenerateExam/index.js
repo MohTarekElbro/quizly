@@ -257,6 +257,7 @@ class GenerateExam extends Component {
 
     generateExam = async () => {
         $("*").css("cursor", "progress");
+        $("#generateExam").css("display","none")
         var Questions = []
         var { deletedQuestions } = this.state
         deletedQuestions.forEach(element => {
@@ -285,7 +286,7 @@ class GenerateExam extends Component {
             api1 = await fetch('http://localhost:3500/exam/create', requestOptions1)
             let data = await api1.json();
             console.log(data)
-            
+
         }
         catch (e) {
             console.log(e)
@@ -293,8 +294,13 @@ class GenerateExam extends Component {
 
         this.generatePdf()
         $("*").css("cursor", "default");
+        $("#generateExam").css("display","block")
         this.setState({
-            deletedQuestions:[]
+            examToolContent: "",
+            Questions: [],
+            deletedQuestions: [],
+            currentPage: "",
+            
         })
     }
 
@@ -323,46 +329,87 @@ class GenerateExam extends Component {
     }
 
     generatePdf = () => {
-        var doc = new jsPDF('p' , 'pt')
+        var doc = new jsPDF('p', 'pt')
         // doc.fromHTML($('#examhalf').get(0), 5, 10)
-        let text = "Answer The Following Questions"
-        let xOffset = (doc.internal.pageSize.width / 2) - (doc.getStringUnitWidth(text) * doc.internal.getFontSize() / 2); 
-        doc.text(15,30 , "Subject: " + this.state.subject)
-        doc.text(15,50 , "University: " + this.state.university)
-        doc.text(15,70 , "Faculty: " + this.state.faculty)
-        doc.text(15,90 , "Duration: " + this.state.duration)
+        let letters = {
+            1: "A",
+            2: "B",
+            3: "C",
+            4: "D",
+            5: "E",
+            6: "F",
+            7: "G",
+            8: "H",
+            9: "I",
+            10: "J",
+            11: "K",
+            12: "L",
+            13: "M",
+            14: "N",
 
-        doc.text(40 ,120 , "__________________________________________________________")
-        doc.text(40 ,121 , "__________________________________________________________")
-        doc.text(40 ,122 , "__________________________________________________________")
-        doc.text(40 ,123 , "__________________________________________________________")
-        let leng = 190 
-        doc.text(xOffset,160 , text )
+        }
+        let text = "Answer The Following Questions"
+        let xOffset = (doc.internal.pageSize.width / 2) - (doc.getStringUnitWidth(text) * doc.internal.getFontSize() / 2);
+        doc.text(15, 30, "Subject: " + this.state.subject)
+        doc.text(15, 50, "University: " + this.state.university)
+        doc.text(15, 70, "Faculty: " + this.state.faculty)
+        doc.text(15, 90, "Duration: " + this.state.duration)
+
+        doc.text(40, 120, "__________________________________________________________")
+        doc.text(40, 121, "__________________________________________________________")
+        doc.text(40, 122, "__________________________________________________________")
+        doc.text(40, 123, "__________________________________________________________")
+        let leng = 190
+        let newStart = 25
+        let pageHeight = doc.internal.pageSize.height;
+        doc.text(xOffset, 160, text)
         var Questions = []
-        
+
         Questions = this.state.deletedQuestions.map((Question, index) => {
             let splitTitle = doc.splitTextToSize(Question.Question, 550);
-            for(let i=0 ; i<splitTitle.length ; i++){
-                if(i==0){
-                    doc.text(15 , leng , index+1 + "- " + splitTitle[i] )
+            for (let i = 0; i < splitTitle.length; i++) {
+                if (i == 0) {
+                    doc.text(15, leng, index + 1 + "- " + splitTitle[i])
                 }
-                else{
-                    doc.text(15 , leng , splitTitle[i] )
+                else {
+                    doc.text(15, leng, splitTitle[i])
                 }
-                leng+=25
+                leng += 25
             }
+            if (leng > pageHeight) {
+                doc.addPage()
+                leng = newStart
+            }
+            // doc.text(30, leng, 1 + "- " + Question.keyword)
+            // leng += 20
+            // if (leng > pageHeight) {
+            //     doc.addPage()
+            //     leng = newStart
+            // }
 
-            
+
             if (Question.kind == "MCQ") {
-                Question.distructor.map((dis , index) => {
-                    doc.text(30 , leng , index+1 + "- " + dis )
-                    leng+=20
+                Question.distructor.push(Question.keyword)
+                this.shuffleArray(Question.distructor)
+                Question.distructor.map((dis, index) => {
+                    doc.text(30, leng, letters[index + 1] + "- " + dis)
+                    leng += 20
+                    if (leng > pageHeight) {
+                        doc.addPage()
+                        leng = newStart
+                    }
                 })
+
             }
-            leng+=30
+            leng += 30
+            if (leng > pageHeight) {
+                doc.addPage()
+                leng = newStart
+            }
         })
 
-        
+
+
         doc.save("exam.pdf")
     }
 
@@ -437,7 +484,7 @@ class GenerateExam extends Component {
                     </div>
                     <div className="generateButtonContainer">
 
-                        <button onClick={() => this.generateExam()} type="submit" className="btn btn-primary btn-icon-split btn-md generateButton " >
+                        <button onClick={() => this.generateExam()} type="submit" id = "generateExam" className="btn btn-primary btn-icon-split btn-md generateButton " >
                             <span className="text">GenerateExam</span>
                         </button>
                     </div>
