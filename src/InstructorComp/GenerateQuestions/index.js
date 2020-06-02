@@ -202,6 +202,9 @@ class GenerteQuestions extends Component {
     }
 
     generateQuestions = async () => {
+        this.setState({
+            screen : "loading"
+        })
 
         let { QuestionType } = this.state
         let { level } = this.state
@@ -225,6 +228,7 @@ class GenerteQuestions extends Component {
                 let data = await api.json();
                 console.log(data)
                 if (data.body == "in Processing") {
+                    $("#generateButton").css("display","block")
                     bake_cookie("levelOfQuestions", level)
                     bake_cookie("questionsDomain", DomainName)
                     if (DomainName == "PL") {
@@ -245,6 +249,10 @@ class GenerteQuestions extends Component {
 
             }
             catch (e) {
+                this.setState({
+                    renderScreen : "generateQuestion"
+                })
+                
                 console.log(e.message);
             }
         }
@@ -256,7 +264,7 @@ class GenerteQuestions extends Component {
         let Questions = QuestionsPackge.Questions
         let QuestionType = read_cookie("questionType")
         let level = read_cookie("levelOfQuestions")
-
+        
 
         let levels = []
         let savedQuestions = []
