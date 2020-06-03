@@ -141,12 +141,13 @@
     .examDetails {
         background-color: white !important;
         overflow: auto;
+        margin: 10px;
         padding: 5px 10px !important;
         width: 650px;
-        height: calc(80vh - 100px);
+        height: calc(100vh - 100px);
         background-color: transparent;
         padding: 0px;
-        margin-bottom: 30px;
+        
         @media (max-width: 1200px) {
             width: 90%;
             

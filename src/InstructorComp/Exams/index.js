@@ -49,6 +49,9 @@ class Exams extends Component {
 
 
     }
+    componentWillMount = () => {
+        $('.optionItem').addClass("remove")
+    }
 
 
     componentDidMount = async () => {
@@ -72,7 +75,7 @@ class Exams extends Component {
 
         loadjs('js/demo/datatables-demo1.js')
 
-        $('.optionItem').addClass("remove")
+
 
 
 
@@ -162,7 +165,7 @@ class Exams extends Component {
                 })
                 this.ExamsBody1.addEventListener('scroll', this.handleScroll);
             }
-            else{
+            else {
                 this.setState({
                     Exams: []
                 })
@@ -237,7 +240,7 @@ class Exams extends Component {
                             Exams: this.state.Exams.concat(data)
                         })
                     }
-                    else{
+                    else {
                         console.log("else")
                         this.setState({
                             Exams: []
@@ -258,15 +261,26 @@ class Exams extends Component {
 
     changeOption = (id) => {
         $(".optionItem").addClass('remove')
-        $("#" + id).removeClass('remove')
-        $(".option").css({
-            'font-weight': 'normal',
-            'font-size': '16px'
-        })
-        $("#" + id + "Item").css({
-            'font-weight': 'bold',
-            'font-size': '17px'
-        })
+        if ($("#" + id).hasClass("shown") == true) {
+            $("#" + id).addClass('remove')
+            $("#" + id).removeClass('shown')
+            $(".option").css({
+                'font-weight': 'normal',
+                'font-size': '16px'
+            })
+        }
+        else {
+            $("#" + id).removeClass('remove')
+            $("#" + id).addClass('shown')
+            $(".option").css({
+                'font-weight': 'normal',
+                'font-size': '16px'
+            })
+            $("#" + id + "Item").css({
+                'font-weight': 'bold',
+                'font-size': '17px'
+            })
+        }
     }
 
     handleChange = date => {
@@ -387,12 +401,28 @@ class Exams extends Component {
         if (this.state.examDetails.Myexam != null) {
             renderExamDetails = this.renderExamDetails(this.state.examDetails)
         }
+        else {
+            renderExamDetails = (
+                <div className="examDetails pointer" style = {{"opacity":"0.5"}}>
+                    <div className="examTitle">
+                        <p id="University" >University: </p>
+                        <p id="Faculty" >Faculty: </p>
+                        <p id="Duration" >Duration: </p>
+                    </div>
+                    <div className="line"></div>
+                    <div className="following">
+                        Anwser the following questions
+                    </div>
+
+                </div>
+            )
+        }
 
 
 
         var ExamsList = Exams.map((exam, index) => {
             return (
-                <div key={index} onClick = {() => this.setState({examDetails : exam})}  className="selectExam pointer">
+                <div key={index} onClick={() => this.setState({ examDetails: exam })} className="selectExam pointer">
                     <div className="examTitle">
                         <p id="University" >University: {exam.university}</p>
                         <p id="Faculty" >Faculty: {exam.faculty}</p>
@@ -419,15 +449,19 @@ class Exams extends Component {
                         <p onClick={() => this.changeOption("faculty")} className="option" id="facultyItem">Faculty</p>
                         <div className="line"></div>
                         <button onClick={() => this.findExams()} className="btn btn-primary btn-icon-split btn-sm searchExamButton" >
-                            <span className="text">Find</span>
+
+                            <span class="icon text-white-50">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <span className="text">Search</span>
                         </button>
                     </div>
                     <form onSubmit={this.findExams} className="FindForm">
-                        <select id="domain" name="domain" className="custom-select optionItem" value={this.state.domainName} onChange={(e) => { this.setState({ domainName: e.target.value }) }}>
+                        <select id="domain" name="domain" className="custom-select optionItem remove" value={this.state.domainName} onChange={(e) => { this.setState({ domainName: e.target.value }) }}>
                             <option value="">All</option>
                             {ListDomains}
                         </select>
-                        <div id="duration" className="allRange optionItem">
+                        <div id="duration" className="allRange optionItem remove">
                             <p>Duration of the exam: </p>
                             <div className="range">
                                 <span className="updateShow1"> {durationUpdate[0]} </span>
@@ -483,7 +517,7 @@ class Exams extends Component {
                                 <span className="updateShow2"> {durationUpdate[1]} </span>
                             </div>
                         </div>
-                        <div id="numOfQuestions" className="allRange optionItem">
+                        <div id="numOfQuestions" className="allRange optionItem remove">
                             <p>Number of questions: </p>
                             <div className="range">
                                 <span className="updateShow1"> {countUpdate[0]} </span>
@@ -538,7 +572,7 @@ class Exams extends Component {
                                 <span className="updateShow2"> {countUpdate[1]} </span>
                             </div>
                         </div>
-                        <div id="date" className="dates optionItem">
+                        <div id="date" className="dates optionItem remove">
                             <div className="dateDiv" >
                                 <p>Start date: </p>
                                 <input type="date" className="form-control bg-light small inputSearch dateInput" placeholder="End date..."
@@ -550,10 +584,10 @@ class Exams extends Component {
                                     aria-label="Search" aria-describedby="basic-addon2" value={this.state.endDate} onChange={(e) => { this.setState({ endDate: e.target.value }) }} />
                             </div>
                         </div>
-                        <input id="university" type="text" className="form-control bg-light small inputSearch optionItem " placeholder="University"
+                        <input id="university" type="text" className="form-control bg-light small inputSearch optionItem remove " placeholder="University"
                             aria-label="Search" aria-describedby="basic-addon2" value={this.state.university} onChange={(e) => { this.setState({ university: e.target.value }) }} />
 
-                        <input id="faculty" type="text" className="form-control bg-light small inputSearch optionItem " placeholder="faculty"
+                        <input id="faculty" type="text" className="form-control bg-light small inputSearch optionItem remove " placeholder="faculty"
                             aria-label="Search" aria-describedby="basic-addon2" value={this.state.faculty} onChange={(e) => { this.setState({ faculty: e.target.value }) }} />
 
                     </form>

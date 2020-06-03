@@ -8,6 +8,7 @@
     padding: 30px 30px;
     display: flex;
     overflow: auto;
+    
 
     flex-wrap: wrap;
     // form{
@@ -126,4 +127,19 @@
     font-size: 18px !important;
     border-radius: 10px !important;
     border: 1px solid #cdd8f5 !important;
+}
+
+.questionsLoading {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+    div {
+        display: flex;
+        flex-flow: column;
+        margin: auto;
+        margin-bottom: 20px;
+    }
 }

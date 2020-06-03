@@ -255,14 +255,14 @@ class InstructorNav extends Component {
                 <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mr-3">
                     <i className="fa fa-bars"></i>
                 </button>
-                <div className="flex1">
+                {/* <div className="flex1">
                     <Link to = "/instructorHome/addingQuestion" className="addQuestions btn btn-success btn-icon-split btn-sm " >
                         <span className="icon text-white-50">
                             <i class="fas fa-plus-square"></i>
                         </span>
                         <span className="text">Add New Question</span>
                     </Link>
-                </div>
+                </div> */}
                 <ul className=" navbar-nav ml-auto ">
 
 

@@ -202,9 +202,7 @@ class GenerteQuestions extends Component {
     }
 
     generateQuestions = async () => {
-        this.setState({
-            screen : "loading"
-        })
+
 
         let { QuestionType } = this.state
         let { level } = this.state
@@ -212,6 +210,9 @@ class GenerteQuestions extends Component {
         let { numOfAnswers } = this.state
         let { filePath } = this.state
         if (filePath != null && filePath != "") {
+            this.setState({
+                screen: "loading"
+            })
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
@@ -228,7 +229,7 @@ class GenerteQuestions extends Component {
                 let data = await api.json();
                 console.log(data)
                 if (data.body == "in Processing") {
-                    $("#generateButton").css("display","block")
+                    $("#generateButton").css("display", "block")
                     bake_cookie("levelOfQuestions", level)
                     bake_cookie("questionsDomain", DomainName)
                     if (DomainName == "PL") {
@@ -250,9 +251,9 @@ class GenerteQuestions extends Component {
             }
             catch (e) {
                 this.setState({
-                    renderScreen : "generateQuestion"
+                    renderScreen: "generateQuestion"
                 })
-                
+
                 console.log(e.message);
             }
         }
@@ -264,7 +265,7 @@ class GenerteQuestions extends Component {
         let Questions = QuestionsPackge.Questions
         let QuestionType = read_cookie("questionType")
         let level = read_cookie("levelOfQuestions")
-        
+
 
         let levels = []
         let savedQuestions = []
@@ -287,22 +288,22 @@ class GenerteQuestions extends Component {
             else {
                 levels.push("medium")
             }
-            if (QuestionType == "Complete" ) {
+            if (QuestionType == "Complete") {
                 savedQuestions.push(Questions[i][0])
             }
             else if (QuestionType == "MCQ") {
                 savedQuestions.push(Questions[i][Questions[i].length - 1])
             }
-            if (QuestionType == "MCQ" ) {
+            if (QuestionType == "MCQ") {
                 kinds.push("mcq")
             }
-            else if (QuestionType == "Complete" ) {
+            else if (QuestionType == "Complete") {
                 kinds.push("complete")
             }
 
 
 
-            if ( QuestionType == "Complete") {
+            if (QuestionType == "Complete") {
                 keywords.push(Questions[i][1])
             }
             else {
@@ -311,7 +312,7 @@ class GenerteQuestions extends Component {
 
             publics.push("false")
 
-            if (QuestionType == "MCQ" ) {
+            if (QuestionType == "MCQ") {
                 add_distructors[i.toString()] = []
                 for (let j = 1; j < Questions[i].length - 1; j++) {
                     add_distructors[i.toString()].push(Questions[i][j])
@@ -536,7 +537,7 @@ class GenerteQuestions extends Component {
             return (
                 <div className="loading">
                     <div>
-                        <h2>Wati for generating questions...</h2>
+                        <h2>Wait for generating questions...</h2>
                         <Ouroboro color="#be97e8" />
                     </div>
                 </div>
@@ -544,13 +545,13 @@ class GenerteQuestions extends Component {
         }
         else if (screen == "generatedQuestions") {
             let { Questions } = this.state
-            console.log("Questions: ", Questions)
+
             let Questions1 = Questions.Questions
+
             if (Questions != "") {
                 let ListQuestions = Object.keys(Questions1).map((Question, index) => {
                     let distractorItem = [];
-                    if (read_cookie("questionType") == "Complete" ) {
-
+                    if (read_cookie("questionType") == "Complete") {
                         distractorItem.push(<p>Answer:  {Questions1[Question][1]}</p>)
 
                         let disractorsDiv =
@@ -569,12 +570,18 @@ class GenerteQuestions extends Component {
                     }
                     else if (read_cookie("questionType") == "MCQ") {
                         for (let i = 0; i < Questions1[Question].length - 1; i++) {
-                            distractorItem.push(<p>dis{i + 1}:  {Questions1[Question][i]}</p>)
+                            if (i == 0) {
+                                distractorItem.push(<p>Answer:  {Questions1[Question][i]}</p>)
+                            }
+                            else {
+                                distractorItem.push(<p>dis{i }:  {Questions1[Question][i]}</p>)
+                            }
                         }
                         let disractorsDiv =
                             <div className="QuestionDistractors">
                                 {distractorItem}
                             </div>
+
                         return (
                             <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" >
                                 <div className="generatedContent">
@@ -587,6 +594,8 @@ class GenerteQuestions extends Component {
                     }
 
                 })
+
+                console.log("ListQuestions: ", ListQuestions)
                 return (
                     <Fragment>
                         <div className="saveQuestionsButton" style={{ "marginTop": "0px", "justifyContent": "space-between" }}>

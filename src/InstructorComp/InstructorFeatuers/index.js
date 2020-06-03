@@ -98,15 +98,15 @@ class InstructorFeatuers extends Component {
 
                 <a className="sidebar-brand d-flex align-items-center justify-content-center" href="">
                     <div className="sidebar-brand-icon rotate-n-15">
-                        <i className="fas fa-laugh-wink"></i>
+                        <i class="fas fa-question-circle ling fa-2x"></i>
                     </div>
                     <div className="sidebar-brand-text mx-3">Quizly Instructor </div>
                 </a>
 
                 <li className="nav-item active">
                     <a className="nav-link" >
-                        <i className="fas fa-fw fa-tachometer-alt"></i>
-                        <span> Dashboard</span></a>
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>INSTRUCTOR</span></a>
                 </li>
 
                 <hr className="sidebar-divider" />
@@ -114,6 +114,32 @@ class InstructorFeatuers extends Component {
                 <div className="sidebar-heading">
                     Features
                 </div>
+
+                <li className="nav-item">
+                    <Link className="nav-link collapsed" to="/instructorHome/generateQuestions" >
+                        <i class="fas fa-question-circle"></i>
+                        <span>GenerateQuestions</span>
+                    </Link>
+                </li>
+
+                <li className="nav-item">
+                    <Link className="nav-link collapsed" to="/instructorHome/addingQuestion" >
+                        <i class="fas fa-question-circle"></i>
+                        <span>AddNewQuestion</span>
+                    </Link>
+                </li>
+
+                <li className="nav-item">
+                    <Link className="nav-link collapsed" to={{
+                        pathname: "/instructorHome/questionBank",
+                        state: {
+                            url: "https://quizly-app.herokuapp.com/instructor/getmyQuestions/"
+                        }
+                    }}  >
+                        <i class="fas fa-question-circle"></i>
+                        <span>My Questions</span>
+                    </Link>
+                </li>
 
 
 
@@ -124,20 +150,18 @@ class InstructorFeatuers extends Component {
                             url: "https://quizly-app.herokuapp.com/questionbank/"
                         }
                     }}  >
-                        <i className="fas fa-fw fa-cog"></i>
+                        <i class="fas fa-question-circle"></i>
                         <span>Question Bank</span>
                     </Link>
-                    {/* <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div className="bg-white py-2 collapse-inner rounded">
-                            <h6 className="collapse-header">Domains List:</h6>
-
-                            {questionsFeatures}
-                            <a onClick={() => { this.navigate("all", "all") }} className="collapse-item" >All</a>
-
-
-                        </div>
-                    </div> */}
                 </li>
+
+
+
+
+
+
+
+
 
                 <li className="nav-item">
                     <Link className="nav-link collapsed" to={{
@@ -150,13 +174,6 @@ class InstructorFeatuers extends Component {
                 </li>
 
                 <li className="nav-item">
-                    <Link className="nav-link collapsed" to="/instructorHome/generateQuestions" >
-                        <i class="fas fa-question-circle"></i>
-                        <span>GenerateQuestions</span>
-                    </Link>
-                </li>
-
-                <li className="nav-item">
                     <Link className="nav-link collapsed" to={{
                         pathname: "/instructorHome/Exams",
 
@@ -165,6 +182,12 @@ class InstructorFeatuers extends Component {
                         <span>My Exams</span>
                     </Link>
                 </li>
+
+
+
+
+
+
 
                 <li className="nav-item">
                     <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">

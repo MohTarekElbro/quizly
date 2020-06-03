@@ -8,6 +8,7 @@ import './style.css'
 import './jquery.js'
 import Modal from '../../components/Modal'
 import { withRouter } from 'react-router-dom'
+import { Ring } from 'react-spinners-css';
 // import '../../custom.js'
 
 
@@ -55,7 +56,7 @@ class QuestionBank extends Component {
                 console.log("backQuestion: ", this.props.backQuestion)
                 var { Questions } = this.state
                 console.log("oldQuestions: ", Questions)
-                if ((this.props.pageType == "questionBank" && this.props.backQuestion.public == true) || ((this.props.pageType == "myQuestions" || this.props.pageType == "addingNewQuestion")  && this.props.backQuestion.owner == read_cookie("instructorID"))) {
+                if ((this.props.pageType == "questionBank" && this.props.backQuestion.public == true) || ((this.props.pageType == "myQuestions" || this.props.pageType == "addingNewQuestion") && this.props.backQuestion.owner == read_cookie("instructorID"))) {
                     Questions.push(this.props.backQuestion)
                     this.setState({
                         Questions,
@@ -189,12 +190,21 @@ class QuestionBank extends Component {
         this.setState({
             flag: true
         })
+        var version
         try {
             e.preventDefault()
+            version  = this.state.version
+            this.setState({
+                version: 0
+            })
         }
         catch (err) {
+            version  = e
+            this.setState({
+                version
+            })
         }
-        var { version } = this.state
+        
         var { count } = this.state
         var { domainName } = this.state
         var { QuestionType } = this.state
@@ -210,11 +220,10 @@ class QuestionBank extends Component {
             })
         };
         let api;
-        this.setState({
-            version: 0
-        })
+        
 
         try {
+            console.log("ABO ELVARASION: " , version)
 
             let url1
             if (this.props.url) {
@@ -235,37 +244,37 @@ class QuestionBank extends Component {
                 })
             }
             else {
-                console.log("Data: " , data)
-                
+                console.log("Data: ", data)
+
                 this.setState({
                     Questions: data
                 })
                 if (this.props.url) {
                     this.filterQuestions()
                 }
-                if(this.state.Questions.length <4){
-                    
+                if (this.state.Questions.length < 4) {
+
                     this.handleScroll()
                 }
-                if (this.state.Questions.length == 0) {
-                    var value = ((this.state.deletedQuestions.length) / this.state.count)
-                    if (value > parseInt(value)) {
-                        value = parseInt(value) + 1
-                    }
-                    if (e == value) {
+                // if (this.state.Questions.length == 0) {
+                //     var value = ((this.state.deletedQuestions.length) / this.state.count)
+                //     if (value > parseInt(value)) {
+                //         value = parseInt(value) + 1
+                //     }
+                //     if (e == value) {
 
-                    }
-                    else {
-                        var { version } = this.state
-                        console.log("version: ", version)
-                        version = version + parseInt(value)
-                        console.log("version: ", version)
-                        this.setState({
-                            version
-                        })
-                        this.findQuestions(value)
-                    }
-                }
+                //     }
+                //     else {
+                //         var { version } = this.state
+                //         console.log("version: ", version)
+                //         version = version + parseInt(value)
+                //         console.log("version: ", version)
+                //         this.setState({
+                //             version
+                //         })
+                //         this.findQuestions(value)
+                //     }
+                // }
 
                 this.QuestionsBody1.addEventListener('scroll', this.handleScroll);
             }
@@ -312,6 +321,9 @@ class QuestionBank extends Component {
 
             }
             else {
+                $(".QuestionsContainer").css("padding-bottom", "40px")
+                $(".questionsLoading").removeClass("remove")
+
                 const requestOptions = {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
@@ -345,11 +357,15 @@ class QuestionBank extends Component {
                         this.setState({
                             Questions: []
                         })
+                        $(".questionsLoading").addClass("remove")
+                        $(".QuestionsContainer").css("padding-bottom", "30px")
                     }
                     else {
                         this.setState({
                             Questions: this.state.Questions.concat(data)
                         })
+                        $(".QuestionsContainer").css("padding-bottom", "30px")
+                        $(".questionsLoading").addClass("remove")
                     }
 
 
@@ -436,6 +452,23 @@ class QuestionBank extends Component {
                 this.props.getItem(Question)
             }
         }
+        console.log("this.state.Questions.length: ",this.state.Questions.length)
+        if (this.state.Questions.length == 0) {
+            var value = ((this.state.deletedQuestions.length) / this.state.count)
+            if (value > parseInt(value)) {
+                value = parseInt(value) + 1
+            }
+
+            var { version } = this.state
+            console.log("version: ", version)
+            version = version + parseInt(value)
+            console.log("version: ", version)
+            this.setState({
+                version
+            })
+            this.findQuestions(version)
+
+        }
     }
 
     render() {
@@ -518,15 +551,9 @@ class QuestionBank extends Component {
             })
         }
 
-        let style
-        if (this.props.url) {
-            style = { "marginTop": "10px" }
-        }
-        else {
-            style = { "marginTop": "70px" }
-        }
+
         return (
-            <div className="card shadow mb-4 FindFrom" style={style}>
+            <div className="card shadow mb-4 FindFrom" >
                 <div className="card-header py-3">
                     <form onSubmit={this.findQuestions} className="FindForm">
                         <select data-menu id="QuestionType" className="custom-select" name="QuestionType" value={this.state.QuestionType} onChange={(e) => { this.setState({ QuestionType: e.target.value }) }}>
@@ -553,6 +580,11 @@ class QuestionBank extends Component {
                     <div className="QuestionsContainer" id="QuestionsBody" ref={(QuestionsBody) => { this.QuestionsBody = QuestionsBody }}>
 
                         {ListQuestions}
+                        <div className="questionsLoading remove">
+                            <div>
+                                <Ring color="#4e73df" style={{ "width": "20px", "height": "20px" }} />
+                            </div>
+                        </div>
 
                     </div>
                 </div>

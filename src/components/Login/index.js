@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { bake_cookie } from 'sfcookies'
+import $ from 'jquery'
+import { transitions, positions, Provider as AlertProvider } from 'react-alert'
+import { useAlert } from 'react-alert'
+import { confirm } from 'jquery-confirm'
 import InstructorHome from '../../InstructorComp/InstructorHome'
 // import InstructorHome from '../../instructorComp/instructorHome'
 import './style.css';
@@ -16,12 +20,12 @@ import axios from 'axios'
 
 class Login extends Component {
     state = {
-        url:""
+        url: ""
     }
     componentDidMount = () => {
         axios.get('js/data.json').then(res => {
             this.setState({
-                url:res.data.url
+                url: res.data.url
             })
         })
     }
@@ -30,6 +34,7 @@ class Login extends Component {
 
 
     LoginAt = async (e) => {
+        $("*").css("cursor", "progress")
         e.preventDefault();
         const username = e.target.elements.username.value;
         const password = e.target.elements.password.value;
@@ -44,13 +49,26 @@ class Login extends Component {
         };
 
         let api;
-        let {url} = this.state
-        
-        console.log("URL: " , url)
+        let { url } = this.state
+
+        console.log("URL: ", url)
         try {
-        api = await fetch('https://quizly-app.herokuapp.com/instructor/login', requestOptions)
-        
+            api = await fetch('https://quizly-app.herokuapp.com/instructor/login', requestOptions)
+
             const data = await api.json();
+            $("*").css("cursor", "default")
+            console.log(api)
+            if (api.status == 404) {
+                $.alert({
+                    title: 'Failed!',
+                    boxWidth: '400px',
+                    useBootstrap: false,
+                    content: "Wrong email or password",
+                    buttons: {
+                        okay: function () { },
+                    }
+                });
+            }
             if (data.instructor) {
                 bake_cookie('token', data.token);
                 bake_cookie("instructorID", data.instructor._id);
@@ -63,14 +81,15 @@ class Login extends Component {
                 //     bake_cookie('pic' , res)
                 // })
 
-
+                $("*").css("cursor", "default")
                 this.props.history.push("/instructorHome");
             }
             else {
                 console.log("0")
             }
         }
-        catch(e){
+        catch (e) {
+
             console.log(e)
         }
 

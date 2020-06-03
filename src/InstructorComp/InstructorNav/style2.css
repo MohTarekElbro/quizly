@@ -4,6 +4,7 @@
 
 .navbar {
   z-index: 1000 !important;
+  height: 43px !important;
 }
 
 #sidebarToggleTop {
