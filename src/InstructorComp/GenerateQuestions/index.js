@@ -87,7 +87,7 @@ class GenerteQuestions extends Component {
         try {
             api1 = await fetch('https://quizly-app.herokuapp.com/instructor/GetMyRequest', requestOptions1)
             console.log(api1)
-            if (api1.statusCode == 400) {
+            if (api1.status == 400) {
                 this.setState({
                     screen: "generateQuestion"
                 })
@@ -103,11 +103,8 @@ class GenerteQuestions extends Component {
                 try {
                     api = await fetch('https://quizly-app.herokuapp.com/instructor/GetTempQuestions', requestOptions1)
                     let data = await api.json()
-                    if (api.statusCode == 400) {
-                        this.setState({
-                            screen: "loading"
-                        })
-                        console.log("no Questions yet")
+                    if (api.status == 404) {
+                        
                     }
                     else {
                         data["allowedQuestions"] = {}
@@ -124,6 +121,10 @@ class GenerteQuestions extends Component {
                 }
                 catch (e) {
                     console.log(e)
+                    this.setState({
+                        screen: "loading"
+                    })
+                    console.log("no Questions yet")
                 }
             }
 
@@ -230,12 +231,13 @@ class GenerteQuestions extends Component {
                 console.log(data)
                 if (data.body == "in Processing") {
                     $("#generateButton").css("display", "block")
-                    bake_cookie("levelOfQuestions", level)
-                    bake_cookie("questionsDomain", DomainName)
+                    
                     if (DomainName == "PL") {
-                        QuestionType = "Complete"
+                        this.setState({
+                            QuestionType : "Complete"
+                        })
                     }
-                    bake_cookie("questionType", QuestionType)
+                    
 
                     this.setState({
                         screen: "loading",
@@ -263,8 +265,8 @@ class GenerteQuestions extends Component {
         let QuestionsPackge = this.state.Questions
         console.log("QuestionsPackge : ", QuestionsPackge)
         let Questions = QuestionsPackge.Questions
-        let QuestionType = read_cookie("questionType")
-        let level = read_cookie("levelOfQuestions")
+        let {QuestionType} = this.state
+        let {level} = this.state
 
 
         let levels = []
@@ -273,7 +275,7 @@ class GenerteQuestions extends Component {
         let keywords = []
         let publics = []
         let add_distructors = {}
-        let DomainName = read_cookie("questionsDomain")
+        let {DomainName} = this.state
         let numofQuestions = 0
         console.log(Object.keys(Questions).length)
         for (let i = 0; i < Object.keys(Questions).length; i++) {
@@ -545,13 +547,14 @@ class GenerteQuestions extends Component {
         }
         else if (screen == "generatedQuestions") {
             let { Questions } = this.state
-
+            let {QuestionType} = this.state
+            console.log("QuestionType: " , QuestionType)
             let Questions1 = Questions.Questions
 
             if (Questions != "") {
                 let ListQuestions = Object.keys(Questions1).map((Question, index) => {
                     let distractorItem = [];
-                    if (read_cookie("questionType") == "Complete") {
+                    if (QuestionType == "Complete") {
                         distractorItem.push(<p>Answer:  {Questions1[Question][1]}</p>)
 
                         let disractorsDiv =
@@ -568,7 +571,7 @@ class GenerteQuestions extends Component {
                             </div>
                         )
                     }
-                    else if (read_cookie("questionType") == "MCQ") {
+                    else if (QuestionType == "MCQ") {
                         for (let i = 0; i < Questions1[Question].length - 1; i++) {
                             if (i == 0) {
                                 distractorItem.push(<p>Answer:  {Questions1[Question][i]}</p>)
