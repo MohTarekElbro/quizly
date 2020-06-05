@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import './style.css'
 import { read_cookie, bake_cookie } from 'sfcookies';
 import { Ouroboro } from 'react-spinners-css';
+import { saveAs, encodeBase64 } from '@progress/kendo-file-saver';
 import socketIOClient from "socket.io-client";
 import $ from 'jquery'
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
@@ -27,7 +28,8 @@ class GenerteQuestions extends Component {
         DomainName: "SW",
         keyword: "",
         Questions: "",
-        screen: "generateQuestion"
+        screen: "generateQuestion",
+        fileName:""
 
     }
 
@@ -104,7 +106,7 @@ class GenerteQuestions extends Component {
                     api = await fetch('https://quizly-app.herokuapp.com/instructor/GetTempQuestions', requestOptions1)
                     let data = await api.json()
                     if (api.status == 404) {
-                        
+
                     }
                     else {
                         data["allowedQuestions"] = {}
@@ -137,7 +139,11 @@ class GenerteQuestions extends Component {
 
     uploadImage = async (e) => {
         let file = this.txtFile.files[0]
-        // console.log(file)
+        // console.log(file.name)
+        this.setState({
+            fileName:file.name
+        })
+        $('.saveImg').css('display', 'block')
         let formData = new FormData()
         formData.append('resource', file)
         const requestOptions = {
@@ -154,15 +160,13 @@ class GenerteQuestions extends Component {
             this.setState({
                 filePath: data.path
             })
-
-
         }
         catch (e) {
             console.log(e.message);
         }
 
         // let input = this.txtFile
-        // // console.log(input.files[0])
+        // // 
         // if (input.files && input.files[0]) {
         //     var reader = new FileReader();
         //     reader.onload = function (e) {
@@ -170,7 +174,7 @@ class GenerteQuestions extends Component {
         //             .attr('src', e.target.result)
         //             .width(240)
         //             .height(300);
-        //         $('.saveImg').css('display', 'block')
+        //         
         //     };
         //     reader.readAsDataURL(input.files[0]);
         // }
@@ -203,26 +207,41 @@ class GenerteQuestions extends Component {
     }
 
     generateQuestions = async () => {
-
-
         let { QuestionType } = this.state
         let { level } = this.state
         let { DomainName } = this.state
         let { numOfAnswers } = this.state
         let { filePath } = this.state
-        if (filePath != null && filePath != "") {
+        let { text } = this.state
+        if ((filePath != null && filePath != "") || text != "") {
+            let requestOptions = {}
+            if (text != "") {
+                console.log("TEXT BABE")
+                requestOptions = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                    body: JSON.stringify({
+                        "data": text,
+                        "Diffculty": level,
+                        "Distructor": numOfAnswers
+                    })
+                };
+            }
+            else {
+                requestOptions = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                    body: JSON.stringify({
+                        "path": filePath,
+                        "Diffculty": level,
+                        "Distructor": numOfAnswers
+                    })
+                };
+            }
+
             this.setState({
                 screen: "loading"
             })
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
-                body: JSON.stringify({
-                    "path": filePath,
-                    "Diffculty": level,
-                    "Distructor": numOfAnswers
-                })
-            };
             let api;
 
             try {
@@ -231,13 +250,12 @@ class GenerteQuestions extends Component {
                 console.log(data)
                 if (data.body == "in Processing") {
                     $("#generateButton").css("display", "block")
-                    
                     if (DomainName == "PL") {
                         this.setState({
-                            QuestionType : "Complete"
+                            QuestionType: "Complete"
                         })
                     }
-                    
+
 
                     this.setState({
                         screen: "loading",
@@ -257,6 +275,7 @@ class GenerteQuestions extends Component {
                 })
 
                 console.log(e.message);
+
             }
         }
     }
@@ -265,8 +284,8 @@ class GenerteQuestions extends Component {
         let QuestionsPackge = this.state.Questions
         console.log("QuestionsPackge : ", QuestionsPackge)
         let Questions = QuestionsPackge.Questions
-        let {QuestionType} = this.state
-        let {level} = this.state
+        let { QuestionType } = this.state
+        let { level } = this.state
 
 
         let levels = []
@@ -275,7 +294,7 @@ class GenerteQuestions extends Component {
         let keywords = []
         let publics = []
         let add_distructors = {}
-        let {DomainName} = this.state
+        let { DomainName } = this.state
         let numofQuestions = 0
         console.log(Object.keys(Questions).length)
         for (let i = 0; i < Object.keys(Questions).length; i++) {
@@ -448,6 +467,7 @@ class GenerteQuestions extends Component {
         })
     }
 
+
     renderScreen = () => {
         let { screen } = this.state
         if (screen == "generateQuestion") {
@@ -512,16 +532,17 @@ class GenerteQuestions extends Component {
 
                         <div class="row optionItem remove" id="textarea" >
                             <div class="col-sm-12 form-group">
-                                <textarea class="generateQuestionText" type="textarea" name="comments" id="comments" placeholder="Your Question" rows="7" onBlur={(e) => { console.log(this.state.text); this.setState({ text: e.target.value }) }} ></textarea>
+                                <textarea class="generateQuestionText" ref={(textarea) => { this.textarea = textarea }} type="textarea" name="comments" id="comments" placeholder="Your Question" rows="7" onBlur={(e) => { console.log(this.state.text); this.setState({ text: e.target.value }) }} ></textarea>
                             </div>
                         </div>
+
                         <div className="uploadTxtFile  optionItem" id="uploadInput">
-                            <label className="custom-file-upload" style={{ "marginTop": "0px" }}>
+                            <label className="uploadFile" style={{ "marginTop": "0px" }}>
                                 <input type="file" name='txtFile' ref={(txtFile) => { this.txtFile = txtFile }} onChange={() => this.uploadImage()} className="fileInput form-control" />
                                 <i className="fas fa-upload"></i> Upload File
                             </label>
 
-                            <button className="saveImg btn btn-primary" onClick={() => { this.saveFile() }}> SaveFile</button>
+                            <p className="" > {this.state.fileName}</p>
                         </div>
 
                         <div className="generateQuestionsButton">
@@ -547,8 +568,8 @@ class GenerteQuestions extends Component {
         }
         else if (screen == "generatedQuestions") {
             let { Questions } = this.state
-            let {QuestionType} = this.state
-            console.log("QuestionType: " , QuestionType)
+            let { QuestionType } = this.state
+            console.log("QuestionType: ", QuestionType)
             let Questions1 = Questions.Questions
 
             if (Questions != "") {
@@ -577,7 +598,7 @@ class GenerteQuestions extends Component {
                                 distractorItem.push(<p>Answer:  {Questions1[Question][i]}</p>)
                             }
                             else {
-                                distractorItem.push(<p>dis{i }:  {Questions1[Question][i]}</p>)
+                                distractorItem.push(<p>dis{i}:  {Questions1[Question][i]}</p>)
                             }
                         }
                         let disractorsDiv =
@@ -639,6 +660,19 @@ class GenerteQuestions extends Component {
 
 
     changeOption = (id) => {
+        if(id == "uploadInput"){
+            this.setState({
+                text:""
+            })
+            this.textarea.value =""
+        }
+        else{
+            this.setState({
+                filePath:"",
+                fileName:""
+            })
+
+        }
         $(".optionItem").addClass('remove')
         $("#" + id).removeClass('remove')
         $(".option").css({
@@ -685,7 +719,7 @@ class GenerteQuestions extends Component {
 
     render() {
         console.log("filePath: ", this.state.filePath)
-        if (this.state.filePath == "") {
+        if (this.state.filePath == "" && this.state.text =="") {
             $('#generateButton').css({
                 "opacity": "0.5",
                 "cursor": "not-allowed"

@@ -142,6 +142,33 @@
   margin: auto;
 }
 
+.uploadTxtFile {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 15px;
+}
+
+.uploadTxtFile p {
+  width: 200px;
+  height: 30px;
+  border: 1px solid black;
+  text-align: center;
+  padding-top: 2px;
+}
+
+.uploadTxtFile .uploadFile {
+  cursor: pointer;
+  margin-bottom: 0px;
+  margin-right: 10px;
+}
+
 .generatedsContainer1 {
   height: calc(105vh - 100px);
   overflow: auto;

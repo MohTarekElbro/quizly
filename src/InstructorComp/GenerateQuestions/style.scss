@@ -93,6 +93,25 @@
     }
 }
 
+.uploadTxtFile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    p{
+        width: 200px;
+        height: 30px;
+        border: 1px solid black;
+        text-align: center;
+        padding-top: 2px;
+    }
+    .uploadFile{
+        cursor: pointer;
+        margin-bottom: 0px;
+        margin-right: 10px;
+    }
+}
+
 
 
 
