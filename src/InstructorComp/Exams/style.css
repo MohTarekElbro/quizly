@@ -28,6 +28,19 @@
   margin: 0 20px;
 }
 
+.options .edited::after {
+  content: "";
+  border: 10px solid transparent;
+  border-top: 4px solid black;
+  border-right: 4px solid black;
+  border-left: 4px solid black;
+  border-bottom: 4px solid black;
+  position: absolute;
+  top: 33px;
+  border-radius: 100%;
+  margin-left: 6px;
+}
+
 .options .option {
   margin: auto;
   cursor: pointer;

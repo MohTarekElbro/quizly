@@ -56,9 +56,10 @@ class Login extends Component {
             api = await fetch('https://quizly-app.herokuapp.com/instructor/login', requestOptions)
 
             const data = await api.json();
-            $("*").css("cursor", "default")
+            
             console.log(api)
             if (api.status == 404) {
+                $("*").css("cursor", "default")
                 $.alert({
                     title: 'Failed!',
                     boxWidth: '400px',

@@ -271,6 +271,7 @@ class Exams extends Component {
         }
         else {
             $("#" + id).removeClass('remove')
+            $(".optionItem").removeClass('shown')
             $("#" + id).addClass('shown')
             $(".option").css({
                 'font-weight': 'normal',
@@ -436,7 +437,7 @@ class Exams extends Component {
             <div className="card shadow mb-4 FindFrom" >
                 <div className="card-header py-3">
                     <div className="options">
-                        <p onClick={() => this.changeOption("domain")} className="option" id="domainItem">Domain Name</p>
+                        <p onClick={() => this.changeOption("domain")} className="option " id="domainItem">Domain Name</p>
                         <div className="line"></div>
                         <p onClick={() => this.changeOption("numOfQuestions")} className="option" id="numOfQuestionsItem" >Number of questions</p>
                         <div className="line"></div>
@@ -457,7 +458,7 @@ class Exams extends Component {
                         </button>
                     </div>
                     <form onSubmit={this.findExams} className="FindForm">
-                        <select id="domain" name="domain" className="custom-select optionItem remove" value={this.state.domainName} onChange={(e) => { this.setState({ domainName: e.target.value }) }}>
+                        <select id="domain" name="domain" className="custom-select optionItem remove" value={this.state.domainName} onChange={(e) => { this.setState({ domainName: e.target.value });$("#"+e.target.id+"Item").addClass("edited") }}>
                             <option value="">All</option>
                             {ListDomains}
                         </select>
@@ -477,6 +478,7 @@ class Exams extends Component {
                                         }}
                                         onChange={(durationValues) => {
                                             this.setState({ durationValues })
+                                            $("#durationItem").addClass("edited")
                                         }}
                                         values={durationValues}
                                     >
@@ -532,6 +534,7 @@ class Exams extends Component {
                                         }}
                                         onChange={(countValues) => {
                                             this.setState({ countValues })
+                                            $("#numOfQuestionsItem").addClass("edited")
                                         }}
                                         values={countValues}
                                     >
@@ -576,19 +579,19 @@ class Exams extends Component {
                             <div className="dateDiv" >
                                 <p>Start date: </p>
                                 <input type="date" className="form-control bg-light small inputSearch dateInput" placeholder="End date..."
-                                    aria-label="Search" aria-describedby="basic-addon2" value={this.state.startDate} onChange={(e) => { this.setState({ startDate: e.target.value }) }} />
+                                    aria-label="Search" aria-describedby="basic-addon2" value={this.state.startDate} onChange={(e) => { this.setState({ startDate: e.target.value });$("#dateItem").addClass("edited") }} />
                             </div>
                             <div className="dateDiv">
                                 <p> End date: </p>
                                 <input type="date" className="form-control bg-light small inputSearch dateInput" placeholder="End date..."
-                                    aria-label="Search" aria-describedby="basic-addon2" value={this.state.endDate} onChange={(e) => { this.setState({ endDate: e.target.value }) }} />
+                                    aria-label="Search" aria-describedby="basic-addon2" value={this.state.endDate} onChange={(e) => { this.setState({ endDate: e.target.value });$("#dateItem").addClass("edited") }} />
                             </div>
                         </div>
                         <input id="university" type="text" className="form-control bg-light small inputSearch optionItem remove " placeholder="University"
-                            aria-label="Search" aria-describedby="basic-addon2" value={this.state.university} onChange={(e) => { this.setState({ university: e.target.value }) }} />
+                            aria-label="Search" aria-describedby="basic-addon2" value={this.state.university} onChange={(e) => { this.setState({ university: e.target.value });$("#"+e.target.id+"Item").addClass("edited") }} />
 
                         <input id="faculty" type="text" className="form-control bg-light small inputSearch optionItem remove " placeholder="faculty"
-                            aria-label="Search" aria-describedby="basic-addon2" value={this.state.faculty} onChange={(e) => { this.setState({ faculty: e.target.value }) }} />
+                            aria-label="Search" aria-describedby="basic-addon2" value={this.state.faculty} onChange={(e) => { this.setState({ faculty: e.target.value });$("#"+e.target.id+"Item").addClass("edited") }} />
 
                     </form>
                 </div>
