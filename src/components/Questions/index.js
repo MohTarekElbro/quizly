@@ -233,7 +233,7 @@ class QuestionBank extends Component {
 
 
         try {
-            console.log("ABO ELVARASION: ", version)
+            // console.log("ABO ELVARASION: ", version)
 
             let url1
             if (this.props.url) {
@@ -285,7 +285,7 @@ class QuestionBank extends Component {
                             //     this.handleScroll(j)
                             //     j=10
                             // }
-                            console.log("api.status: ", api.status)
+                            // console.log("api.status: ", api.status)
                         });
                         this.setState({
                             Questions: this.state.Questions.concat(data),
@@ -306,7 +306,7 @@ class QuestionBank extends Component {
                 //     console.log("SCROLLHANDLED")
                 //     this.handleScroll()
                 // }
-                console.log(this.state.Questions.length, " ", dataLength)
+                // console.log(this.state.Questions.length, " ", dataLength)
                 if (this.state.Questions.length < 1 && this.props.url && dataLength != 0) {
                     $(".QuestionsContainer").css("padding-bottom", "40px")
                     $(".questionsLoading").removeClass("remove")
@@ -317,16 +317,16 @@ class QuestionBank extends Component {
                     var version = 0
                     try {
                         e.preventDefault()
-                        console.log("first Time")
+                        // console.log("first Time")
                     }
                     catch (error) {
-                        console.log("Not first Time: ", e)
+                        // console.log("Not first Time: ", e)
                         version = e
                     }
                     version = version + 1
 
 
-                    console.log("Findversion1: ", version)
+                    // console.log("Findversion1: ", version)
                     // let version1 = version + parseInt(value)
                     // console.log("Findversion2: ", version1)
                     // this.setState({
@@ -446,9 +446,9 @@ class QuestionBank extends Component {
                         url1 = this.props.location.state.url
                     }
                     var { version } = this.state
-                    console.log("VERSIONS@: ", version)
+                    // console.log("VERSIONS@: ", version)
                     let url = url1 + count + "/" + version;
-                    console.log(url)
+                    // console.log(url)
                     api = await fetch(url, requestOptions)
                     var data = await api.json();
                     this.setState({
@@ -475,11 +475,11 @@ class QuestionBank extends Component {
                                 // console.log("Questions.length: " , Questions.length)
                                 for (let i = 0; i < data.length; i++) {
                                     if (deleted._id == data[i]._id) {
-                                        console.log("data.length: ", data.length)
-                                        console.log("I: ", i)
+                                        // console.log("data.length: ", data.length)
+                                        // console.log("I: ", i)
                                         data.splice(i, 1)
                                         i--
-                                        console.log("I: ", i)
+                                        // console.log("I: ", i)
                                         // console.log("deleted: " , data[i+1].Question)
                                         break
                                     }
@@ -492,12 +492,12 @@ class QuestionBank extends Component {
                                 //     this.handleScroll(j)
                                 //     j=10
                                 // }
-                                console.log("api.status: ", api.status)
+                                // console.log("api.status: ", api.status)
                             });
 
                             // }
                         }
-                        console.log("api.status: ", api.status)
+                        // console.log("api.status: ", api.status)
 
                         if (api.status === 404) {
                             // this.setState({
@@ -611,11 +611,11 @@ class QuestionBank extends Component {
                 value = parseInt(value) + 1
             }
             let realVersion = this.state.version
-            console.log("realVersion: ", realVersion)
+            // console.log("realVersion: ", realVersion)
             var version = 0
-            console.log("version1: ", version)
+            // console.log("version1: ", version)
             version = version + parseInt(value)
-            console.log("version2: ", version)
+            // console.log("version2: ", version)
             this.setState({
                 version: version + 1
             })
