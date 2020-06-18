@@ -32,7 +32,7 @@ class GenerateExam extends Component {
         var { university } = this.state
         var { faculty } = this.state
         var { duration } = this.state
-        console.log("Titles:", subject.length, university, faculty, duration)
+        // console.log("Titles:", subject.length, university, faculty, duration)
         let flag1 = false
         let flag2 = false
         let flag3 = false
@@ -74,7 +74,7 @@ class GenerateExam extends Component {
             flag5 = true
         }
         if (flag1 && flag2 && flag3 && flag4 && flag5) {
-            console.log("dsdsdsdsdsdsdsdsdss")
+            // console.log("dsdsdsdsdsdsdsdsdss")
 
             $('.generateButton').css({
                 "opacity": "1",
@@ -97,7 +97,7 @@ class GenerateExam extends Component {
 
     changeToolContent = (id, newDeletedQuestions = null) => {
         if (newDeletedQuestions == null) {
-            console.log("id: ", id)
+            // console.log("id: ", id)
             this.setState({
                 currentPage: id
             })
@@ -119,9 +119,9 @@ class GenerateExam extends Component {
             }
         }
         else {
-            console.log("obaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-            console.log("backQuestion: ", newDeletedQuestions)
-            console.log("id: ", id)
+            // console.log("obaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+            // console.log("backQuestion: ", newDeletedQuestions)
+            // console.log("id: ", id)
             var { deletedQuestions } = this.state
             if (id == "addingNewQuestion") {
                 this.setState({
@@ -155,7 +155,7 @@ class GenerateExam extends Component {
             deletedQuestions
         })
         var { currentPage } = this.state
-        console.log(currentPage, this.state.Questions)
+        // console.log(currentPage, this.state.Questions)
         let different = Math.random()
         Question["different"] = different
         this.changeToolContent(currentPage, Question)
@@ -198,7 +198,7 @@ class GenerateExam extends Component {
     editQuestion = async (QuestionID, newQuestion = "", oldDistractor = "", newDistractor = "", keyword = "") => {
         var { deletedQuestions } = this.state
         deletedQuestions.map((element) => {
-            console.log("keyword: ", keyword)
+            // console.log("keyword: ", keyword)
             if (element._id == QuestionID) {
                 if (newQuestion !== "") {
                     element.Question = newQuestion
@@ -218,12 +218,12 @@ class GenerateExam extends Component {
                     element.distructor.map((dis, index) => {
                         if (dis == oldDistractor) {
                             element.distructor.splice(index, 1)
-                            console.log(element)
+                            // console.log(element)
                         }
                     })
                 }
                 else {
-                    console.log("nooooo")
+                    // console.log("nooooo")
                     element.distructor.push(newDistractor)
                 }
             }
@@ -231,7 +231,7 @@ class GenerateExam extends Component {
         this.setState({
             deletedQuestions
         })
-        console.log(newQuestion, oldDistractor, newDistractor)
+        // console.log(newQuestion, oldDistractor, newDistractor)
         const requestOptions1 = {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
@@ -250,7 +250,7 @@ class GenerateExam extends Component {
             let data = await api1.json();
         }
         catch (e) {
-            console.log(e)
+            // console.log(e)
         }
 
     }
@@ -285,11 +285,11 @@ class GenerateExam extends Component {
         try {
             api1 = await fetch('https://quizly-app.herokuapp.com/exam/create', requestOptions1)
             let data = await api1.json();
-            console.log(data)
+            // console.log(data)
 
         }
         catch (e) {
-            console.log(e)
+            // console.log(e)
         }
 
         this.generatePdf()
@@ -569,7 +569,7 @@ class DistractorContent extends Component {
             this.props.editQuestion(this.props.Question._id, "", "", this.state.newDistractor)
         }
         else if (this.props.keyword != null) {
-            console.log("keywordddd")
+            // console.log("keywordddd")
             if (this.state.newDistractor != this.props.Distractor) {
                 this.props.editQuestion(this.props.Question._id, "", "", "", this.state.newDistractor)
             }

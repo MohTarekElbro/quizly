@@ -15,7 +15,7 @@ import ReactPDF, { Page, Text, View, Document, StyleSheet, PDFViewer } from '@re
 // value={this.state.search} onChange={(e) => { this.setState({ search: e.target.value }) }}
 class GenerteQuestions extends Component {
     state = {
-        QuestionType: "MCQ",
+        QuestionType: "trueorfalse",
         public: "false",
         numOfDis: 1,
         distractorsValue: [],
@@ -28,8 +28,8 @@ class GenerteQuestions extends Component {
         DomainName: "SW",
         keyword: "",
         Questions: "",
-        screen: "generateQuestion",
-        fileName:""
+        screen: "loading1",
+        fileName: ""
 
     }
 
@@ -70,7 +70,7 @@ class GenerteQuestions extends Component {
 
         const socket = socketIOClient("https://quizly-app.herokuapp.com")
         socket.on('sendQuestions', () => {
-            this.getQuestions()
+            this.getQuestions(false)
             this.setState({
                 screen: "generatedQuestions"
             })
@@ -79,7 +79,7 @@ class GenerteQuestions extends Component {
 
     }
 
-    getQuestions = async () => {
+    getQuestions = async (flag = true) => {
         const requestOptions1 = {
             method: 'Get',
             headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
@@ -118,6 +118,16 @@ class GenerteQuestions extends Component {
                             Questions: data,
                             screen: "generatedQuestions"
                         })
+                        if (flag) {
+                            $.alert({
+                                title: 'UnSaved',
+                                content: 'You have to save or  this questions before generate new',
+                                buttons: {
+                                    okay: function () { },
+
+                                }
+                            });
+                        }
                         console.log("Questions arrived: ", data)
                     }
                 }
@@ -141,7 +151,7 @@ class GenerteQuestions extends Component {
         let file = this.txtFile.files[0]
         // console.log(file.name)
         this.setState({
-            fileName:file.name
+            fileName: file.name
         })
         $('.saveImg').css('display', 'block')
         let formData = new FormData()
@@ -292,12 +302,13 @@ class GenerteQuestions extends Component {
         let savedQuestions = []
         let kinds = []
         let keywords = []
+        let states = []
         let publics = []
         let add_distructors = {}
         let { DomainName } = this.state
         let numofQuestions = 0
         console.log(Object.keys(Questions).length)
-        for (let i = 0; i < Object.keys(Questions).length; i++) {
+        for (let i = 0 , k=0; i < Object.keys(Questions).length; i++) {
             if (QuestionsPackge["allowedQuestions"][i] == false) {
                 console.log("false")
                 continue
@@ -309,45 +320,66 @@ class GenerteQuestions extends Component {
             else {
                 levels.push("medium")
             }
-            if (QuestionType == "Complete") {
+            if (QuestionsPackge.kind == "Complete") {
                 savedQuestions.push(Questions[i][0])
             }
-            else if (QuestionType == "MCQ") {
+            else if (QuestionsPackge.kind == "MCQ") {
                 savedQuestions.push(Questions[i][Questions[i].length - 1])
             }
-            if (QuestionType == "MCQ") {
+            else{
+                savedQuestions.push(Questions[i][3])
+            }
+
+            if (QuestionsPackge.kind == "MCQ") {
                 kinds.push("mcq")
             }
-            else if (QuestionType == "Complete") {
+            else if (QuestionsPackge.kind == "Complete") {
                 kinds.push("complete")
+            }
+            else {
+                kinds.push("trueorfalse")
             }
 
 
 
-            if (QuestionType == "Complete") {
+            if (QuestionsPackge.kind == "Complete") {
                 keywords.push(Questions[i][1])
             }
             else {
                 keywords.push(Questions[i][0])
             }
 
-            publics.push("false")
-
-            if (QuestionType == "MCQ") {
-                add_distructors[i.toString()] = []
-                for (let j = 1; j < Questions[i].length - 1; j++) {
-                    add_distructors[i.toString()].push(Questions[i][j])
+            if (QuestionsPackge.kind == "trueorfalse") {
+                if (Questions[i][2] == "T") {
+                    states[k.toString()] = "true"
+                }
+                else {
+                    states[k.toString()] = "false"
                 }
             }
+
+            publics.push("false")
+
+            if (QuestionsPackge.kind == "MCQ") {
+                add_distructors[k.toString()] = []
+                for (let j = 1; j < Questions[i].length - 1; j++) {
+                    add_distructors[k.toString()].push(Questions[i][j])
+                }
+            }
+            else if (QuestionsPackge.kind == "trueorfalse") {
+                add_distructors[k.toString()] = []
+                add_distructors[k.toString()].push(Questions[i][1])
+            }
+            k++
         }
 
         // console.log(levels)
-        // console.log(savedQuestions)
+        console.log(savedQuestions)
         // console.log(kinds)
-        // console.log(keywords)
+        console.log(keywords)
         // console.log(publics)
-        // console.log(add_distructors)
-        // console.log(DomainName)
+        console.log(add_distructors)
+        console.log(states)
 
         $.confirm({
             title: 'Confirm!',
@@ -388,6 +420,7 @@ class GenerteQuestions extends Component {
                                 "Level": levels,
                                 "Question": savedQuestions,
                                 "kind": kinds,
+                                "state": states,
                                 "keyword": keywords,
                                 "public": publics,
                                 "add_distructors": add_distructors,
@@ -469,6 +502,7 @@ class GenerteQuestions extends Component {
 
 
     renderScreen = () => {
+        console.log("this.state.QuestionType: ", this.state.QuestionType)
         let { screen } = this.state
         if (screen == "generateQuestion") {
             var { domains } = this.state
@@ -566,6 +600,15 @@ class GenerteQuestions extends Component {
                 </div>
             )
         }
+        else if (screen == "loading1") {
+            return (
+                <div className="loading">
+                    <div>
+                        <Ouroboro color="#be97e8" />
+                    </div>
+                </div>
+            )
+        }
         else if (screen == "generatedQuestions") {
             let { Questions } = this.state
             let { QuestionType } = this.state
@@ -575,7 +618,7 @@ class GenerteQuestions extends Component {
             if (Questions != "") {
                 let ListQuestions = Object.keys(Questions1).map((Question, index) => {
                     let distractorItem = [];
-                    if (QuestionType == "Complete") {
+                    if (Questions.kind == "Complete") {
                         distractorItem.push(<p>Answer:  {Questions1[Question][1]}</p>)
 
                         let disractorsDiv =
@@ -592,7 +635,8 @@ class GenerteQuestions extends Component {
                             </div>
                         )
                     }
-                    else if (QuestionType == "MCQ") {
+
+                    else if (Questions.kind == "MCQ") {
                         for (let i = 0; i < Questions1[Question].length - 1; i++) {
                             if (i == 0) {
                                 distractorItem.push(<p>Answer:  {Questions1[Question][i]}</p>)
@@ -613,6 +657,47 @@ class GenerteQuestions extends Component {
                                 </div>
                                 <div className="line"></div>
                                 {disractorsDiv}
+                            </div>
+                        )
+                    }
+                    else {
+                        distractorItem.push(<p>Answer:  {Questions1[Question][0]}</p>)
+                        distractorItem.push(<p>Distractor:  {Questions1[Question][1]}</p>)
+                        let TorF
+                        if (Questions1[Question][2] == "T") {
+                            TorF = "btn btn-secondary btn-icon-split"
+                        }
+                        else {
+                            TorF = "btn btn-light btn-icon-split"
+                        }
+                        let TorF2
+                        if (TorF == "btn btn-secondary btn-icon-split") {
+                            TorF2 = "btn btn-light btn-icon-split"
+
+                        }
+                        else {
+                            TorF2 = "btn btn-secondary btn-icon-split"
+                        }
+                        let disractorsDiv =
+                            <div className="TQuestionDistractors">
+                                {distractorItem}
+                            </div>
+                        return (
+                            <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" >
+                                <div className="generatedContent">
+                                    Question:  {Questions1[Question][3]}
+                                </div>
+                                <div className="line"></div>
+                                {disractorsDiv}
+                                <div className="line"></div>
+                                <div className="trueOrFalse">
+                                    <button class={TorF}>
+                                        <span class="text">True</span>
+                                    </button>
+                                    <button class={TorF2}>
+                                        <span class="text">False</span>
+                                    </button>
+                                </div>
                             </div>
                         )
                     }
@@ -660,16 +745,16 @@ class GenerteQuestions extends Component {
 
 
     changeOption = (id) => {
-        if(id == "uploadInput"){
+        if (id == "uploadInput") {
             this.setState({
-                text:""
+                text: ""
             })
-            this.textarea.value =""
+            this.textarea.value = ""
         }
-        else{
+        else {
             this.setState({
-                filePath:"",
-                fileName:""
+                filePath: "",
+                fileName: ""
             })
 
         }
@@ -719,7 +804,7 @@ class GenerteQuestions extends Component {
 
     render() {
         console.log("filePath: ", this.state.filePath)
-        if (this.state.filePath == "" && this.state.text =="") {
+        if (this.state.filePath == "" && this.state.text == "") {
             $('#generateButton').css({
                 "opacity": "0.5",
                 "cursor": "not-allowed"

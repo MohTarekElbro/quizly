@@ -1,4 +1,5 @@
 import React, { Component, props, DropdownButton, Dropdown, } from 'react'
+import _, { throttle } from 'lodash'
 import { DropdownList } from 'react-widgets'
 import { bake_cookie, read_cookie } from 'sfcookies'
 import filter from 'filter'
@@ -50,12 +51,12 @@ class QuestionBank extends Component {
 
         }
         if (this.props.url) {
-            console.log("PropsVersion: ", this.props.backQuestion, "StateVersion: ", this.state.different)
+            // console.log("PropsVersion: ", this.props.backQuestion, "StateVersion: ", this.state.different)
             if (this.props.backQuestion && this.props.backQuestion.different !== this.state.different) {
-                console.log("Doneeeeeeeeeeeeeeeeeeeeeeeeee")
-                console.log("backQuestion: ", this.props.backQuestion)
+                // console.log("Doneeeeeeeeeeeeeeeeeeeeeeeeee")
+                // console.log("backQuestion: ", this.props.backQuestion)
                 var { Questions } = this.state
-                console.log("oldQuestions: ", Questions)
+                // console.log("oldQuestions: ", Questions)
                 if ((this.props.pageType == "questionBank" && this.props.backQuestion.public == true) || ((this.props.pageType == "myQuestions" || this.props.pageType == "addingNewQuestion") && this.props.backQuestion.owner == read_cookie("instructorID"))) {
                     Questions.push(this.props.backQuestion)
                     this.setState({
@@ -152,7 +153,7 @@ class QuestionBank extends Component {
 
         }
         catch (e) {
-            console.log("no response");
+            // console.log("no response");
         }
 
 
@@ -178,7 +179,7 @@ class QuestionBank extends Component {
 
         }
         catch (e) {
-            console.log("no response");
+            // console.log("no response");
         }
 
 
@@ -187,29 +188,38 @@ class QuestionBank extends Component {
     }
 
     findQuestions = async (e) => {
+        $(".QuestionsContainer").css("padding-bottom", "40px")
+        $(".questionsLoading").removeClass("remove")
+        $('#QuestionsBody1').animate({ scrollTop: 0 }, 1)
+        let helper = false
         this.setState({
             flag: true
         })
         var version
         try {
             e.preventDefault()
-            version  = this.state.version
+
             this.setState({
-                version: 0
+                version: 0,
+                Questions: []
             })
+            version = 0
+            // console.log("version: ", version)
         }
         catch (err) {
-            version  = e
+            version = e
+            helper = true
             this.setState({
                 version
             })
         }
-        
+
+
         var { count } = this.state
         var { domainName } = this.state
         var { QuestionType } = this.state
         var { search } = this.state
-        console.log(domainName, QuestionType)
+        // console.log(domainName, QuestionType)
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
@@ -220,10 +230,10 @@ class QuestionBank extends Component {
             })
         };
         let api;
-        
+
 
         try {
-            console.log("ABO ELVARASION: " , version)
+            // console.log("ABO ELVARASION: ", version)
 
             let url1
             if (this.props.url) {
@@ -233,10 +243,10 @@ class QuestionBank extends Component {
                 url1 = this.props.location.state.url
             }
             let url = url1 + count + "/" + version;
-            console.log(url)
+            // console.log(url)
             api = await fetch(url, requestOptions)
             const data = await api.json();
-            console.log(api.status)
+            // console.log(api.status)
 
             if (api.status === 404) {
                 this.setState({
@@ -244,17 +254,72 @@ class QuestionBank extends Component {
                 })
             }
             else {
-                console.log("Data: ", data)
-
-                this.setState({
-                    Questions: data
-                })
+                // console.log("Data: ", data)
+                if (data.length == 0) {
+                    this.setState({
+                        version: 0
+                    })
+                }
+                else {
+                    if (helper) {
+                        let Questions = this.state.Questions
+                        Questions.forEach(deleted => {
+                            // console.log("Questions.length: " , Questions.length)
+                            for (let i = 0; i < data.length; i++) {
+                                if (deleted._id == data[i]._id) {
+                                    console.log("data.length: ", data.length)
+                                    console.log("I: ", i)
+                                    data.splice(i, 1)
+                                    i--
+                                    console.log("I: ", i)
+                                    // console.log("deleted: " , data[i+1].Question)
+                                    break
+                                }
+                                // else {
+                                //     j++
+                                // }
+                            }
+                            // if (j < 10) {
+                            //     console.log("Repeated: " , j)
+                            //     this.handleScroll(j)
+                            //     j=10
+                            // }
+                            console.log("api.status: ", api.status)
+                        });
+                        this.setState({
+                            Questions: this.state.Questions.concat(data),
+                            version: 1
+                        })
+                    }
+                    else {
+                        this.setState({
+                            Questions: data,
+                            version: 1
+                        })
+                    }
+                }
                 if (this.props.url) {
                     this.filterQuestions()
                 }
-                if (this.state.Questions.length < 4) {
+                // if (this.state.Questions.length < 4) {
+                //     console.log("SCROLLHANDLED")
+                //     this.handleScroll()
+                // }
+                if (this.state.Questions.length <= 4 && this.props.url) {
+                    var value = ((this.state.deletedQuestions.length) / this.state.count)
+                    if (value > parseInt(value)) {
+                        value = parseInt(value)
+                    }
 
-                    this.handleScroll()
+                    var version = this.state.version
+                    console.log("Findversion1: ", version)
+                    // let version1 = version + parseInt(value)
+                    // console.log("Findversion2: ", version1)
+                    this.setState({
+                        version: version + 1
+                    })
+                    // console.log("Findversionnnnnn: ", version)
+                    this.findQuestions(version)
                 }
                 // if (this.state.Questions.length == 0) {
                 //     var value = ((this.state.deletedQuestions.length) / this.state.count)
@@ -266,26 +331,45 @@ class QuestionBank extends Component {
                 //     }
                 //     else {
                 //         var { version } = this.state
-                //         console.log("version: ", version)
+                // console.log("version: ", version)
                 //         version = version + parseInt(value)
-                //         console.log("version: ", version)
+                // console.log("version: ", version)
                 //         this.setState({
                 //             version
                 //         })
                 //         this.findQuestions(value)
                 //     }
                 // }
-
-                this.QuestionsBody1.addEventListener('scroll', this.handleScroll);
+                // $(".QuestionsContainer").css("padding-bottom", "40px")
+                // $(".questionsLoading").removeClass("remove")
+                this.QuestionsBody1.addEventListener('scroll', _.throttle(this.handleScroll, 700));
+                $(".QuestionsContainer").css("padding-bottom", "30px")
+                $(".questionsLoading").addClass("remove")
             }
 
 
         }
         catch (e) {
-            console.log(e);
+            // console.log(e);
             this.setState({
                 Questions: []
             })
+        }
+    }
+
+    throttle(fn, wait) {
+
+        var time = Date.now();
+        return function () {
+            if ((time + wait - Date.now()) < 0) {
+                // console.log("POOOP")
+                fn();
+                time = Date.now();
+            }
+            else {
+                // console.log("time + wait - Date.now()",)
+                throttle(fn, time + wait - Date.now())
+            }
         }
     }
 
@@ -296,33 +380,31 @@ class QuestionBank extends Component {
             height: window.innerHeight
         })
         var obj = $('#QuestionsBody1').scrollTop()
-        console.log(obj + 450, "height: ", $('#QuestionsBody').height())
+        // console.log(obj + 450, "height: ", $('#QuestionsBody').height())
 
-        console.log("height2: ", this.state.helperheight)
-        if (this.state.helperheight < $('#QuestionsBody').height()) {
-            this.setState({
-                flag: true
-            })
-            console.log("flag")
-        }
+        // console.log("height2: ", this.state.helperheight)
+
         if (obj + 550 > $('#QuestionsBody').height() && this.state.flag == true) {
+            // console.log("FLAG: ", this.state.flag)
             this.setState({
                 flag: false
             })
             this.setState({ helperheight: $('#QuestionsBody').height() })
-            console.log("done")
+            // console.log("done")
             var { version } = this.state
             var { count } = this.state
             var { domainName } = this.state
             var { QuestionType } = this.state
             var { search } = this.state
-            console.log(version, this.state.Questions[0])
-            if (version == 0 && this.state.Questions[0] == null) {
+            // console.log(version, this.state.Questions[0])
+            if (version == 0 || this.state.Questions[0] == null) {
 
             }
             else {
+                // console.log("VERSIONSSSSSSSSSSSSSSSSSSSSSSSS: ", this.state.version)
                 $(".QuestionsContainer").css("padding-bottom", "40px")
                 $(".questionsLoading").removeClass("remove")
+                $('#QuestionsBody1').animate({ scrollTop: $('#QuestionsBody').height() + 40 }, 1)
 
                 const requestOptions = {
                     method: 'POST',
@@ -336,9 +418,7 @@ class QuestionBank extends Component {
                 let api;
 
                 try {
-                    this.setState({
-                        version: version + 1
-                    })
+
                     let url1
                     if (this.props.url) {
                         url1 = this.props.url
@@ -347,36 +427,89 @@ class QuestionBank extends Component {
                         url1 = this.props.location.state.url
                     }
                     var { version } = this.state
+                    console.log("VERSIONS@: ", version)
                     let url = url1 + count + "/" + version;
                     console.log(url)
                     api = await fetch(url, requestOptions)
-                    const data = await api.json();
-                    console.log(api.status)
-
-                    if (api.status === 404) {
+                    var data = await api.json();
+                    this.setState({
+                        version: version + 1
+                    })
+                    if (data.length == 0) {
                         this.setState({
-                            Questions: []
+                            version: 0
                         })
-                        $(".questionsLoading").addClass("remove")
-                        $(".QuestionsContainer").css("padding-bottom", "30px")
                     }
                     else {
-                        this.setState({
-                            Questions: this.state.Questions.concat(data)
-                        })
-                        $(".QuestionsContainer").css("padding-bottom", "30px")
-                        $(".questionsLoading").addClass("remove")
+                        if (this.props.url) {
+                            let jj = 0
+                            // console.log("event: " , event)
+                            // if(parseInt(event)){
+
+                            //     jj=event
+                            // }
+                            // for (let j = jj, v = 1; j < 10;) {
+                            var { Questions } = this.state
+                            let dataLength = data.length
+                            console.log(data)
+                            Questions.forEach(deleted => {
+                                // console.log("Questions.length: " , Questions.length)
+                                for (let i = 0; i < data.length; i++) {
+                                    if (deleted._id == data[i]._id) {
+                                        console.log("data.length: ", data.length)
+                                        console.log("I: ", i)
+                                        data.splice(i, 1)
+                                        i--
+                                        console.log("I: ", i)
+                                        // console.log("deleted: " , data[i+1].Question)
+                                        break
+                                    }
+                                    // else {
+                                    //     j++
+                                    // }
+                                }
+                                // if (j < 10) {
+                                //     console.log("Repeated: " , j)
+                                //     this.handleScroll(j)
+                                //     j=10
+                                // }
+                                console.log("api.status: ", api.status)
+                            });
+
+                            // }
+                        }
+                        console.log("api.status: ", api.status)
+
+                        if (api.status === 404) {
+                            // this.setState({
+                            //     Questions: []
+                            // })
+
+                        }
+                        else {
+                            this.setState({
+                                Questions: this.state.Questions.concat(data)
+                            })
+                            $(".QuestionsContainer").css("padding-bottom", "30px")
+                            $(".questionsLoading").addClass("remove")
+                        }
                     }
+                    $(".questionsLoading").addClass("remove")
+                    $(".QuestionsContainer").css("padding-bottom", "30px")
 
 
                 }
                 catch (e) {
-                    console.log(e);
+                    // console.log(e);
                     this.setState({
-                        Questions: []
+                        Questions: [],
+                        version: 0
                     })
                 }
             }
+            this.setState({
+                flag: true
+            })
         }
     }
 
@@ -391,7 +524,7 @@ class QuestionBank extends Component {
             }
         });
         var { deletedQuestions } = this.props
-        console.log(deletedQuestions)
+        // console.log(deletedQuestions)
         deletedQuestions.forEach(deleted => {
             for (let i = 0; i < Questions.length; i++) {
                 if (deleted._id == Questions[i]._id) {
@@ -415,7 +548,7 @@ class QuestionBank extends Component {
             }
         });
         var { deletedQuestions } = this.props
-        console.log(deletedQuestions)
+        // console.log(deletedQuestions)
         deletedQuestions.forEach(deleted => {
             for (let i = 0; i < Questions.length; i++) {
                 if (deleted._id == Questions[i]._id) {
@@ -452,22 +585,23 @@ class QuestionBank extends Component {
                 this.props.getItem(Question)
             }
         }
-        console.log("this.state.Questions.length: ",this.state.Questions.length)
-        if (this.state.Questions.length == 0) {
+        // console.log("this.state.Questions.length: ", this.state.Questions.length)
+        if (this.state.Questions.length < 2) {
             var value = ((this.state.deletedQuestions.length) / this.state.count)
             if (value > parseInt(value)) {
                 value = parseInt(value) + 1
             }
-
-            var { version } = this.state
-            console.log("version: ", version)
+            let realVersion = this.state.version
+            console.log("realVersion: ", realVersion)
+            var version = 0
+            console.log("version1: ", version)
             version = version + parseInt(value)
-            console.log("version: ", version)
+            console.log("version2: ", version)
             this.setState({
-                version
+                version: version + 1
             })
+            // console.log("versionnnnnn: ", version)
             this.findQuestions(version)
-
         }
     }
 

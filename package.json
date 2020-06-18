@@ -18,6 +18,7 @@
     "jspdf": "^1.5.3",
     "kendo-ui-react-jquery-slider": "^1.0.2",
     "loadjs": "^4.2.0",
+    "lodash": "^4.17.15",
     "moment": "^2.25.3",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
