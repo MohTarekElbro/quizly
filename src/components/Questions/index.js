@@ -233,7 +233,7 @@ class QuestionBank extends Component {
 
 
         try {
-            // console.log("ABO ELVARASION: ", version)
+            console.log("ABO ELVARASION: ", version)
 
             let url1
             if (this.props.url) {
@@ -255,6 +255,7 @@ class QuestionBank extends Component {
             }
             else {
                 // console.log("Data: ", data)
+                let dataLength = data.length
                 if (data.length == 0) {
                     this.setState({
                         version: 0
@@ -267,11 +268,11 @@ class QuestionBank extends Component {
                             // console.log("Questions.length: " , Questions.length)
                             for (let i = 0; i < data.length; i++) {
                                 if (deleted._id == data[i]._id) {
-                                    console.log("data.length: ", data.length)
-                                    console.log("I: ", i)
+                                    // console.log("data.length: ", data.length)
+                                    // console.log("I: ", i)
                                     data.splice(i, 1)
                                     i--
-                                    console.log("I: ", i)
+                                    // console.log("I: ", i)
                                     // console.log("deleted: " , data[i+1].Question)
                                     break
                                 }
@@ -305,21 +306,39 @@ class QuestionBank extends Component {
                 //     console.log("SCROLLHANDLED")
                 //     this.handleScroll()
                 // }
-                if (this.state.Questions.length <= 4 && this.props.url) {
+                console.log(this.state.Questions.length, " ", dataLength)
+                if (this.state.Questions.length < 1 && this.props.url && dataLength != 0) {
+                    $(".QuestionsContainer").css("padding-bottom", "40px")
+                    $(".questionsLoading").removeClass("remove")
                     var value = ((this.state.deletedQuestions.length) / this.state.count)
                     if (value > parseInt(value)) {
                         value = parseInt(value)
                     }
+                    var version = 0
+                    try {
+                        e.preventDefault()
+                        console.log("first Time")
+                    }
+                    catch (error) {
+                        console.log("Not first Time: ", e)
+                        version = e
+                    }
+                    version = version + 1
 
-                    var version = this.state.version
+
                     console.log("Findversion1: ", version)
                     // let version1 = version + parseInt(value)
                     // console.log("Findversion2: ", version1)
-                    this.setState({
-                        version: version + 1
-                    })
-                    // console.log("Findversionnnnnn: ", version)
+                    // this.setState({
+                    //     version: version 
+                    // })
+                    // console.log("Findversionnnnnn: ", version-1)
                     this.findQuestions(version)
+
+                }
+                else {
+                    $(".QuestionsContainer").css("padding-bottom", "30px")
+                    $(".questionsLoading").addClass("remove")
                 }
                 // if (this.state.Questions.length == 0) {
                 //     var value = ((this.state.deletedQuestions.length) / this.state.count)
@@ -343,8 +362,8 @@ class QuestionBank extends Component {
                 // $(".QuestionsContainer").css("padding-bottom", "40px")
                 // $(".questionsLoading").removeClass("remove")
                 this.QuestionsBody1.addEventListener('scroll', _.throttle(this.handleScroll, 700));
-                $(".QuestionsContainer").css("padding-bottom", "30px")
-                $(".questionsLoading").addClass("remove")
+                // $(".QuestionsContainer").css("padding-bottom", "30px")
+                // $(".questionsLoading").addClass("remove")
             }
 
 
