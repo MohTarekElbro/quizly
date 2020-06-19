@@ -16,7 +16,7 @@ class AddingQuestion extends Component {
         state: 'true',
         level: "medium",
         domains: [],
-        DomainName: "Software Engineering",
+        DomainName: "SW",
         keyword: "",
         Question: "",
 

@@ -252,14 +252,18 @@ class QuestionBank extends Component {
                 this.setState({
                     Questions: []
                 })
+                $(".QuestionsContainer").css("padding-bottom", "30px")
+                $(".questionsLoading").addClass("remove")
             }
             else {
                 // console.log("Data: ", data)
                 let dataLength = data.length
                 if (data.length == 0) {
+                    console.log("NODATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
                     this.setState({
                         version: 0
                     })
+
                 }
                 else {
                     if (helper) {
@@ -373,6 +377,8 @@ class QuestionBank extends Component {
             this.setState({
                 Questions: []
             })
+            $(".QuestionsContainer").css("padding-bottom", "30px")
+            $(".questionsLoading").addClass("remove")
         }
     }
 
