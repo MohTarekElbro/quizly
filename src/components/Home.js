@@ -1,6 +1,6 @@
 import React from 'react';
-import Navbar from './Header'
-import Header from './Navbar'
+import Navbar from './Navbar'
+import Header from './Header'
 import Features from './Features'
 import Reviews from './Reviews'
 import Contact from './Contact'
@@ -11,6 +11,8 @@ function Home() {
     <div>
       <Navbar />
       <Header />
+      
+      
       <Features />
       <Reviews />
       <Contact />

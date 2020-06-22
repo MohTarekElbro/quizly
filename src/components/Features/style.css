@@ -135,4 +135,10 @@
     height: 500px;
   }
 }
+
+@media (max-width: 500px) {
+  .featureTitle {
+    font-size: 18px !important;
+  }
+}
 /*# sourceMappingURL=style.css.map */

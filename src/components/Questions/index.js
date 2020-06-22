@@ -1,4 +1,4 @@
-import React, { Component, props, DropdownButton, Dropdown, } from 'react'
+import React, { Component, props, DropdownButton, Dropdown, Fragment } from 'react'
 import _, { throttle } from 'lodash'
 import { DropdownList } from 'react-widgets'
 import { bake_cookie, read_cookie } from 'sfcookies'
@@ -10,6 +10,7 @@ import './jquery.js'
 import Modal from '../../components/Modal'
 import { withRouter } from 'react-router-dom'
 import { Ring } from 'react-spinners-css';
+import AddingQuestion from '../../InstructorComp/AddingQuestion'
 // import '../../custom.js'
 
 
@@ -630,7 +631,78 @@ class QuestionBank extends Component {
         }
     }
 
+    editRenderdQuestion = (Question) => {
+        var { Questions } = this.state
+        for (let i = 0; i < Questions.length; i++) {
+            if (Question._id == Questions[i]._id) {
+                Questions[i] = Question
+            }
+        }
+        console.log("Questions: ", Questions)
+        this.setState({
+            Questions
+        })
+    }
+
+    deleteQeustion = async (id) => {
+        $.confirm({
+            title: 'Confirm!',
+            boxWidth: '40%',
+            useBootstrap: false,
+            content: "Are you sure you want to delete this question?",
+            buttons: {
+                confirm: async () => {
+                    const requestOptions1 = {
+                        method: 'delete',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                    };
+                    let api1;
+
+                    try {
+                        api1 = await fetch('https://quizly-app.herokuapp.com/Question/delete/' + id, requestOptions1)
+                        let data = await api1.json();
+                        console.log(api1.status, " ", data)
+                        var { Questions } = this.state
+                        for (let i = 0; i < Questions.length; i++) {
+                            if (id == Questions[i]._id) {
+                                Questions.splice(i, 1)
+                            }
+                        }
+                        this.setState({
+                            Questions
+                        })
+
+                    }
+                    catch (e) {
+                        console.log(e);
+                    }
+                },
+                cancel: function () { },
+            }
+        });
+
+
+
+
+
+
+    }
+
     render() {
+        var editAndDelete = (
+            <Fragment></Fragment>
+        )
+        var title = (<Fragment></Fragment>)
+        if (this.props.location.state) {
+            if (this.props.location.state.pageType == "questionBank") {
+                title = (<h2 className="titleee"><p>Question Bank</p></h2>)
+            }
+            else {
+                title = (<h2 className="titleee"><p>My Questions</p></h2>)
+            }
+        }
+
+
         var Types = ["MCQ", "Complete", "T/F"]
         let ListTypes = Types.map((type, index) => {
             return (
@@ -666,7 +738,37 @@ class QuestionBank extends Component {
         }
         else {
             ListQuestions = Questions.map((Question, index) => {
+                if (this.props.location.state) {
+                    if (this.props.location.state.url.includes("getmyQuestions")) {
 
+                        editAndDelete = (
+                            <Fragment>
+                                <button data-toggle="modal" data-target={"#card" + index + 1} type="button" className="editQuestion"><i class="fas fa-edit"></i><p className="editHover">Edit Question</p> </button>
+                                <Modal index={index + 1} modalName={"card" + index + 1} body={<AddingQuestion editRenderdQuestion={this.editRenderdQuestion} Question={Question} index={index + 1} url={"https://quizly-app.herokuapp.com/question/edit/" + Question._id} />} title={"Edit Question"} closeButton="close" />
+                                <button onClick={() => this.deleteQeustion(Question._id)} className="deleteQuestion" ><i class="far fa-trash-alt"></i><p className="deleteHover">Delete Question</p></button>
+                            </Fragment>
+                        )
+                    }
+                }
+                // if (this.props.url) {
+                //     if (this.props.url.includes("getmyQuestions")) {
+                //         editAndDelete = (
+                //             <Fragment>
+                //                 <button data-toggle="modal" data-target={"#card" + index + 1} type="button" className="editQuestion"><i class="fas fa-edit"></i><p className="editHover">Edit Question</p> </button>
+                //                 <Modal index={index + 1} modalName={"card" + index + 1} body={<AddingQuestion editRenderdQuestion={this.editRenderdQuestion} Question={Question} index={index + 1} url={"https://quizly-app.herokuapp.com/question/edit/" + Question._id} />} title={"Edit Question"} closeButton="close" />
+                //                 <button className="deleteQuestion" ><i class="far fa-trash-alt"></i><p className="deleteHover">Delete Question</p></button>
+                //             </Fragment>
+                //         )
+                //     }
+                // }
+                // console.log(Question)
+                let QuestionPublication;
+                if (Question.public == false) {
+                    QuestionPublication = (<span className="privateQuestion"><span><i class="fas fa-lock"></i> Private Question</span></span>)
+                }
+                else {
+                    QuestionPublication = (<span className="publicQuestion"><span><i class="fas fa-unlock-alt"></i> Public Question</span></span>)
+                }
                 var disractorsDiv
                 if (Question.kind == "MCQ") {
                     let distractorItem = Question.distructor.map((dis, index) => {
@@ -705,6 +807,13 @@ class QuestionBank extends Component {
                         </div>
                         <div className="line"></div>
                         {disractorsDiv}
+                        <div className="line" style={{ 'marginTop': "15px", 'marginBottom': '15px' }}></div>
+                        {QuestionPublication}
+
+                        {editAndDelete}
+
+
+
                     </div>
                 )
             })
@@ -714,6 +823,7 @@ class QuestionBank extends Component {
         return (
             <div className="card shadow mb-4 FindFrom" >
                 <div className="card-header py-3">
+                    {title}
                     <form onSubmit={this.findQuestions} className="FindForm">
                         <select data-menu id="QuestionType" className="custom-select" name="QuestionType" value={this.state.QuestionType} onChange={(e) => { this.setState({ QuestionType: e.target.value }) }}>
                             <option value="all">All</option>

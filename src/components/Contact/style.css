@@ -37,6 +37,12 @@
   border-bottom: 1px solid #d6d6d6;
 }
 
+@media (max-width: 500px) {
+  .contact .container form input {
+    width: 100%;
+  }
+}
+
 .contact .container form input:focus {
   border: 0;
   border-bottom: 1px solid #007ee5;
@@ -62,11 +68,16 @@
 .contact .container form .message {
   height: 170px;
   padding-top: 0;
-  width: 350px;
   margin: 20px;
   border: 0;
   border-bottom: 1px solid #d6d6d6;
   resize: none;
+}
+
+@media (max-width: 500px) {
+  .contact .container form .message {
+    width: 100%;
+  }
 }
 
 .contact .container form .message:focus {

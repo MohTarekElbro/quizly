@@ -34,7 +34,7 @@ class Features extends Component {
                 if (feature.id === shownFeature) {
                     return (
                         <div key={feature.id} id="contents">
-                            <h2>{feature.title}</h2>
+                            <h2 className = "featureTitle">{feature.title}</h2>
                             <p>{feature.content}</p>
                             <div className="downloadButton">Download</div>
                         </div>

@@ -20,6 +20,7 @@
 .QuestionsContainer .QuestionItem {
   -ms-flex-preferred-size: 48%;
       flex-basis: 48%;
+  position: relative;
   width: 100%;
   background-color: white;
   -webkit-transition: 0.3s;
@@ -43,13 +44,12 @@
           box-shadow: 0 9px 18px 0 rgba(188, 188, 212, 0.4);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1900px) {
   .QuestionsContainer .QuestionItem {
-    display: block !important;
-    -ms-flex-preferred-size: 100% !important;
-        flex-basis: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+    -ms-flex-preferred-size: 70%;
+        flex-basis: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
   }
 }
 
@@ -59,6 +59,16 @@
         flex-basis: 90%;
     margin-left: 5%;
     margin-right: 5%;
+  }
+}
+
+@media (max-width: 600px) {
+  .QuestionsContainer .QuestionItem {
+    display: block !important;
+    -ms-flex-preferred-size: 100% !important;
+        flex-basis: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 }
 
@@ -121,6 +131,122 @@
         -ms-flex-align: center;
             align-items: center;
   }
+}
+
+.QuestionsContainer .QuestionItem .editQuestion {
+  cursor: pointer;
+  position: absolute;
+  margin-left: 10px;
+  height: 0px;
+  right: 55%;
+  width: 0px;
+  color: #4e73df;
+  top: 13px;
+  font-size: 21px;
+  background: transparent;
+}
+
+@media (max-width: 600px) {
+  .QuestionsContainer .QuestionItem .editQuestion {
+    right: 90%;
+  }
+}
+
+.QuestionsContainer .QuestionItem .editQuestion .editHover {
+  position: absolute;
+  padding: 5px;
+  z-index: 3;
+  right: -70px !important;
+  display: none;
+  width: 115px;
+  font-size: 13px;
+  color: white;
+  background-color: black;
+  border-radius: 100px;
+  top: -40px;
+}
+
+@media (max-width: 600px) {
+  .QuestionsContainer .QuestionItem .editQuestion .editHover {
+    right: -70px !important;
+    top: -40px;
+  }
+}
+
+.QuestionsContainer .QuestionItem .editQuestion:hover .editHover {
+  display: block;
+}
+
+.QuestionsContainer .QuestionItem .editQuestion:focus {
+  outline: none;
+}
+
+.QuestionsContainer .QuestionItem .deleteQuestion {
+  cursor: pointer;
+  position: absolute;
+  top: 13px;
+  font-size: 21px;
+  color: #d13535;
+  width: 0px;
+  height: 0px;
+  right: 45%;
+}
+
+@media (max-width: 600px) {
+  .QuestionsContainer .QuestionItem .deleteQuestion {
+    right: 10%;
+  }
+}
+
+.QuestionsContainer .QuestionItem .deleteQuestion .deleteHover {
+  position: absolute;
+  padding: 5px;
+  z-index: 3;
+  right: -70px !important;
+  display: none;
+  width: 115px;
+  font-size: 13px;
+  color: white;
+  background-color: black;
+  border-radius: 100px;
+  top: -40px;
+}
+
+@media (max-width: 600px) {
+  .QuestionsContainer .QuestionItem .deleteQuestion .deleteHover {
+    right: -70px !important;
+    top: -40px;
+  }
+}
+
+.QuestionsContainer .QuestionItem .deleteQuestion:hover .deleteHover {
+  display: block;
+}
+
+.QuestionsContainer .QuestionItem .deleteQuestion:focus {
+  outline: none;
+}
+
+.QuestionsContainer .QuestionItem .publicQuestion,
+.QuestionsContainer .QuestionItem .privateQuestion {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center !important;
+  right: 100%;
+  font-size: 24px;
+}
+
+.QuestionsContainer .QuestionItem .publicQuestion {
+  color: #4e73df;
+}
+
+.QuestionsContainer .QuestionItem .privateQuestion {
+  color: black;
 }
 
 .FindForm {
@@ -200,6 +326,18 @@
       -ms-flex-flow: column;
           flex-flow: column;
   margin: auto;
+  margin-bottom: 20px;
+}
+
+.titleee {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
   margin-bottom: 20px;
 }
 /*# sourceMappingURL=style.css.map */

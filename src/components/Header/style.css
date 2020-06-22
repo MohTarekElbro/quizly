@@ -1,6 +1,6 @@
 header {
   width: 100%;
-  padding: 50px;
+  padding: 50px 0px;
   margin-top: 60px;
   background: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.2))), url(/images/studying.webp);
   background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2)), url(/images/studying.webp);
@@ -20,6 +20,34 @@ header .discription {
   margin: auto;
   height: 400px;
   padding: 10px;
+}
+
+@media (max-width: 1200px) {
+  header .discription {
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+            flex-flow: column;
+  }
+  header .discription .websiteTitle {
+    text-align: center;
+  }
+}
+
+@media (max-width: 500px) {
+  header .discription .websiteTitle {
+    font-size: 23px !important;
+  }
+  header .discription .websitediscrip {
+    font-size: 16px !important;
+  }
 }
 
 .cat {
@@ -68,7 +96,7 @@ header .discription .downloadButton:hover {
   transition: ease-in-out 200ms;
 }
 
-@media all and (min-width: 1170px) {
+@media all and (min-width: 1200px) {
   header .container {
     display: -webkit-box;
     display: -ms-flexbox;

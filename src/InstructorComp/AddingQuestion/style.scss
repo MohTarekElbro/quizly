@@ -19,9 +19,16 @@
 .levels {
     display: flex;
     justify-content: center;
+    p {
+        @media (max-width: 550px) {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+    }
 }
 
-.distractors {
+.distructors {
     display: flex;
     flex-flow: wrap;
     justify-content: space-between;
@@ -30,42 +37,38 @@
         margin-left: 5%;
         margin-right: 5%;
     }
-    div{
+    div {
         width: 100%;
         display: flex;
         position: relative;
-        
-        a{
-            margin-left: 10px;
+
+        a {
+            margin-left: 7px;
+            margin-top: auto;
+            margin-bottom: auto;
+
             padding: 4px;
-            span{
-                
+            span {
                 height: 100%;
                 width: 30px;
-                
             }
-            
         }
-        .remove{
+        .remove {
             position: absolute;
             top: 28%;
             right: 0;
-            &.parent:hover{
+            &.parent:hover {
                 background-color: gray;
             }
-            
         }
-        
-         
+
         .inputSearch {
-            width: 80% !important; 
+            width: 80% !important;
         }
     }
-
-    
 }
 
-.addQuestionText{
+.addQuestionText {
     display: block;
     width: 100%;
     height: 100px;
@@ -79,15 +82,35 @@
     border: 1px solid #d1d3e2;
     border-radius: 0.35rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-
+    resize: none;
 }
 
-.margin{
+.margin {
     cursor: pointer;
-    &:hover{
+    &:hover {
         box-shadow: 0 2px 4px 0 rgba(188, 188, 211, 0.4);
     }
-    input{
+    input {
         cursor: pointer;
+    }
+}
+.disDiv {
+    position: relative;
+    .deleteInstructorIcon {
+        color: #d13535;
+        cursor: pointer;
+        position: absolute;
+        top: 32%;
+        right: 2%;
+        @media (max-width: 550px) {
+            right: -5%;
+        }
+    }
+    .addQuestions {
+        background-color: #4e73df !important;
+    }
+
+    .addnewDis {
+        // background-color: #4e73df !important;
     }
 }

@@ -133,7 +133,8 @@ class InstructorFeatuers extends Component {
                     <Link className="nav-link collapsed" to={{
                         pathname: "/instructorHome/questionBank",
                         state: {
-                            url: "https://quizly-app.herokuapp.com/instructor/getmyQuestions/"
+                            url: "https://quizly-app.herokuapp.com/instructor/getmyQuestions/",
+                            pageType:"myQuestions"
                         }
                     }}  >
                         <i class="fas fa-question-circle"></i>
@@ -147,7 +148,8 @@ class InstructorFeatuers extends Component {
                     <Link className="nav-link collapsed" to={{
                         pathname: "/instructorHome/questionBank",
                         state: {
-                            url: "https://quizly-app.herokuapp.com/questionbank/"
+                            url: "https://quizly-app.herokuapp.com/questionbank/",
+                            pageType:"questionBank"
                         }
                     }}  >
                         <i class="fas fa-question-circle"></i>

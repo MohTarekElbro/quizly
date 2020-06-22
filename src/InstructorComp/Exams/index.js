@@ -16,7 +16,7 @@ import { withRouter } from 'react-router-dom'
 
 const sliderStyle = {
     position: 'relative',
-    width: '180px',
+    width: '350px',
 }
 
 
@@ -26,7 +26,7 @@ class Exams extends Component {
         Exams: [],
         domains: [],
         search: "",
-        domainName: "",
+        subject_name: "",
         count: 10,
         version: 0,
         flag: true,
@@ -36,13 +36,13 @@ class Exams extends Component {
         university: "",
         faculty: "",
         durationDomain: [0, 240],
-        durationValues: [0, 120].slice(),
-        durationUpdate: [0, 120].slice(),
+        durationValues: [0, 240].slice(),
+        durationUpdate: [0, 240].slice(),
         durationReversed: false,
 
         countDomain: [0, 100],
-        countValues: [0, 50].slice(),
-        countUpdate: [0, 50].slice(),
+        countValues: [0, 100].slice(),
+        countUpdate: [0, 100].slice(),
         countReversed: false,
 
         examDetails: "",
@@ -111,14 +111,14 @@ class Exams extends Component {
         })
         var { version } = this.state
         var { count } = this.state
-        var { domainName } = this.state
+        var { subject_name } = this.state
         var { durationValues } = this.state
         var { countValues } = this.state
         var { startDate } = this.state
         var { endDate } = this.state
         var { university } = this.state
         var { faculty } = this.state
-        console.log("domainName: ", domainName)
+        console.log("subject_name: ", subject_name)
         console.log("durationValues: ", durationValues)
         console.log("countValues: ", countValues)
         console.log("startDate: ", startDate)
@@ -129,7 +129,7 @@ class Exams extends Component {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
             body: JSON.stringify({
-                "Domain_Name": domainName,
+                "subject_name": subject_name,
                 "Search": {
                     "StartQuestion": countValues[0],
                     "EndQuestion": countValues[1],
@@ -183,27 +183,27 @@ class Exams extends Component {
 
     handleScroll = async (event) => {
         var obj = $('#ExamsBody1').scrollTop()
-        console.log(obj + 450, "height: ", $('#ExamsBody').height())
+        // console.log(obj + 450, "height: ", $('#ExamsBody').height())
 
-        console.log("height2: ", this.state.helperheight)
+        // console.log("height2: ", this.state.helperheight)
         if (this.state.helperheight < $('#ExamsBody').height()) {
             this.setState({
                 flag: true
             })
-            console.log("flag")
+            // console.log("flag")
         }
         if (obj + 550 > $('#ExamsBody').height() && this.state.flag == true) {
             this.setState({
                 flag: false
             })
             this.setState({ helperheight: $('#ExamsBody').height() })
-            console.log("done")
+            // console.log("done")
             var { version } = this.state
             var { count } = this.state
-            var { domainName } = this.state
+            var { subject_name } = this.state
             var { QuestionType } = this.state
             var { search } = this.state
-            console.log(version, this.state.Exams[0])
+            // console.log(version, this.state.Exams[0])
             if (version == 0 && this.state.Exams[0] == null) {
 
             }
@@ -212,7 +212,7 @@ class Exams extends Component {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
                     body: JSON.stringify({
-                        "Domain_Name": domainName,
+                        "Domain_Name": subject_name,
                         "Question_Type": QuestionType,
                         "Search": search
                     })
@@ -226,22 +226,22 @@ class Exams extends Component {
                     let url = "https://quizly-app.herokuapp.com/exam/view/" + count + "/" + version;
                     api = await fetch(url, requestOptions)
                     const data = await api.json();
-                    console.log(api.status)
+                    // console.log(api.status)
 
                     if (api.status === 404) {
-                        console.log("if")
+                        // console.log("if")
                         this.setState({
                             Exams: []
                         })
                     }
                     else if (data.length > 0) {
-                        console.log("else if")
+                        // console.log("else if")
                         this.setState({
                             Exams: this.state.Exams.concat(data)
                         })
                     }
                     else {
-                        console.log("else")
+                        // console.log("else")
                         this.setState({
                             Exams: []
                         })
@@ -360,6 +360,7 @@ class Exams extends Component {
         return (
             <div className="examDetails pointer">
                 <div className="examTitle">
+                    <p id="Subject Name" >Subject Name: {exam.subject_name}</p>
                     <p id="University" >University: {exam.university}</p>
                     <p id="Faculty" >Faculty: {exam.faculty}</p>
                     <p id="Duration" >Duration: {exam.duration}</p>
@@ -382,12 +383,7 @@ class Exams extends Component {
 
     render() {
 
-        var { domains } = this.state
-        let ListDomains = domains.map((domain, index) => {
-            return (
-                <option key={index} value={domain.domain_name}>{domain.domain_name}</option>
-            )
-        })
+
 
         const {
             state: { durationDomain, durationValues, durationUpdate, durationReversed },
@@ -404,8 +400,9 @@ class Exams extends Component {
         }
         else {
             renderExamDetails = (
-                <div className="examDetails pointer" style = {{"opacity":"0.5"}}>
+                <div className="examDetails pointer" style={{ "opacity": "0.5" }}>
                     <div className="examTitle">
+                        <p id="Subject Name" >Subject Name: </p>
                         <p id="University" >University: </p>
                         <p id="Faculty" >Faculty: </p>
                         <p id="Duration" >Duration: </p>
@@ -425,6 +422,7 @@ class Exams extends Component {
             return (
                 <div key={index} onClick={() => this.setState({ examDetails: exam })} className="selectExam pointer">
                     <div className="examTitle">
+                        <p id="Subject Name" >Subject Name: {exam.subject_name}</p>
                         <p id="University" >University: {exam.university}</p>
                         <p id="Faculty" >Faculty: {exam.faculty}</p>
                         <p id="Duration" >Duration: {exam.duration}</p>
@@ -437,7 +435,7 @@ class Exams extends Component {
             <div className="card shadow mb-4 FindFrom" >
                 <div className="card-header py-3">
                     <div className="options">
-                        <p onClick={() => this.changeOption("domain")} className="option " id="domainItem">Domain Name</p>
+                        <p onClick={() => this.changeOption("subject_name")} className="option " id="subject_nameItem">Subject Name</p>
                         <div className="line"></div>
                         <p onClick={() => this.changeOption("numOfQuestions")} className="option" id="numOfQuestionsItem" >Number of questions</p>
                         <div className="line"></div>
@@ -458,10 +456,8 @@ class Exams extends Component {
                         </button>
                     </div>
                     <form onSubmit={this.findExams} className="FindForm">
-                        <select id="domain" name="domain" className="custom-select optionItem remove" value={this.state.domainName} onChange={(e) => { this.setState({ domainName: e.target.value });$("#"+e.target.id+"Item").addClass("edited") }}>
-                            <option value="">All</option>
-                            {ListDomains}
-                        </select>
+                        <input id="subject_name" type="text" className="form-control bg-light small inputSearch optionItem remove " placeholder="subject_name"
+                            aria-label="Search" aria-describedby="basic-addon2" value={this.state.subject_name} onChange={(e) => { this.setState({ subject_name: e.target.value }); if (e.target.value != "") $("#" + e.target.id + "Item").addClass("edited"); else { $("#" + e.target.id + "Item").removeClass("edited") } }} />
                         <div id="duration" className="allRange optionItem remove">
                             <p>Duration of the exam: </p>
                             <div className="range">
@@ -478,7 +474,12 @@ class Exams extends Component {
                                         }}
                                         onChange={(durationValues) => {
                                             this.setState({ durationValues })
-                                            $("#durationItem").addClass("edited")
+                                            if (durationValues[0] != 0 || durationValues[1] != 240) {
+                                                $("#durationItem").addClass("edited")
+                                            }
+                                            else {
+                                                $("#durationItem").removeClass("edited")
+                                            }
                                         }}
                                         values={durationValues}
                                     >
@@ -531,10 +532,18 @@ class Exams extends Component {
                                         rootStyle={sliderStyle}
                                         onUpdate={(countUpdate) => {
                                             this.setState({ countUpdate })
+                                            // console.log(countUpdate[0] , countUpdate[1])
+                                            // if(countUpdate[0] !=0 && countUpdate[1] != 50)$("#numOfQuestionsItem").addClass("edited");else{$("#numOfQuestionsItem").removeClass("edited")}
                                         }}
                                         onChange={(countValues) => {
                                             this.setState({ countValues })
-                                            $("#numOfQuestionsItem").addClass("edited")
+                                            // console.log(countValues[0], countValues[1])
+                                            if (countValues[0] != 0 || countValues[1] != 100) {
+                                                $("#numOfQuestionsItem").addClass("edited")
+                                            }
+                                            else {
+                                                $("#numOfQuestionsItem").removeClass("edited")
+                                            }
                                         }}
                                         values={countValues}
                                     >
@@ -579,19 +588,19 @@ class Exams extends Component {
                             <div className="dateDiv" >
                                 <p>Start date: </p>
                                 <input type="date" className="form-control bg-light small inputSearch dateInput" placeholder="End date..."
-                                    aria-label="Search" aria-describedby="basic-addon2" value={this.state.startDate} onChange={(e) => { this.setState({ startDate: e.target.value });$("#dateItem").addClass("edited") }} />
+                                    aria-label="Search" aria-describedby="basic-addon2" value={this.state.startDate} onChange={(e) => { this.setState({ startDate: e.target.value }); if (e.target.value != "") $("#dateItem").addClass("edited"); else { $("#dateItem").removeClass("edited") } }} />
                             </div>
                             <div className="dateDiv">
                                 <p> End date: </p>
                                 <input type="date" className="form-control bg-light small inputSearch dateInput" placeholder="End date..."
-                                    aria-label="Search" aria-describedby="basic-addon2" value={this.state.endDate} onChange={(e) => { this.setState({ endDate: e.target.value });$("#dateItem").addClass("edited") }} />
+                                    aria-label="Search" aria-describedby="basic-addon2" value={this.state.endDate} onChange={(e) => { this.setState({ endDate: e.target.value }); if (e.target.value != "") $("#dateItem").addClass("edited"); else { $("#dateItem").removeClass("edited") } }} />
                             </div>
                         </div>
                         <input id="university" type="text" className="form-control bg-light small inputSearch optionItem remove " placeholder="University"
-                            aria-label="Search" aria-describedby="basic-addon2" value={this.state.university} onChange={(e) => { this.setState({ university: e.target.value });$("#"+e.target.id+"Item").addClass("edited") }} />
+                            aria-label="Search" aria-describedby="basic-addon2" value={this.state.university} onChange={(e) => { this.setState({ university: e.target.value }); if (e.target.value != "") $("#" + e.target.id + "Item").addClass("edited"); else { $("#" + e.target.id + "Item").removeClass("edited") } }} />
 
                         <input id="faculty" type="text" className="form-control bg-light small inputSearch optionItem remove " placeholder="faculty"
-                            aria-label="Search" aria-describedby="basic-addon2" value={this.state.faculty} onChange={(e) => { this.setState({ faculty: e.target.value });$("#"+e.target.id+"Item").addClass("edited") }} />
+                            aria-label="Search" aria-describedby="basic-addon2" value={this.state.faculty} onChange={(e) => { this.setState({ faculty: e.target.value }); if (e.target.value != "") $("#" + e.target.id + "Item").addClass("edited"); else { $("#" + e.target.id + "Item").removeClass("edited") } }} />
 
                     </form>
                 </div>

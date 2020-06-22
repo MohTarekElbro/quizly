@@ -8,7 +8,6 @@
     padding: 30px 30px;
     display: flex;
     // overflow: auto;
-    
 
     flex-wrap: wrap;
     // form{
@@ -29,7 +28,7 @@
     }
     .QuestionItem {
         flex-basis: 48%;
-
+        position: relative;
         width: 100%;
         background-color: white;
         transition: 0.3s;
@@ -42,18 +41,22 @@
         &:hover {
             box-shadow: 0 9px 18px 0 rgba(188, 188, 212, 0.4);
         }
+        @media (max-width: 1900px) {
+            flex-basis: 70%;
+            margin-left: 15%;
+            margin-right: 15%;
+        }
+        @media (max-width: 1150px) {
+            flex-basis: 90%;
+            margin-left: 5%;
+            margin-right: 5%;
+        }
 
         @media (max-width: 600px) {
             display: block !important;
             flex-basis: 100% !important;
             margin-left: 0 !important;
             margin-right: 0 !important;
-        }
-
-        @media (max-width: 1150px) {
-            flex-basis: 90%;
-            margin-left: 5%;
-            margin-right: 5%;
         }
 
         .typeAndDomain {
@@ -88,6 +91,107 @@
                 flex-flow: column;
                 align-items: center;
             }
+        }
+
+        .editQuestion {
+            cursor: pointer;
+            position: absolute;
+            margin-left: 10px;
+            height: 0px;
+            right: 55%;
+            width: 0px;
+            color: #4e73df;
+            top: 13px;
+            font-size: 21px;
+            background: transparent;
+            @media (max-width: 600px) {
+                right: 90%;
+            }
+            .editHover {
+                position: absolute;
+                padding: 5px;
+                z-index: 3;
+                right: -70px !important;
+                // opacity: 0;
+                display: none;
+                width: 115px;
+                font-size: 13px;
+                color: white;
+                background-color: black;
+                border-radius: 100px;
+                top: -40px;
+                @media (max-width: 600px) {
+                    right: -70px !important;
+                    top: -40px;
+                }
+            }
+            &:hover {
+                .editHover {
+                    display: block;
+                }
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
+        .deleteQuestion {
+            cursor: pointer;
+            position: absolute;
+            top: 13px;
+            font-size: 21px;
+            color: #d13535;
+            width: 0px;
+            height: 0px;
+            right: 45%;
+            @media (max-width: 600px) {
+                right: 10%;
+            }
+
+            .deleteHover {
+                position: absolute;
+                padding: 5px;
+                z-index: 3;
+                right: -70px !important;
+                // opacity: 0;
+                display: none;
+                width: 115px;
+                font-size: 13px;
+                color: white;
+                background-color: black;
+                border-radius: 100px;
+                top: -40px;
+                @media (max-width: 600px) {
+                    right: -70px !important;
+                    top: -40px;
+                }
+            }
+            &:hover {
+                .deleteHover {
+                    display: block;
+                }
+            }
+            &:focus {
+                outline: none;
+            }
+        }
+        .publicQuestion,
+        .privateQuestion {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            text-align: center !important;
+            right: 100%;
+            font-size: 24px;
+            @media (max-width: 600px) {
+                
+            }
+        }
+        .publicQuestion{
+            color: #4e73df;
+        }
+        .privateQuestion{
+            color: black;
         }
     }
 }
@@ -142,4 +246,12 @@
         margin: auto;
         margin-bottom: 20px;
     }
+}
+
+.titleee{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 20px;
 }

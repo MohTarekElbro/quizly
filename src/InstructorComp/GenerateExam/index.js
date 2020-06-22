@@ -1,5 +1,6 @@
 import React, { Component, version, Fragment } from 'react'
 import './style.css'
+import autosize from 'autosize'
 import AddingQuestion from '../AddingQuestion'
 import ExamNavbar from '../ExamNavbar'
 import Questions from '../../components/Questions'
@@ -195,15 +196,25 @@ class GenerateExam extends Component {
         }
     }
 
-    editQuestion = async (QuestionID, newQuestion = "", oldDistractor = "", newDistractor = "", keyword = "") => {
+    editQuestion = async (QuestionID, newQuestion = "", oldDistractor = "", newDistractor = "", addNewDistractor = "", removeOldDistractor = "", keyword = "") => {
         var { deletedQuestions } = this.state
+        let addNewDistractor1 = ""
+        let removeOldDistractor1 = ""
+        let newDistractor1 = ""
+        let oldDistractor1 = ""
         deletedQuestions.map((element) => {
-            // console.log("keyword: ", keyword)
+
             if (element._id == QuestionID) {
+
                 if (newQuestion !== "") {
+                    // console.log("Question: ", newQuestion)
                     element.Question = newQuestion
                 }
                 else if (oldDistractor !== "" && newDistractor !== "") {
+                    // console.log("oldDistractor: ", oldDistractor)
+                    // console.log("newDistractor: ", newDistractor)
+                    oldDistractor1 = [oldDistractor]
+                    newDistractor1 = [newDistractor]
                     element.distructor.map((dis, index) => {
                         if (dis == oldDistractor) {
                             element.distructor[index] = newDistractor
@@ -211,23 +222,34 @@ class GenerateExam extends Component {
                     })
                 }
                 else if (keyword !== "") {
+                    // console.log("keyword: ", keyword)
                     element.keyword = keyword
                 }
-                else if (oldDistractor !== "" && newDistractor == "") {
-
+                else if (removeOldDistractor !== "") {
+                    // console.log("removeOldDistractor: ", removeOldDistractor)
+                    removeOldDistractor1 = [removeOldDistractor]
                     element.distructor.map((dis, index) => {
-                        if (dis == oldDistractor) {
+                        if (dis == removeOldDistractor) {
                             element.distructor.splice(index, 1)
                             // console.log(element)
                         }
                     })
                 }
-                else {
+                else if (addNewDistractor !== "") {
                     // console.log("nooooo")
-                    element.distructor.push(newDistractor)
+                    // console.log("addNewDistractor: ", addNewDistractor)
+                    element.distructor.push(addNewDistractor)
+                    addNewDistractor1 = [addNewDistractor]
                 }
             }
         });
+        console.log("QuestionID: ", QuestionID)
+        console.log("Question: ", newQuestion)
+        console.log("oldDistractor: ", oldDistractor1)
+        console.log("newDistractor: ", newDistractor1)
+        console.log("addNewDistractor: ", addNewDistractor1)
+        console.log("removeOldDistractor: ", removeOldDistractor1)
+        console.log("keyword: ", keyword)
         this.setState({
             deletedQuestions
         })
@@ -237,9 +259,11 @@ class GenerateExam extends Component {
             headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
             body: JSON.stringify({
                 "Question": newQuestion,
-                "OldDistructor": oldDistractor,
-                "keyword": keyword,
-                "NewDistructor": newDistractor,
+                "NewDistructor": newDistractor1,
+                "OldDistructor": oldDistractor1,
+                "AddNewDistructor": addNewDistractor1,
+                "RemoveOldDistructor": removeOldDistractor1,
+                "keyword": keyword
 
             })
         };
@@ -248,6 +272,7 @@ class GenerateExam extends Component {
         try {
             api1 = await fetch('https://quizly-app.herokuapp.com/question/edit/' + QuestionID, requestOptions1)
             let data = await api1.json();
+            console.log(data)
         }
         catch (e) {
             // console.log(e)
@@ -257,7 +282,7 @@ class GenerateExam extends Component {
 
     generateExam = async () => {
         $("*").css("cursor", "progress");
-        $("#generateExam").css("display","none")
+        $("#generateExam").css("display", "none")
         var Questions = []
         var { deletedQuestions } = this.state
         deletedQuestions.forEach(element => {
@@ -272,7 +297,7 @@ class GenerateExam extends Component {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
             body: JSON.stringify({
-                "domain_name": subject,
+                "subject_name": subject,
                 "university": university,
                 "faculty": faculty,
                 "duration": duration,
@@ -294,13 +319,13 @@ class GenerateExam extends Component {
 
         this.generatePdf()
         $("*").css("cursor", "default");
-        $("#generateExam").css("display","block")
+        $("#generateExam").css("display", "block")
         this.setState({
             examToolContent: "",
             Questions: [],
             deletedQuestions: [],
             currentPage: "",
-            
+
         })
     }
 
@@ -366,13 +391,13 @@ class GenerateExam extends Component {
         var Questions = []
 
         Questions = this.state.deletedQuestions.map((Question, index) => {
-            let splitTitle = doc.splitTextToSize(Question.Question, 550);
-            for (let i = 0; i < splitTitle.length; i++) {
+            let splitQuestion = doc.splitTextToSize(Question.Question, 550);
+            for (let i = 0; i < splitQuestion.length; i++) {
                 if (i == 0) {
-                    doc.text(15, leng, index + 1 + "- " + splitTitle[i])
+                    doc.text(15, leng, index + 1 + "- " + splitQuestion[i])
                 }
                 else {
-                    doc.text(15, leng, splitTitle[i])
+                    doc.text(15, leng, splitQuestion[i])
                 }
                 leng += 25
                 if (leng >= pageHeight) {
@@ -396,8 +421,22 @@ class GenerateExam extends Component {
                 Question.distructor.push(Question.keyword)
                 this.shuffleArray(Question.distructor)
                 Question.distructor.map((dis, index) => {
-                    doc.text(30, leng, letters[index + 1] + "- " + dis)
-                    leng += 20
+                    let splitDis = doc.splitTextToSize(dis, 530);
+                    for (let i = 0; i < splitDis.length; i++) {
+                        if (i == 0) {
+                            doc.text(30, leng, letters[index + 1] + "- " + splitDis[i])
+                        }
+                        else {
+                            doc.text(30, leng, splitDis[i])
+                        }
+                        leng += 20
+                        if (leng >= pageHeight) {
+                            doc.addPage()
+                            leng = newStart
+                        }
+                    }
+                    // doc.text(30, leng, letters[index + 1] + "- " + dis)
+                    // leng += 20
                     if (leng > pageHeight) {
                         doc.addPage()
                         leng = newStart
@@ -461,7 +500,7 @@ class GenerateExam extends Component {
                     <ol type="a" className="distructorsList">
                         {distractorsList}
                     </ol>
-                    <a className="deleteItem pointer" onClick={() => this.deleteQuestion(Question, this.props.counter)}><i class='fas fa-times'></i></a>
+                    <a className="deleteItem pointer" onClick={() => this.deleteQuestion(Question, this.props.counter)}><i class="far fa-trash-alt"></i></a>
                 </div>
             )
         })
@@ -472,27 +511,7 @@ class GenerateExam extends Component {
 
             <div className="GenerateExamContainer" >
 
-                <div className="examHalf examDetails" id="examhalf">
-                    <div className="examTitle">
-                        {/* <ExamTitle title="Subject" addTitle={this.addTitle} /> */}
-                        <ExamTitle title="University" addTitle={this.addTitle} />
-                        <ExamTitle title="Faculty" addTitle={this.addTitle} />
-                        <ExamTitle title="Duration" addTitle={this.addTitle} />
-                    </div>
-                    <div className="line"></div>
-                    <div className="following">
-                        Anwser the following questions
-                    </div>
-                    <div>
-                        {Questions}
-                    </div>
-                    <div className="generateButtonContainer">
-
-                        <button onClick={() => this.generateExam()} type="submit" id = "generateExam" className="btn btn-primary btn-icon-split btn-md generateButton " >
-                            <span className="text">GenerateExam</span>
-                        </button>
-                    </div>
-                </div>
+                
                 <div className="examHalf examTools">
                     <div className="options1">
                         <p onClick={() => this.changeOption("addingNewQuestion")} id="addingNewQuestion" className="option1"><a onClick={() => this.changeToolContent("addingNewQuestion")} >AddNewQuestion</a> </p>
@@ -508,6 +527,28 @@ class GenerateExam extends Component {
                     </div>
                     <div className="ExamToolBody" >
                         {examToolContent}
+                    </div>
+                </div>
+
+                <div className="examHalf examDetails" id="examhalf">
+                    <div className="examTitle">
+                        <ExamTitle title="Subject" addTitle={this.addTitle} />
+                        <ExamTitle title="University" addTitle={this.addTitle} />
+                        <ExamTitle title="Faculty" addTitle={this.addTitle} />
+                        <ExamTitle title="Duration" addTitle={this.addTitle} />
+                    </div>
+                    <div className="line"></div>
+                    <div className="following">
+                        Anwser the following questions
+                    </div>
+                    <div>
+                        {Questions}
+                    </div>
+                    <div className="generateButtonContainer">
+
+                        <button onClick={() => this.generateExam()} type="submit" id="generateExam" className="btn btn-primary btn-icon-split btn-md generateButton " >
+                            <span className="text">GenerateExam</span>
+                        </button>
                     </div>
                 </div>
             </div >
@@ -541,7 +582,7 @@ class DistractorContent extends Component {
 
     }
     componentDidUpdate = () => {
-
+        autosize($(".distrr"));
         if (this.state.oldDistractor != this.props.Distractor) {
             this.setState({
                 oldDistractor: this.props.Distractor,
@@ -566,12 +607,17 @@ class DistractorContent extends Component {
         e.preventDefault()
         this.toggleState()
         if (this.props.Distractor == "Add new distractor....") {
-            this.props.editQuestion(this.props.Question._id, "", "", this.state.newDistractor)
+            if (this.state.newDistractor == "Add new distractor....") {
+
+            }
+            else {
+                this.props.editQuestion(this.props.Question._id, "", "", "", this.state.newDistractor)
+            }
         }
         else if (this.props.keyword != null) {
             // console.log("keywordddd")
             if (this.state.newDistractor != this.props.Distractor) {
-                this.props.editQuestion(this.props.Question._id, "", "", "", this.state.newDistractor)
+                this.props.editQuestion(this.props.Question._id, "", "", "", "", "", this.state.newDistractor)
             }
         }
         else {
@@ -583,13 +629,13 @@ class DistractorContent extends Component {
     deleteDistractor = () => {
 
         this.toggleState()
-        this.props.editQuestion(this.props.Question._id, "", this.props.Distractor, "")
+        this.props.editQuestion(this.props.Question._id, "", "", "", "", this.props.Distractor)
     }
 
     renderDistractor = () => {
         if (this.props.Distractor == "Add new distractor....") {
             return (
-                <li type="none" onClick={() => this.toggleState()}>
+                <li type="none" onClick={() => this.toggleState()} style={{ "border-bottom": "1px solid", "margin-left": "0px", "cursor": "pointer", "width": "150px" }}>
                     {this.state.oldDistractor}
                 </li>
             )
@@ -606,26 +652,35 @@ class DistractorContent extends Component {
 
 
     renderEditDistractor = () => {
-        if (this.props.keyword != null) {
+        if (this.props.Distractor == "Add new distractor....") {
             return (
                 <form onSubmit={this.addDistractor}>
-                    <input autoFocus onFocus={(e) => { e.target.select() }} type="text" value={this.state.newDistractor} onChange={(e) => this.setState({ newDistractor: e.target.value })} />
-                    <input type="submit" value="submit" />
+                    <textarea autoFocus className="distrr" onFocus={(e) => { e.target.select() }} type="text" value={this.state.newDistractor} onChange={(e) => this.setState({ newDistractor: e.target.value })} />
+                    <button style = {{"font-size":"25px" , "top":"3px" , "right":"8%"}} type="submit"><i class="far fa-plus-square"></i></button>
+                </form>
+            )
+        }
+        else if (this.props.keyword != null) {
+            return (
+                <form onSubmit={this.addDistractor}>
+                    <textarea autoFocus className="distrr" onFocus={(e) => { e.target.select() }} type="text" value={this.state.newDistractor} onChange={(e) => this.setState({ newDistractor: e.target.value })} />
+                    {/* <input type="submit" value="Edit" /> */}
+                    <button type="submit"><i class="fas fa-edit"></i></button>
                 </form>
             )
         }
         else {
             return (
                 <form onSubmit={this.addDistractor}>
-                    <input autoFocus onFocus={(e) => { e.target.select() }} type="text" value={this.state.newDistractor} onChange={(e) => this.setState({ newDistractor: e.target.value })} />
-                    <input type="submit" value="submit" />
-                    <span onClick={() => this.deleteDistractor()} className="pointer" style={{ "marginLeft": "5px" }}><i class='fas fa-times ' ></i></span>
-
+                    <textarea autoFocus className="distrr" onFocus={(e) => { e.target.select() }} type="text" value={this.state.newDistractor} onChange={(e) => this.setState({ newDistractor: e.target.value })} />
+                    <button type="submit"><i class="fas fa-edit"></i></button>
+                    <button onClick={() => this.deleteDistractor()} className="pointer" ><i class="far fa-trash-alt"></i></button>
                 </form>
             )
         }
     }
     render() {
+        autosize($(".distrr"));
         var { isEdit } = this.state
         return (
             <Fragment>
@@ -657,6 +712,9 @@ class QuestionContent extends Component {
             Question: this.props.Question.Question
         })
     }
+    componentDidUpdate = () => {
+        autosize($(".questionInputText"));
+    }
 
     toggleState = () => {
         if (this.state.isEdit == false) {
@@ -683,15 +741,18 @@ class QuestionContent extends Component {
     }
 
 
+
     renderEditQuestion = () => {
+
         return (
-            <form onSubmit={this.addQuestion}>
-                <input autoFocus onFocus={(e) => { e.target.select() }} type="text" value={this.state.Question} onChange={(e) => this.setState({ Question: e.target.value })} />
-                <input type="submit" value="submit" />
+            <form onSubmit={this.addQuestion} className="questionForm">
+                <textarea class="questionInputText" autoFocus onFocus={(e) => { e.target.select() }} type="text" value={this.state.Question} onChange={(e) => this.setState({ Question: e.target.value })} />
+                <input className="questionInputSubmit" type="submit" value="Edit" />
             </form>
         )
     }
     render() {
+        autosize($(".questionInputText"));
         var { isEdit } = this.state
         return (
             <Fragment>
@@ -748,7 +809,7 @@ class ExamTitle extends Component {
         return (
             <form onSubmit={this.addTitle}>
                 <input autoFocus onFocus={(e) => { e.target.select() }} type={type} value={this.state.title} onChange={(e) => this.setState({ title: e.target.value })} />
-                <input type="submit" value="submit" />
+                <input type="submit" value="Edit" />
             </form>
         )
     }

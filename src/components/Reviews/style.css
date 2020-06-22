@@ -4,6 +4,12 @@
   padding-top: 100px;
 }
 
+@media (max-width: 600px) {
+  .startreviews h1 {
+    font-size: 26px;
+  }
+}
+
 .startreviews .line {
   height: 2px;
   width: 70px;
@@ -34,6 +40,12 @@
   margin-bottom: 40px;
 }
 
+@media (max-width: 600px) {
+  .startreviews .reviews .review {
+    width: 100%;
+  }
+}
+
 .startreviews .reviews .review > p {
   background-color: white;
   width: 300px;
@@ -43,6 +55,12 @@
   margin-bottom: 30px;
   position: relative;
   border-radius: 10px;
+}
+
+@media (max-width: 600px) {
+  .startreviews .reviews .review > p {
+    width: 100%;
+  }
 }
 
 .startreviews .reviews .review > p::after {

@@ -73,6 +73,9 @@
 }
 
 .allRange {
+    // width: 100%;
+    // display: flex;
+    // justify-content: center;
     p {
         margin: auto;
     }
@@ -97,7 +100,7 @@
     }
     .rangeSlider {
         height: 20px;
-        width: 180px;
+        width: 350px;
         display: flex;
         flex-flow: column;
         justify-content: center;

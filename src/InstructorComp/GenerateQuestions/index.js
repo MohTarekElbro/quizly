@@ -567,6 +567,10 @@ class GenerteQuestions extends Component {
                         <div class="row optionItem remove" id="textarea" >
                             <div class="col-sm-12 form-group">
                                 <textarea class="generateQuestionText" ref={(textarea) => { this.textarea = textarea }} type="textarea" name="comments" id="comments" placeholder="Your Question" rows="7" onBlur={(e) => { console.log(this.state.text); this.setState({ text: e.target.value }) }} ></textarea>
+                                {/* <textarea class="generateQuestionText" ref={(textarea) => { this.textarea = textarea }} type="textarea" name="comments" id="comments" placeholder="Your Question" rows="7" onBlur={(e) => { console.log(this.state.text); this.setState({ text: e.target.value }) }} ></textarea> */}
+
+                                {/* <textarea class="generateQuestionText" ref={(textarea) => { this.textarea = textarea }} type="textarea" name="comments" id="comments" placeholder="Your Question" rows="7" onBlur={(e) => { console.log(this.state.text); this.setState({ text: e.target.value }) }} ></textarea> */}
+
                             </div>
                         </div>
 

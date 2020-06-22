@@ -10,6 +10,15 @@
           justify-content: space-between;
 }
 
+@media (max-width: 900px) {
+  .GenerateExamContainer {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+}
+
 .GenerateExamContainer .options1 {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -76,10 +85,56 @@
   padding: 0px;
 }
 
+@media (max-width: 900px) {
+  .GenerateExamContainer .examHalf {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+}
+
 .GenerateExamContainer .examDetails {
   background-color: white;
   overflow: auto;
   padding: 5px 10px;
+}
+
+.GenerateExamContainer .examDetails .questionForm {
+  width: 90%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column;
+          flex-flow: column;
+}
+
+.GenerateExamContainer .examDetails .questionForm .questionInputText {
+  display: block;
+  width: 100%;
+  min-height: 50px !important;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #6e707e;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #d1d3e2;
+  border-radius: 0.35rem;
+  -webkit-transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  resize: none;
+}
+
+.GenerateExamContainer .examDetails .questionForm .questionInputSubmit {
+  width: 40%;
+  height: 20px;
+  margin: 10px auto;
 }
 
 .GenerateExamContainer .examDetails .ExamQuestionItem {
@@ -93,7 +148,7 @@
   color: black;
   font-size: 20px;
   position: absolute;
-  top: 14px;
+  top: 0px;
   right: -10px;
 }
 
@@ -115,13 +170,43 @@
 }
 
 .GenerateExamContainer .examDetails .ExamQuestionItem ol li {
-  width: 80%;
+  width: 100%;
   margin-bottom: 5px;
 }
 
 .GenerateExamContainer .examDetails .ExamQuestionItem ol form {
-  width: 80%;
+  width: 100%;
+  position: relative;
   margin-bottom: 5px;
+}
+
+.GenerateExamContainer .examDetails .ExamQuestionItem ol form .distrr {
+  width: 90%;
+  font-size: 15px;
+  min-height: 15px !important;
+  margin-bottom: 7px;
+  resize: none;
+}
+
+.GenerateExamContainer .examDetails .ExamQuestionItem ol form button[type=submit] {
+  cursor: pointer;
+  position: absolute;
+  margin-left: 10px;
+  height: 0px;
+  right: 9%;
+  width: 0px;
+  top: -5px;
+  font-size: 18px;
+  background: transparent;
+}
+
+.GenerateExamContainer .examDetails .ExamQuestionItem ol form .pointer {
+  position: absolute;
+  top: 17px;
+  font-size: 18px;
+  width: 0px;
+  height: 0px;
+  right: 9%;
 }
 
 .GenerateExamContainer .examDetails .examTitle {
@@ -169,7 +254,8 @@
           justify-content: center;
 }
 
-.GenerateExamContainer .generateButtonContainer .generateButton, .GenerateExamContainer .generateButtonContainer .selectButton {
+.GenerateExamContainer .generateButtonContainer .generateButton,
+.GenerateExamContainer .generateButtonContainer .selectButton {
   margin: 10px auto;
 }
 

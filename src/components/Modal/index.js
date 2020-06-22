@@ -1,6 +1,7 @@
 import React, { Component  } from 'react'
 class Modal extends Component {
     render() {
+        // console.log("index: " , this.props.index)
         return (
             <div class="modal fade" id={this.props.modalName} tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -15,7 +16,7 @@ class Modal extends Component {
                             {this.props.body}
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{this.props.closeButton}</button>
+                            <button type="button" id = {"closeModal"+this.props.index} class="btn btn-secondary" data-dismiss="modal">{this.props.closeButton}</button>
                             {this.props.saveButton?<button type="button" class="btn btn-primary">{this.props.saveButton}</button>:<div></div>}
                             
                         </div>

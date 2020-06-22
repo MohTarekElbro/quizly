@@ -5,14 +5,16 @@ import $ from 'jquery'
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
 import { useAlert } from 'react-alert'
 import { confirm } from 'jquery-confirm'
+import autosize from 'autosize'
+
 
 class AddingQuestion extends Component {
 
     state = {
-        QuestionType: "mcq",
-        public: "false",
+        QuestionType: "MCQ",
+        public: false,
         numOfDis: 1,
-        distractorsValue: [],
+        distructorsValue: [],
         state: 'true',
         level: "medium",
         domains: [],
@@ -20,12 +22,102 @@ class AddingQuestion extends Component {
         keyword: "",
         Question: "",
 
+        editedDistructors: {},
+        existedLength: 0,
+        existedDistructors: [],
+        oldDistructors: "",
+        newDistructors: "",
+        addNewDistructors: [],
+        removeOldDistructors: [],
 
+
+        hhh: ""
+    }
+    componentDidUpdate = () => {
+        autosize($(".addQuestionText"))
+        
     }
 
 
     componentDidMount = async () => {
 
+        if (this.props.Question) {
+            console.log("index", this.props.Question)
+            $("#QuestionsType" + this.props.index).css("display", "none")
+            $("#domains" + this.props.index).css("display", "none")
+            let Q = this.props.Question
+            if (Q.public == true) {
+                console.log("public")
+                $("#public" + this.props.index).css("color", "#4e73df")
+            }
+            else {
+                console.log("private")
+                // $("input[name='public']").css("display","none")
+                $("#private" + this.props.index).css("color", "#4e73df")
+            }
+            if (Q.state == true) {
+                console.log("TRUE")
+                $("#trueChoose" + this.props.index).css("color", "#4e73df")
+            }
+            else {
+                console.log("FALSE")
+                // $("input[name='public']").css("display","none")
+                $("#falseChoose" + this.props.index).css("color", "#4e73df")
+            }
+            $("#" + Q.Level + this.props.index).css("color", "#4e73df")
+
+            // if (Q.Level == "easy") {
+            //     console.log(Q.Level)
+            //     $("#easy" + this.props.index).css("color","#4e73df")
+            // }
+            // else if ( == "medium") {
+            //     console.log(Q.Level)
+
+            // }
+            // else {
+            //     console.log(Q.Level)
+            //     $("#hard" + this.props.index).css("color","#4e73df")
+            // }
+
+            var { QuestionType } = this.state
+            if (QuestionType == "MCQ") {
+                $("#MCQ").click()
+            }
+            else if (QuestionType == "Complete") {
+                $("#Complete").click()
+            }
+            else {
+                $("#trueorfalse").click()
+            }
+        }
+        if (this.props.Question) {
+            const Question = this.props.Question
+            let ex = []
+            let old = []
+            if (Question.distructor) {
+                for (let i = 0; i < Question.distructor.length; i++) {
+                    ex.push(Question.distructor[i])
+                }
+
+                for (let i = 0; i < Question.distructor.length; i++) {
+                    old.push(Question.distructor[i])
+                }
+            }
+            this.setState({
+                Question: Question.Question,
+                QuestionType: Question.kind,
+                public: Question.public ? true : false,
+                numOfDis: Question.distructor ? Question.distructor.length : 0,
+                existedLength: Question.distructor ? Question.distructor.length : 0,
+                distructorsValue: old,
+                existedDistructors: ex,
+                hhh: Question.distructor,
+                state: Question.state ? Question.state : true,
+                level: Question.Level,
+                DomainName: Question.domain.domain_name,
+                keyword: Question.keyword,
+            })
+        }
         const requestOptions1 = {
             method: 'Get',
             headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
@@ -55,7 +147,7 @@ class AddingQuestion extends Component {
 
                 <div class="row">
                     <div class="col-sm-12 form-group">
-                        <input type="submit" class=" btn-secondary btn btn-lg  btn-block" value="Post" />
+                        <input type="submit" class=" btn-secondary btn btn-lg  btn-block" value={this.props.Question ? "Edit" : "Add"} />
                     </div>
                 </div>
             </form>
@@ -64,40 +156,90 @@ class AddingQuestion extends Component {
 
     //////////////////////////MCQ Functions////////////////////////////////
 
-    addNewDistractor = (i) => {
-        i = i - 1
+    addNewDistructor = (i) => {
+        var { distructorsValue } = this.state
+        var { addNewDistructors } = this.state
+        let numOfDis = this.state.numOfDis
+        numOfDis++
+        distructorsValue[i] = "Add New Distructor"
+
         this.setState({
-            numOfDis: this.state.numOfDis + 1
+            numOfDis,
+            distructorsValue
         })
-        var { numOfDis } = this.state
+        addNewDistructors.push(distructorsValue[i])
+        console.log("add New Dis: ", addNewDistructors)
+        console.log("numOfDis: ", numOfDis, "existedlength", this.state.existedLength)
+
+        this.setState({
+            addNewDistructors
+        })
+        // var { numOfDis } = this.state
     }
 
-    removeDistractor = (i) => {
+    removeDistructor = (i) => {
+        var { distructorsValue } = this.state
+        if (this.props.Question) {
+            let { existedDistructors } = this.state
+            let { removeOldDistructors } = this.state
+            let { existedLength } = this.state
+            let { editedDistructors } = this.state
+            let { addNewDistructors } = this.state
+            console.log("numOfDis: ", i + 1, "existedlength", this.state.existedLength)
+            if (i + 1 <= existedLength) {
+                console.log("remove one from existed!: ", distructorsValue[i])
+                if (editedDistructors[existedDistructors[i]] != null) {
+                    console.log("remove Edited one")
+                    // editedDistructors.filter(index => index.existedDistructors[i] != null)
+                    delete editedDistructors[existedDistructors[i]]
+                    console.log("editedDistructors: ", editedDistructors)
+                    removeOldDistructors.push(existedDistructors[i])
+                }
+                else {
+                    removeOldDistructors.push(distructorsValue[i])
+                }
+                existedDistructors.splice(i, 1)
+                existedLength--
+                console.log("removeOldDistructors: ", removeOldDistructors)
+            }
+            else {
+                console.log("remove one from new!")
+                addNewDistructors.splice(i + 1 - this.state.numOfDis - 1, 1)
+                console.log("addNewDistructors: ", addNewDistructors)
+            }
+            this.setState({
+                removeOldDistructors,
+                existedDistructors,
+                existedLength,
+                addNewDistructors
+            })
+        }
         console.log("RemoveID: ", i)
         this.setState({
             numOfDis: this.state.numOfDis - 1
         })
-        var { distractorsValue } = this.state
-        distractorsValue.splice(i, 1)
+
+        distructorsValue.splice(i, 1)
         this.setState({
-            distractorsValue
+            distructorsValue
         })
+
     }
 
-    distractor = (i) => {
+    distructor = (i) => {
         var { numOfDis } = this.state
         let span;
         let a;
         if (i != 0) {
             span = (
-                <span onClick={() => this.removeDistractor(i)} className="remove pointer">
+                <span onClick={() => this.removeDistructor(i)} className="deleteInstructorIcon">
                     <i class="fas fa-times-circle"></i>
                 </span>
             )
         }
         if ((i + 1) == numOfDis) {
-            a = <a id={"dis" + i} onClick={() => this.addNewDistractor(i + 1)} className="addQuestions btn btn-secondary btn-icon-split btn-sm " >
-                <span className="icon text-white-50">
+            a = <a id={"dis" + i} onClick={() => this.addNewDistructor(i + 1)} className="addQuestions   " >
+                <span className="icon text-white-50 ">
                     <i class="fas fa-plus-square"></i>
                 </span>
             </a>
@@ -106,13 +248,37 @@ class AddingQuestion extends Component {
 
         return (
             <div className="disDiv" id={"disDiv" + i} style={{ "marginBottom": "20px" }}>
-                <input id={"disInput" + i} type="text" autoFocus className="form-control bg-light  small inputSearch" onFocus={(e) => { e.target.select() }} placeholder="Add New Distractor"
-                    aria-label="Search" aria-describedby="basic-addon2" value={this.state.distractorsValue[i]} onChange={(e) => {
-                        let { distractorsValue } = this.state
-                        distractorsValue[i] = e.target.value
+                <input id={"disInput" + i} type="text" autoFocus className="form-control bg-light  small inputSearch" onFocus={(e) => { e.target.select() }} placeholder="Add New Distructor"
+                    aria-label="Search" aria-describedby="basic-addon2" value={this.state.distructorsValue[i]} onChange={(e) => {
+                        let { distructorsValue } = this.state
+                        let { existedDistructors } = this.state
+                        distructorsValue[i] = e.target.value
                         this.setState({
-                            distractorsValue
+                            distructorsValue
                         })
+
+                        if (this.props.Question) {
+                            if (i + 1 <= this.state.existedLength) {
+                                // let newDistructors = this.state.newDistructors
+                                // let oldDistructors = this.state.oldDistructors
+                                // let {existedDistructors} = this.state
+                                let editedDistructors = this.state.editedDistructors
+                                // console.log("existedDistructors: " , this.state.existedDistructors)
+                                editedDistructors[this.state.existedDistructors[i]] = e.target.value
+                                this.setState({
+                                    editedDistructors
+                                })
+                                // console.log("editedDistructors: " , editedDistructors)
+                            }
+                            else {
+                                let addNewDistructors = this.state.addNewDistructors
+                                addNewDistructors[i - this.state.existedLength] = e.target.value
+                                this.setState({
+                                    addNewDistructors
+                                })
+                                // console.log("addNewDistructors: " , addNewDistructors)
+                            }
+                        }
 
                     }} />
                 {a}
@@ -124,10 +290,10 @@ class AddingQuestion extends Component {
 
     mcqForm = () => {
         var { numOfDis } = this.state
-        var distractorsList = []
+        var distructorsList = []
         for (let i = 0; i < numOfDis; i++) {
 
-            distractorsList.push(this.distractor(i))
+            distructorsList.push(this.distructor(i))
         }
         return (
             <form id="reused_form" onSubmit={this.addQuestion}>
@@ -137,16 +303,16 @@ class AddingQuestion extends Component {
                 </div>
 
                 <p style={{ "margin-bottom": "20px", "textAlign": "center" }}>
-                    You dont have to add all distractors!
+                    You dont have to add all distructors!
                 </p>
 
-                <div className="distractors">
-                    {distractorsList}
+                <div className="distructors">
+                    {distructorsList}
 
                 </div>
                 <div class="row">
                     <div class="col-sm-12 form-group">
-                        <input type="submit" class=" btn-success btn btn-lg btn-block" value="Post" />
+                        <input type="submit" class=" btn-success btn btn-lg btn-block" value={this.props.Question ? "Edit" : "Add"} />
                     </div>
                 </div>
             </form>
@@ -176,27 +342,40 @@ class AddingQuestion extends Component {
             <form id="reused_form" onSubmit={this.addQuestion}>
                 <div class="col-sm-12 form-group levels">
                     <p>
-                        <label class="margin radio-inline">
-                            <input type="radio" name="state" id="state" onChange={(e) => this.setState({ state: e.target.value })} value="true" />
+                        <label class="margin radio-inline trueorfalse" id={this.props.index ? "trueChoose" + this.props.index : "trueChoose"} style = {this.state.state?{"color" : "#4e73df"}:{"color" : "black"}}>
+                            <input type="radio" name="state" onChange={(e) => {
+                                this.setState({ state: e.target.value })
+                                $(".trueorfalse").css("color" , "black")
+                                $("#trueChoose" + this.props.index).css("color", "#4e73df")
+
+                            }} value="true" />
                             True
                         </label>
 
-                        <label class="margin radio-inline">
-                            <input type="radio" name="state" id="state" onChange={(e) => this.setState({ state: e.target.value })} value="false" />
+                        <label class="margin radio-inline trueorfalse" id={this.props.index ? "falseChoose" + this.props.index : "falseChoose"} style = {this.state.state?{"color" : "black"}:{"color" : "#4e73df"}}>
+                            <input type="radio" name="state" onChange={(e) => {
+                                this.setState({ state: e.target.value })
+                                $(".trueorfalse").css("color" , "black")
+                                $("#falseChoose" + this.props.index).css("color", "#4e73df")
+
+                            }} value="false" />
                             False
                         </label>
                     </p>
                 </div>
-                <div className="distractors">
+                <div className="distructors">
                     <input type="text" className="form-control bg-light  small " style={{ "marginBottom": "20px" }} placeholder="Keyword"
                         aria-label="Search" aria-describedby="basic-addon2" value={this.state.keyword} onChange={(e) => { this.setState({ keyword: e.target.value }) }} />
-                    <input type="text" className="form-control bg-light  small " style={{ "marginBottom": "20px" }} placeholder="Distractor"
-                        aria-label="Search" aria-describedby="basic-addon2" value={this.state.distractorsValue[0]} onChange={(e) => {
-                            let { distractorsValue } = this.state
-                            distractorsValue[0] = e.target.value
+                    <input type="text" className="form-control bg-light  small " style={{ "marginBottom": "20px" }} placeholder="Distructor"
+                        aria-label="Search" aria-describedby="basic-addon2" value={this.state.distructorsValue[0]} onChange={(e) => {
+                            let { distructorsValue } = this.state
+                            distructorsValue[0] = e.target.value
                             this.setState({
-                                distractorsValue
+                                distructorsValue
                             })
+
+
+
 
                         }} />
                 </div>
@@ -204,7 +383,7 @@ class AddingQuestion extends Component {
 
                 <div class="row">
                     <div class="col-sm-12 form-group">
-                        <input type="submit" class=" btn-secondary btn btn-lg  btn-block" value="Post" />
+                        <input type="submit" class=" btn-secondary btn btn-lg  btn-block" value={this.props.Question ? "Edit" : "Add"} />
                     </div>
                 </div>
             </form>
@@ -216,13 +395,16 @@ class AddingQuestion extends Component {
 
     formContent = () => {
         var { QuestionType } = this.state
-        if (QuestionType == "mcq") {
+        if (QuestionType == "MCQ") {
+            $("#MCQ").click()
             return this.mcqForm()
         }
-        else if (QuestionType == "complete") {
+        else if (QuestionType == "Complete") {
+            $("#Complete").click()
             return this.completeForm()
         }
         else {
+            $("#trueorfalse").click()
             return this.TrueOrFalseForm()
         }
     }
@@ -237,6 +419,17 @@ class AddingQuestion extends Component {
         this.setState({
             public: e.target.value
         })
+        $(".public111").css("color", "black")
+        console.log(e.target.value)
+        if (e.target.value == "true") {
+            console.log("true")
+            $("#public" + this.props.index).css("color", "#4e73df")
+        }
+        else {
+            console.log("false")
+            $("#private" + this.props.index).css("color", "#4e73df")
+        }
+
 
     }
 
@@ -244,19 +437,22 @@ class AddingQuestion extends Component {
         this.setState({
             level: e.target.value
         })
+        $(".level11").css("color", "black")
+        $("#" + e.target.value + this.props.index).css("color", "#4e73df")
     }
 
     addQuestion = async (e) => {
         e.preventDefault()
+        let api1;
         var { level } = this.state
         var { Question } = this.state
         var { keyword } = this.state
         var { state } = this.state
         let Publication = this.state.public
-        var { distractorsValue } = this.state
+        var { distructorsValue } = this.state
         var { DomainName } = this.state
         var { QuestionType } = this.state
-        console.log(DomainName)
+        // console.log(DomainName)
         if (Question == "") {
             $.alert({
                 title: 'Error!',
@@ -276,17 +472,159 @@ class AddingQuestion extends Component {
                 }
             });
         }
-        else if (distractorsValue.length < 1 && QuestionType != "complete") {
+        else if (distructorsValue.length < 1 && QuestionType != "Complete") {
             $.alert({
                 title: 'Error!',
-                content: 'Enter at least one Distractor',
+                content: 'Enter at least one Distructor',
                 buttons: {
                     okay: function () { },
                 }
             });
         }
+        else if (this.props.Question) {
+            let { removeOldDistructors } = this.state
+            let { addNewDistructors } = this.state
+            let { editedDistructors } = this.state
+            let oldDistructors = []
+            let newDistructors = []
+            console.log("editedDistructors: ", editedDistructors)
+
+            let keys = Object.keys(editedDistructors)
+            for (let i = 0; i < keys.length; i++) {
+                oldDistructors[i] = keys[i]
+                newDistructors[i] = editedDistructors[oldDistructors[i]]
+            }
+            if (oldDistructors.length == 0) {
+                oldDistructors = ""
+            }
+            if (newDistructors.length == 0) {
+                newDistructors = ""
+            }
+            if (addNewDistructors.length == 0) {
+                addNewDistructors = ""
+            }
+            if (removeOldDistructors.length == 0) {
+                removeOldDistructors = ""
+            }
+
+            // console.log("QuestionID: ", QuestionID)
+            console.log("---------------------------------------")
+            console.log("Question: ", Question)
+            console.log("oldDistractor: ", oldDistructors)
+            console.log("newDistractor: ", newDistructors)
+            console.log("addNewDistractor: ", addNewDistructors)
+            console.log("removeOldDistractor: ", removeOldDistructors)
+            console.log("keyword: ", keyword)
+            console.log("public: ", Publication)
+            console.log("---------------------------------------")
+            if (Publication == "false" || Publication == false) {
+                Publication = false
+            }
+            else {
+                Publication = true
+            }
+            const requestOptions1 = {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                body: JSON.stringify({
+                    "Question": Question,
+                    "NewDistructor": newDistructors,
+                    "OldDistructor": oldDistructors,
+                    "AddNewDistructor": addNewDistructors,
+                    "RemoveOldDistructor": removeOldDistructors,
+                    "keyword": keyword,
+                    "public": Publication
+
+                })
+            };
+            try {
+                api1 = await fetch(this.props.url, requestOptions1)
+                let data = await api1.json();
+                let message = data.massage
+                console.log(data)
+                let index = this.props.index
+                let editRenderdQuestion = this.props.editRenderdQuestion
+
+                let { distructorsValue } = this.state
+                let { keyword } = this.state
+                let Question1 = this.state.Question
+
+                let oldQuestion = this.props.Question
+
+                oldQuestion.distructor = distructorsValue
+                oldQuestion.keyword = keyword
+                oldQuestion.Question = Question1
+                oldQuestion.public = Publication
+                console.log(api1.status)
+                if (api1.status == 202) {
+                    let index = this.props.index
+                    const Question = oldQuestion
+                    let ex = []
+                    for (let i = 0; i < Question.distructor.length; i++) {
+                        ex.push(Question.distructor[i])
+                    }
+                    let old = []
+                    for (let i = 0; i < Question.distructor.length; i++) {
+                        old.push(Question.distructor[i])
+                    }
+                    this.setState({
+                        Question: Question.Question,
+                        QuestionType: Question.kind,
+                        public: Question.public ? true : false,
+                        numOfDis: Question.distructor.length,
+                        existedLength: Question.distructor.length,
+                        distructorsValue: old,
+                        existedDistructors: ex,
+                        state: Question.state ? Question.state : true,
+                        level: Question.Level,
+                        DomainName: Question.domain.domain_name,
+                        keyword: Question.keyword,
+                        editedDistructors: {},
+                        addNewDistructors: [],
+                        removeOldDistructors: [],
+                    })
+                    $.alert({
+                        title: 'Success!',
+                        boxWidth: '400px',
+                        useBootstrap: false,
+                        content: "Question Updated",
+                        buttons: {
+                            okay: function () {
+
+                                editRenderdQuestion(oldQuestion)
+
+                                $("#closeModal" + index).click()
+
+                            },
+                        }
+                    });
+                }
+                else {
+                    $.alert({
+                        title: 'ُError!',
+                        boxWidth: '400px',
+                        useBootstrap: false,
+                        content: message,
+                        buttons: {
+                            okay: function () {
+
+                                // editRenderdQuestion(oldQuestion)
+
+                                $("#closeModal" + index).click()
+
+                            },
+                        }
+                    });
+                }
+            }
+            catch (e) {
+                console.log(e)
+            }
+
+        }
 
         else {
+
             const requestOptions1 = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
@@ -296,16 +634,26 @@ class AddingQuestion extends Component {
                     "keyword": keyword,
                     "state": state,
                     "public": Publication,
-                    "add_distructors": distractorsValue,
+                    "add_distructors": distructorsValue,
                     "domain_name": DomainName
                 })
             };
-            let api1;
+
 
             try {
+
+                if (QuestionType == "MCQ") {
+                    QuestionType = "mcq"
+                }
+                else if (QuestionType == "Complete") {
+                    QuestionType = "complete"
+                }
+                console.log(QuestionType, level, Question, keyword, distructorsValue, DomainName, Publication)
                 api1 = await fetch('https://quizly-app.herokuapp.com/question/add/' + QuestionType, requestOptions1)
-                let data = await api1.json();
                 console.log(api1.status)
+                let data = await api1.json();
+
+
                 if (api1.status == 302) {
                     $.confirm({
                         title: 'Confirm!',
@@ -322,7 +670,7 @@ class AddingQuestion extends Component {
                                         "Question": Question,
                                         "keyword": keyword,
                                         "state": state,
-                                        "add_distructors": distractorsValue,
+                                        "add_distructors": distructorsValue,
                                         "domain_name": DomainName
                                     })
                                 };
@@ -379,6 +727,7 @@ class AddingQuestion extends Component {
     //////////////////////////Public Finctions////////////////////////////////
 
     render() {
+
         let formContent = this.formContent()
         let Publication = this.state.public
 
@@ -391,44 +740,44 @@ class AddingQuestion extends Component {
         return (
             <div class="flex row" style={{ "margin": "20px 0px 30px" }}>
                 <div class="form-container">
-                    <h2 className="center">Add Question</h2>
-                    <div class="row">
+                    <h2 className="center">{this.props.Question ? "Edit Question" : "Add Question"}</h2>
+                    <div class="row" id={"QuestionsType" + this.props.index}>
                         <div class="col-sm-12 form-group levels">
                             <p>
-
                                 <label class="margin radio-inline">
-                                    <input type="radio" name="QuestionType" id="QuestionType" onChange={this.changeForm} value="mcq" />
+                                    <input type="radio" name="QuestionType" id={"MCQ"} onChange={this.changeForm} value="MCQ" />
                                     MCQ
                                 </label>
 
                                 <label class="margin radio-inline">
-                                    <input type="radio" name="QuestionType" id="QuestionType" onChange={this.changeForm} value="trueorfalse" />
+                                    <input type="radio" name="QuestionType" id={"trueorfalse"} onChange={this.changeForm} value="trueorfalse" />
                                     TrueOrFalse
                                 </label>
 
                                 <label class="margin radio-inline">
-                                    <input type="radio" name="QuestionType" id="QuestionType" onChange={this.changeForm} value="complete" />
+                                    <input type="radio" name="QuestionType" id={"Complete"} onChange={this.changeForm} value="Complete" />
                                     Complate
                                 </label>
                             </p>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-sm-12 form-group levels">
                             <p>
-                                <label class="margin radio-inline">
-                                    <input type="radio" name="public" id="public" onChange={this.addPublic} value="false" />
+                                <label class="margin radio-inline public111" id={this.props.index ? "private" + this.props.index : "private"}>
+                                    <input type="radio" name="public" onChange={this.addPublic} value={false} />
                                     Private
                                 </label>
 
-                                <label class="margin radio-inline">
-                                    <input type="radio" name="public" id="public" onChange={this.addPublic} value="true" />
+                                <label class="margin radio-inline public111" id={this.props.index ? "public" + this.props.index : "public"}>
+                                    <input type="radio" name="public" onChange={this.addPublic} value={true} />
                                     Public
                                 </label>
                             </p>
                         </div>
                     </div>
-                    <div className="row levels">
+                    <div className="row levels" id={"domains" + this.props.index}>
                         <span style={{ "margin": "auto 0", "height": "30px" }}>Domain: </span>
                         <select data-menu id="QuestionType" className="select1" name="QuestionType" value={this.state.DomainName} onChange={(e) => { this.setState({ DomainName: e.target.value }) }} >
                             {ListDomains}
@@ -439,18 +788,18 @@ class AddingQuestion extends Component {
                     <div class="row">
                         <div class="col-sm-12 form-group levels">
                             <p>
-                                <label class="margin radio-inline">
-                                    <input type="radio" name="level" id="level" onChange={this.selectLevel} value="easy" />
+                                <label class="margin radio-inline level11" id={this.props.index ? "easy" + this.props.index : "easy"}>
+                                    <input type="radio" name="level" onChange={this.selectLevel} value="easy" />
                                     easy
                                 </label>
 
-                                <label class="margin radio-inline">
-                                    <input type="radio" name="level" id="level" onChange={this.selectLevel} value="medium" />
+                                <label class="margin radio-inline level11" id={this.props.index ? "medium" + this.props.index : "medium"}>
+                                    <input type="radio" name="level" onChange={this.selectLevel} value="medium" />
                                     medium
                                 </label>
 
-                                <label class="margin radio-inline">
-                                    <input type="radio" name="level" id="level" onChange={this.selectLevel} value="hard" />
+                                <label class="margin radio-inline level11" id={this.props.index ? "hard" + this.props.index : "hard"}>
+                                    <input type="radio" name="level" onChange={this.selectLevel} value="hard" />
                                     hard
                                 </label>
                             </p>
@@ -459,7 +808,8 @@ class AddingQuestion extends Component {
 
                     <div class="row">
                         <div class="col-sm-12 form-group">
-                            <textarea class="addQuestionText" type="textarea" name="comments" id="comments" placeholder="Your Question" maxLength="6000" rows="7" onBlur={(e) => { console.log(this.state.Question); this.setState({ Question: e.target.value }) }} ></textarea>
+                            {/* <textarea class="addQuestionText" type="textarea" name="comments" id="comments" placeholder="Your Question" maxLength="6000" rows="7" onBlur={(e) => { console.log(this.state.Question); this.setState({ Question: e.target.value }) }} ></textarea> */}
+                            <textarea class="addQuestionText" autoFocus onFocus={(e) => { e.target.select() }} type="text" value={this.state.Question} onChange={(e) => this.setState({ Question: e.target.value })} />
                         </div>
                     </div>
 

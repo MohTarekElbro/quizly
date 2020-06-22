@@ -43,8 +43,19 @@ a {
 }
 
 .logo a,
-.toggle a {
-  font-size: 30px;
+.toggle {
+  padding: 10px !important;
+  padding-left: 15px !important;
+  width: 50px;
+  background-color: #222;
+  border-radius: 100%;
+}
+
+.toggle button {
+  width: 0px;
+  color: white;
+  height: 0px;
+  font-size: 17px;
   cursor: pointer;
 }
 

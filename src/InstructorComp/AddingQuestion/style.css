@@ -33,7 +33,20 @@
           justify-content: center;
 }
 
-.distractors {
+@media (max-width: 550px) {
+  .levels p {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+  }
+}
+
+.distructors {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -45,7 +58,7 @@
 }
 
 @media (max-width: 550px) {
-  .distractors {
+  .distructors {
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
@@ -54,7 +67,7 @@
   }
 }
 
-.distractors div {
+.distructors div {
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -62,27 +75,29 @@
   position: relative;
 }
 
-.distractors div a {
-  margin-left: 10px;
+.distructors div a {
+  margin-left: 7px;
+  margin-top: auto;
+  margin-bottom: auto;
   padding: 4px;
 }
 
-.distractors div a span {
+.distructors div a span {
   height: 100%;
   width: 30px;
 }
 
-.distractors div .remove {
+.distructors div .remove {
   position: absolute;
   top: 28%;
   right: 0;
 }
 
-.distractors div .remove.parent:hover {
+.distructors div .remove.parent:hover {
   background-color: gray;
 }
 
-.distractors div .inputSearch {
+.distructors div .inputSearch {
   width: 80% !important;
 }
 
@@ -103,6 +118,7 @@
   transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  resize: none;
 }
 
 .margin {
@@ -116,5 +132,27 @@
 
 .margin input {
   cursor: pointer;
+}
+
+.disDiv {
+  position: relative;
+}
+
+.disDiv .deleteInstructorIcon {
+  color: #d13535;
+  cursor: pointer;
+  position: absolute;
+  top: 32%;
+  right: 2%;
+}
+
+@media (max-width: 550px) {
+  .disDiv .deleteInstructorIcon {
+    right: -5%;
+  }
+}
+
+.disDiv .addQuestions {
+  background-color: #4e73df !important;
 }
 /*# sourceMappingURL=style.css.map */

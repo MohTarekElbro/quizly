@@ -36,9 +36,9 @@ class Reviews extends Component {
         return (
             <div className="startreviews block" id="review">
                 <div className="container">
-                    <h1>What our customers are saying</h1>
+                    <h1 >What our customers are saying</h1>
                     <div className="line"></div>
-                    <p>iam looking to work in adam company because i want to have some experiance</p>
+                    {/* <p>iam looking to work in adam company because i want to have some experiance</p> */}
                     <div className="reviews">
                         {reviewsList}
                     </div>
