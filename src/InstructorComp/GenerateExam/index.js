@@ -510,8 +510,8 @@ class GenerateExam extends Component {
         return (
 
             <div className="GenerateExamContainer" >
+                {/* <div onClick={() => this.showEaxmsList()} className="examsBar2"><i className="fas fa-bars"></i></div> */}
 
-                
                 <div className="examHalf examTools">
                     <div className="options1">
                         <p onClick={() => this.changeOption("addingNewQuestion")} id="addingNewQuestion" className="option1"><a onClick={() => this.changeToolContent("addingNewQuestion")} >AddNewQuestion</a> </p>
@@ -656,7 +656,7 @@ class DistractorContent extends Component {
             return (
                 <form onSubmit={this.addDistractor}>
                     <textarea autoFocus className="distrr" onFocus={(e) => { e.target.select() }} type="text" value={this.state.newDistractor} onChange={(e) => this.setState({ newDistractor: e.target.value })} />
-                    <button style = {{"font-size":"25px" , "top":"3px" , "right":"8%"}} type="submit"><i class="far fa-plus-square"></i></button>
+                    <button style={{ "font-size": "25px", "top": "3px", "right": "8%" }} type="submit"><i class="far fa-plus-square"></i></button>
                 </form>
             )
         }

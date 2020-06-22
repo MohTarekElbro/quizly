@@ -31,4 +31,10 @@
 .addQuestions {
   float: left !important;
 }
+
+@media (max-width: 600px) {
+  .container-fluid {
+    padding: 0px !important;
+  }
+}
 /*# sourceMappingURL=style2.css.map */

@@ -51,10 +51,17 @@ class Exams extends Component {
     }
     componentWillMount = () => {
         $('.optionItem').addClass("remove")
+        $(".examsList").slideToggle(10)
+        window.removeEventListener('resize', this.resize());
     }
 
 
     componentDidMount = async () => {
+        if ($(document).width() > 1150) {
+            // $('.examsList').animate({ scrollTop: 0 }, 1)
+            $(".examsList").slideDown(500)
+        }
+        window.addEventListener('resize', this.resize());
         const requestOptions1 = {
             method: 'Get',
             headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
@@ -106,6 +113,7 @@ class Exams extends Component {
     }
 
     findExams = async () => {
+
         this.setState({
             flag: true
         })
@@ -179,6 +187,11 @@ class Exams extends Component {
                 Exams: []
             })
         }
+        // if ($(document).width() < 1150) {
+            $(".examsList").slideUp(1)
+            $(".examsList").slideDown(500)
+        // }
+        // this.showEaxmsList()
     }
 
     handleScroll = async (event) => {
@@ -319,6 +332,7 @@ class Exams extends Component {
     }
 
     renderExamDetails = (exam) => {
+
         var Questions = []
         Questions = exam.Myexam.map((Question, index) => {
             let distractorsList = []
@@ -374,11 +388,42 @@ class Exams extends Component {
                 </div>
             </div>
         )
+
     }
 
+    resize = () => {
+        console.log("dsdsdsdssdsds")
+        if ($(document).width() > 1150) {
+            // $('.examsList').animate({ scrollTop: 0 }, 1)
+            $(".examsList").slideDown(1)
+        }
+        else {
+            $(".examsList").slideUp(1)
+        }
+    }
 
+    showEaxmsList = () => {
+        if ($(document).width() < 1150) {
+            $('.examsList').animate({ scrollTop: 0 }, 1)
+            $(".examsList").slideToggle(500)
+        } else {
+            $(".examsList").slideDown(1)
+        }
 
+        // if ($(".examsList").width() == 0) {
 
+        //     $(".examsList").animate({
+        //         width :"80%"
+        //     },500)
+        //     $(".examsList").css("padding", "10px")
+        // }
+        // else {
+        //     $(".examsList").animate({
+        //         width :"0%"
+        //     },200)
+        //     $(".examsList").css("padding", "0px")
+        // }
+    }
 
 
     render() {
@@ -401,6 +446,7 @@ class Exams extends Component {
         else {
             renderExamDetails = (
                 <div className="examDetails pointer" style={{ "opacity": "0.5" }}>
+
                     <div className="examTitle">
                         <p id="Subject Name" >Subject Name: </p>
                         <p id="University" >University: </p>
@@ -420,7 +466,8 @@ class Exams extends Component {
 
         var ExamsList = Exams.map((exam, index) => {
             return (
-                <div key={index} onClick={() => this.setState({ examDetails: exam })} className="selectExam pointer">
+                <div key={index} onClick={() => { this.setState({ examDetails: exam }); this.showEaxmsList(); $('.examDetails').animate({ scrollTop: 0 }, 1) }} className="selectExam pointer">
+
                     <div className="examTitle">
                         <p id="Subject Name" >Subject Name: {exam.subject_name}</p>
                         <p id="University" >University: {exam.university}</p>
@@ -605,11 +652,14 @@ class Exams extends Component {
                     </form>
                 </div>
                 <div className="ExamsContainer1" id="ExamsBody1" ref={(ExamsBody1) => { this.ExamsBody1 = ExamsBody1 }}>
+
                     <div className="ListExamsContainer" id="ExamsBody" ref={(ExamsBody) => { this.ExamsBody = ExamsBody }}>
+                        <div onClick={() => this.showEaxmsList()} className="examsBar"><i className="fas fa-bars"></i></div>
                         <div className="examsList">
                             {ExamsList}
                         </div>
                         {renderExamDetails}
+
                     </div>
                 </div>
             </div >

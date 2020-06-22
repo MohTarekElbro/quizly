@@ -1,4 +1,5 @@
 .GenerateExamContainer {
+    position: relative;
     width: 100%;
     padding: 10px;
     background-color: transparent;
@@ -166,6 +167,10 @@
     .examTools {
         display: flex;
         flex-flow: column;
+        // @media (max-width : 1000px){
+        //     position: absolute;
+        //     display: none;
+        // }
 
         .ExamToolsNav {
             width: 100%;
@@ -194,4 +199,12 @@
 
 input[type="number"] {
     -moz-appearance: textfield;
+}
+
+.examsBar2{
+    position: absolute;
+    top: 8px;
+    left:   10px;
+    font-size: 20px;
+    cursor: pointer;
 }

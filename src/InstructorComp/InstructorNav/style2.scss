@@ -1,4 +1,4 @@
-.navbar2{
+.navbar2 {
     margin-bottom: 0 !important;
 }
 .navbar {
@@ -6,24 +6,28 @@
     height: 43px !important;
 }
 
-#sidebarToggleTop{
+#sidebarToggleTop {
     cursor: pointer;
 }
-.flex1{
+.flex1 {
     display: flex !important;
     justify-content: start !important;
     width: 100% !important;
     height: 100% !important;
-    .addQuestions{
+    .addQuestions {
         height: 60% !important;
         margin: auto 0;
         margin-left: 10px !important;
     }
-    
 }
 
-.addQuestions{ 
+.addQuestions {
     float: left !important;
 }
 
-
+.container-fluid {
+    @media (max-width: 600px) {
+        padding: 0px !important;
+    }
+    
+}

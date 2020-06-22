@@ -45,13 +45,16 @@ a {
 .logo a,
 .toggle {
   padding: 10px !important;
-  padding-left: 15px !important;
+  padding-left: 17px !important;
+  padding-top: 12px !important;
+  margin-top: 15px;
+  height: 45px;
   width: 50px;
   background-color: #222;
   border-radius: 100%;
 }
 
-.toggle button {
+.toggle span {
   width: 0px;
   color: white;
   height: 0px;
@@ -128,6 +131,7 @@ a {
     display: block;
   }
   .toggle {
+    margin-top: 0px;
     -webkit-box-ordinal-group: 3;
         -ms-flex-order: 2;
             order: 2;

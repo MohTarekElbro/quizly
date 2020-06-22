@@ -155,12 +155,11 @@
 
 .ListExamsContainer {
   width: 100%;
-  background-color: #F0EBF8;
+  position: relative;
+  background-color: #f0ebf8;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 48%;
-      flex-basis: 48%;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
@@ -170,26 +169,61 @@
   .ListExamsContainer {
     -ms-flex-preferred-size: 90%;
         flex-basis: 90%;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row;
+            flex-flow: row;
   }
 }
 
 .ListExamsContainer .examsList {
-  width: 40%;
-  height: calc(80vh - 100px);
+  position: relative;
+  width: 50%;
+  height: calc(90vh - 100px);
   padding: 10px;
+  margin: 10px;
   margin-right: 20px;
+  background-color: #cbd4e5;
   overflow: auto;
+}
+
+@media (max-width: 1150px) {
+  .ListExamsContainer .examsList {
+    width: 50%;
+    margin: 35px 10px 10px 10px;
+    opacity: 1;
+    margin-top: 35px;
+    padding: 10px;
+    padding-top: 20px;
+    z-index: 3;
+    -ms-flex-item-align: start;
+        -ms-grid-row-align: start;
+        align-self: start;
+    position: absolute;
+    margin-right: 0px;
+  }
+}
+
+@media (max-width: 800px) {
+  .ListExamsContainer .examsList {
+    width: 70%;
+  }
+}
+
+@media (max-width: 500px) {
+  .ListExamsContainer .examsList {
+    width: 85%;
+  }
 }
 
 .ListExamsContainer .examsList .selectExam {
   width: 100%;
-  height: 100px;
+  border-radius: 20px;
+  color: white;
   padding: 20px;
   margin-bottom: 10px;
-  background-color: white;
+  background-color: #4e73df;
+  opacity: 1;
   -webkit-transition: 0.3s;
   transition: 0.3s;
 }
@@ -219,15 +253,16 @@
   overflow: auto;
   margin: 10px;
   padding: 5px 10px !important;
-  width: 650px;
+  width: 100% !important;
   height: calc(100vh - 100px);
   background-color: transparent;
   padding: 0px;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1150px) {
   .ListExamsContainer .examDetails {
     width: 90%;
+    margin-top: 35px;
   }
 }
 
@@ -263,12 +298,12 @@
 }
 
 .ListExamsContainer .examDetails .ExamQuestionItem ol li {
-  width: 40%;
+  width: 100%;
   margin-bottom: 5px;
 }
 
 .ListExamsContainer .examDetails .ExamQuestionItem ol form {
-  width: 40%;
+  width: 100%;
   margin-bottom: 5px;
 }
 
@@ -280,5 +315,13 @@
 
 .ListExamsContainer .examDetails .examTitle p {
   margin-bottom: 2px;
+}
+
+.examsBar {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  font-size: 20px;
+  cursor: pointer;
 }
 /*# sourceMappingURL=style.css.map */

@@ -7,6 +7,9 @@
     background-color: #f3f4f7 !important;
     padding: 30px 30px;
     display: flex;
+    @media (max-width: 600px) {
+        padding: 10px !important;
+    }
     // overflow: auto;
 
     flex-wrap: wrap;

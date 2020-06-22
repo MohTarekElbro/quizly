@@ -8,39 +8,62 @@ class Navbar extends React.Component {
     state = {
         tog: false
     }
-    toggle = () => {
-        console.log(this.state.tog)
-        if (this.state.tog == false) {
-            $(".nav").css("background-color", "#222")
-            this.setState({
-                tog: true
-            })
-        }
-        else {
-            if ($(document).scrollTop() > 70) {
-                $(".nav").css("background-color", "transparent")
+    // toggle = () => {
+    //     console.log("this.state.tog")
+    //     if (this.state.tog == false) {
+    //         $(".nav").css("background-color", "#222")
+    //         this.setState({
+    //             tog: true
+    //         })
+    //     }
+    //     else {
+    //         if ($(document).scrollTop() > 70) {
+    //             $(".nav").css("background-color", "transparent")
+    //         }
+    //         this.setState({
+    //             tog: false
+    //         })
+    //     }
+    // }
+
+    componentDidMount = () => {
+        $(".toggle").on("click", function () {
+
+            if ($(".item").hasClass("active")) {
+                console.log("MOMOMO")
+                $(".item").removeClass("active");
+                $(this).find("span").html("<i class='fas fa-bars'></i>");
+                if ($(document).scrollTop() > 70) {
+                    console.log("MOMOMO2")
+                    $(".nav").css("background-color", "transparent")
+                }
+            } else {
+                console.log("else")
+                $(".nav").css("background-color", "#222")
+                $(".item").addClass("active");
+                $(this).find("span").html("<i class='fas fa-times'></i>");
             }
-            
-            this.setState({
-                tog: false
-            })
-        }
+
+            // $(".nav").css("background-color", "#222")
+        });
     }
     render() {
-        document.addEventListener("scroll",  ()=> {
-            if ($(document).scrollTop() > 70) {
-                console.log(this.state.tog)
+        let tog = this.state.tog
+
+        document.addEventListener("scroll", () => {
+            if ($(document).scrollTop() > 70 && $(window).width() < 770) {
+                // console.log(this.state.tog)
                 if (this.state.tog == false) {
                     $(".nav").css("background-color", "transparent")
                 }
-                else{
+                else {
                     $(".nav").css("background-color", "#222")
                 }
-                $(".logo").css("opacity", "0")
+                $(".logo").css("display", "none")
             }
             else {
                 $(".nav").css("background-color", "#222")
-                $(".logo").css("opacity", "1")
+                $(".logo").css("display", "block")
             }
         })
         return (
@@ -54,7 +77,7 @@ class Navbar extends React.Component {
                             <li className="item" data-scroll="contact"><a href="#" >Contact</a></li>
                             <li className="item button"><Link to="/login">Log In</Link></li>
                             <li className="item button secondary"><Link to="/signup">Sign Up</Link></li>
-                            <li className="toggle"><button onClick={() => this.toggle()}  ><i className="fas fa-bars"></i></button></li>
+                            <li className="toggle"><span ><i className="fas fa-bars"></i></span></li>
                         </ul>
                     </div>
                 </nav>
