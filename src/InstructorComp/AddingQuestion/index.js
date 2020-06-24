@@ -21,6 +21,7 @@ class AddingQuestion extends Component {
         DomainName: "SW",
         keyword: "",
         Question: "",
+        random: 0,
 
         editedDistructors: {},
         existedLength: 0,
@@ -35,13 +36,97 @@ class AddingQuestion extends Component {
     }
     componentDidUpdate = () => {
         autosize($(".addQuestionText"))
-        
+        // console.log("UPDAAAAAAAAAAATED")
+        if (this.props.random != this.state.random) {
+            // console.log("UPDAAAAAAAAAAATED")
+            if (this.props.Question) {
+                console.log("index", this.props.Question)
+                $("#QuestionsType" + this.props.index).css("display", "none")
+                $("#domains" + this.props.index).css("display", "none")
+                let Q = this.props.Question
+                $(".public111").css("color", "black")
+                if (Q.public == true) {
+                    console.log("public")
+                    $("#public" + this.props.index).css("color", "#4e73df")
+                    $("#public" + this.props.index).click()
+                }
+                else {
+                    console.log("private")
+                    // $("input[name='public']").css("display","none")
+                    $("#private" + this.props.index).css("color", "#4e73df")
+                    $("#private" + this.props.index).click()
+                }
+
+                $(".trueorfalse").css("color", "black")
+                if (Q.state == true) {
+                    console.log("TRUE")
+                    $("#trueChoose" + this.props.index).css("color", "#4e73df")
+                    $("#trueChoose" + this.props.index).click()
+                }
+                else {
+                    console.log("FALSE")
+                    // $("input[name='public']").css("display","none")
+                    $("#falseChoose" + this.props.index).css("color", "#4e73df")
+                    $("#falseChoose" + this.props.index).click()
+                }
+                $(".level11").css("color", "black")
+                $("#" + Q.Level + this.props.index).css("color", "#4e73df")
+                $("#" + Q.Level + this.props.index).click()
+
+                var { QuestionType } = this.state
+                if (QuestionType == "MCQ") {
+                    $("#MCQ").click()
+                }
+                else if (QuestionType == "Complete") {
+                    $("#Complete").click()
+                }
+                else {
+                    $("#trueorfalse").click()
+                }
+            }
+            if (this.props.Question) {
+                const Question = this.props.Question
+                let ex = []
+                let old = []
+                let random = this.props.random
+                if (Question.distructor) {
+                    for (let i = 0; i < Question.distructor.length; i++) {
+                        ex.push(Question.distructor[i])
+                    }
+
+                    for (let i = 0; i < Question.distructor.length; i++) {
+                        old.push(Question.distructor[i])
+                    }
+                }
+                this.setState({
+                    Question: Question.Question,
+                    QuestionType: Question.kind,
+                    public: Question.public ? true : false,
+                    numOfDis: Question.distructor ? Question.distructor.length : 0,
+                    existedLength: Question.distructor ? Question.distructor.length : 0,
+                    distructorsValue: old,
+                    existedDistructors: ex,
+                    hhh: Question.distructor,
+                    state: Question.state ? Question.state : true,
+                    level: Question.Level,
+                    DomainName: Question.domain.domain_name,
+                    keyword: Question.keyword,
+                    random: random
+                })
+                // $("input[type=radio]").css("opacity" , "0")
+            }
+            this.setState({
+                random: this.props.random
+            })
+        }
+
     }
 
 
     componentDidMount = async () => {
 
         if (this.props.Question) {
+
             console.log("index", this.props.Question)
             $("#QuestionsType" + this.props.index).css("display", "none")
             $("#domains" + this.props.index).css("display", "none")
@@ -49,35 +134,30 @@ class AddingQuestion extends Component {
             if (Q.public == true) {
                 console.log("public")
                 $("#public" + this.props.index).css("color", "#4e73df")
+                $("#public" + this.props.index).click()
             }
             else {
                 console.log("private")
                 // $("input[name='public']").css("display","none")
                 $("#private" + this.props.index).css("color", "#4e73df")
+                $("#private" + this.props.index).click()
             }
+
+            $(".trueorfalse").css("color", "black")
             if (Q.state == true) {
                 console.log("TRUE")
                 $("#trueChoose" + this.props.index).css("color", "#4e73df")
+                $("#trueChoose" + this.props.index).click()
             }
             else {
                 console.log("FALSE")
                 // $("input[name='public']").css("display","none")
                 $("#falseChoose" + this.props.index).css("color", "#4e73df")
+                $("#falseChoose" + this.props.index).click()
             }
+            $(".level11").css("color", "black")
             $("#" + Q.Level + this.props.index).css("color", "#4e73df")
-
-            // if (Q.Level == "easy") {
-            //     console.log(Q.Level)
-            //     $("#easy" + this.props.index).css("color","#4e73df")
-            // }
-            // else if ( == "medium") {
-            //     console.log(Q.Level)
-
-            // }
-            // else {
-            //     console.log(Q.Level)
-            //     $("#hard" + this.props.index).css("color","#4e73df")
-            // }
+            $("#" + Q.Level + this.props.index).click()
 
             var { QuestionType } = this.state
             if (QuestionType == "MCQ") {
@@ -94,6 +174,7 @@ class AddingQuestion extends Component {
             const Question = this.props.Question
             let ex = []
             let old = []
+            let random = this.props.random
             if (Question.distructor) {
                 for (let i = 0; i < Question.distructor.length; i++) {
                     ex.push(Question.distructor[i])
@@ -116,7 +197,9 @@ class AddingQuestion extends Component {
                 level: Question.Level,
                 DomainName: Question.domain.domain_name,
                 keyword: Question.keyword,
+                random: random
             })
+            // $("input[type=radio]").css("opacity" , "0")
         }
         const requestOptions1 = {
             method: 'Get',
@@ -342,20 +425,20 @@ class AddingQuestion extends Component {
             <form id="reused_form" onSubmit={this.addQuestion}>
                 <div class="col-sm-12 form-group levels">
                     <p>
-                        <label class="margin radio-inline trueorfalse" id={this.props.index ? "trueChoose" + this.props.index : "trueChoose"} style = {this.state.state?{"color" : "#4e73df"}:{"color" : "black"}}>
+                        <label class="margin radio-inline trueorfalse" id={this.props.index ? "trueChoose" + this.props.index : "trueChoose"} style={this.state.state ? { "color": "#4e73df" } : { "color": "black" }}>
                             <input type="radio" name="state" onChange={(e) => {
                                 this.setState({ state: e.target.value })
-                                $(".trueorfalse").css("color" , "black")
+                                $(".trueorfalse").css("color", "black")
                                 $("#trueChoose" + this.props.index).css("color", "#4e73df")
 
                             }} value="true" />
                             True
                         </label>
 
-                        <label class="margin radio-inline trueorfalse" id={this.props.index ? "falseChoose" + this.props.index : "falseChoose"} style = {this.state.state?{"color" : "black"}:{"color" : "#4e73df"}}>
+                        <label class="margin radio-inline trueorfalse" id={this.props.index ? "falseChoose" + this.props.index : "falseChoose"} style={this.state.state ? { "color": "black" } : { "color": "#4e73df" }}>
                             <input type="radio" name="state" onChange={(e) => {
                                 this.setState({ state: e.target.value })
-                                $(".trueorfalse").css("color" , "black")
+                                $(".trueorfalse").css("color", "black")
                                 $("#falseChoose" + this.props.index).css("color", "#4e73df")
 
                             }} value="false" />
@@ -406,6 +489,7 @@ class AddingQuestion extends Component {
         else {
             $("#trueorfalse").click()
             return this.TrueOrFalseForm()
+
         }
     }
 
@@ -548,13 +632,28 @@ class AddingQuestion extends Component {
                 let { distructorsValue } = this.state
                 let { keyword } = this.state
                 let Question1 = this.state.Question
-
-                let oldQuestion = this.props.Question
-
+                let Q = this.props.Question
+                let oldQuestion = {}
+                let oldPublic = this.props.Question.public
                 oldQuestion.distructor = distructorsValue
                 oldQuestion.keyword = keyword
                 oldQuestion.Question = Question1
                 oldQuestion.public = Publication
+                oldQuestion.Level = Q.Level
+                oldQuestion.kind = Q.kind
+                oldQuestion.owner = Q.owner
+                oldQuestion.domain = Q.domain
+                oldQuestion.time = Q.time
+                oldQuestion._id = Q._id
+                if (Q.kind == "T/F") {
+                    oldQuestion.state = Q.state
+                }
+
+                let newOrNot = false
+                if (oldPublic == true && Publication == false) {
+                    newOrNot = true
+                    // oldQuestion.public = true
+                }
                 console.log(api1.status)
                 if (api1.status == 202) {
                     let index = this.props.index
@@ -589,11 +688,10 @@ class AddingQuestion extends Component {
                         useBootstrap: false,
                         content: "Question Updated",
                         buttons: {
-                            okay: function () {
+                            okay: () => {
+                                editRenderdQuestion(oldQuestion, newOrNot)
 
-                                editRenderdQuestion(oldQuestion)
-
-                                $("#closeModal" + index).click()
+                                $("#closeModal").click()
 
                             },
                         }
@@ -610,7 +708,7 @@ class AddingQuestion extends Component {
 
                                 // editRenderdQuestion(oldQuestion)
 
-                                $("#closeModal" + index).click()
+                                $("#closeModal").click()
 
                             },
                         }
@@ -698,10 +796,12 @@ class AddingQuestion extends Component {
                 }
                 else if (api1.status == 201) {
                     let distrators = []
-                    data.distructor.forEach(element => {
-                        distrators.push(element.distructor)
-                    });
-                    data.distructor = distrators
+                    if (QuestionType != "complete") {
+                        data.distructor.forEach(element => {
+                            distrators.push(element.distructor)
+                        });
+                        data.distructor = distrators
+                    }
                     data.owner = data.owner._id
                     console.log("dissssssssssssssssssssssss: ", data)
                     if (this.props.getQuestion) {

@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import $ from 'jquery'
 import './style.css'
-
 class ExamNavbar extends React.Component {
     componentDidMount(){
         $(".toggle").on("click", function() {

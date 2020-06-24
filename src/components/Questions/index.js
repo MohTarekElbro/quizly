@@ -33,7 +33,9 @@ class QuestionBank extends Component {
         flag: true,
         helperheight: 100000,
         deletedQuestions: [],
-        different: ''
+        different: '',
+        EditQuestionModal: (<div></div>)
+        // EditModal:(<Modal index={0} modalName={"card"} body={<AddingQuestion editRenderdQuestion={this.editRenderdQuestion} Question={""} index={0} url={"https://quizly-app.herokuapp.com/question/edit/"} />} title={"Edit Question"} closeButton="close" />)
 
     }
     componentDidUpdate = () => {
@@ -631,11 +633,17 @@ class QuestionBank extends Component {
         }
     }
 
-    editRenderdQuestion = (Question) => {
+    editRenderdQuestion = (Question, newOrNot = false) => {
         var { Questions } = this.state
-        for (let i = 0; i < Questions.length; i++) {
-            if (Question._id == Questions[i]._id) {
-                Questions[i] = Question
+        if (newOrNot == true) {
+            console.log(Questions)
+            Questions.push(Question)
+        }
+        else {
+            for (let i = 0; i < Questions.length; i++) {
+                if (Question._id == Questions[i]._id) {
+                    Questions[i] = Question
+                }
             }
         }
         console.log("Questions: ", Questions)
@@ -687,11 +695,21 @@ class QuestionBank extends Component {
 
 
     }
+    editModalFun = (index, Question) => {
+        let { EditQuestionModal } = this.state
+        EditQuestionModal = (<AddingQuestion editRenderdQuestion={this.editRenderdQuestion} random={Math.random()} Question={Question} index={index + 1} url={"https://quizly-app.herokuapp.com/question/edit/" + Question._id} />)
+        this.setState({
+            EditQuestionModal
+        })
+        console.log("MODAL EDITED");
+
+    }
 
     render() {
         var editAndDelete = (
             <Fragment></Fragment>
         )
+        // var EditModal = this.state.EditModal
         var title = (<Fragment></Fragment>)
         if (this.props.location.state) {
             if (this.props.location.state.pageType == "questionBank") {
@@ -743,12 +761,13 @@ class QuestionBank extends Component {
 
                         editAndDelete = (
                             <Fragment>
-                                <button data-toggle="modal" data-target={"#card" + index + 1} type="button" className="editQuestion"><i class="fas fa-edit"></i><p className="editHover">Edit Question</p> </button>
-                                <Modal index={index + 1} modalName={"card" + index + 1} body={<AddingQuestion editRenderdQuestion={this.editRenderdQuestion} Question={Question} index={index + 1} url={"https://quizly-app.herokuapp.com/question/edit/" + Question._id} />} title={"Edit Question"} closeButton="close" />
+                                <button onClick={() => this.editModalFun(index, Question)} data-toggle="modal" data-target={"#card"} type="button" className="editQuestion"><i class="fas fa-edit"></i><p className="editHover">Edit Question</p> </button>
+
                                 <button onClick={() => this.deleteQeustion(Question._id)} className="deleteQuestion" ><i class="far fa-trash-alt"></i><p className="deleteHover">Delete Question</p></button>
                             </Fragment>
                         )
                     }
+
                 }
                 // if (this.props.url) {
                 //     if (this.props.url.includes("getmyQuestions")) {
@@ -815,6 +834,7 @@ class QuestionBank extends Component {
 
 
                     </div>
+
                 )
             })
         }
@@ -849,6 +869,7 @@ class QuestionBank extends Component {
                     <div className="QuestionsContainer" id="QuestionsBody" ref={(QuestionsBody) => { this.QuestionsBody = QuestionsBody }}>
 
                         {ListQuestions}
+                        <Modal modalName={"card"} body={this.state.EditQuestionModal} title={"Edit Question"} closeButton="close" />
                         <div className="questionsLoading remove">
                             <div>
                                 <Ring color="#4e73df" style={{ "width": "20px", "height": "20px" }} />

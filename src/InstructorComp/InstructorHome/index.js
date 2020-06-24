@@ -19,6 +19,9 @@ class InstructorHome extends Component {
             token
         })
     }
+    componentDidMount = () => {
+        
+    }
     state = {
         token: ""
     }

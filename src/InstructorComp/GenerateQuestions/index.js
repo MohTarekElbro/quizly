@@ -29,7 +29,9 @@ class GenerteQuestions extends Component {
         keyword: "",
         Questions: "",
         screen: "loading1",
-        fileName: ""
+        fileName: "",
+
+        selectedAll: false
 
     }
 
@@ -45,7 +47,10 @@ class GenerteQuestions extends Component {
 
 
     componentDidMount = async () => {
-
+        $(".selectdiv").css({
+            "background-color": "white",
+            "color": "#4E73DF"
+        })
         const requestOptions1 = {
             method: 'Get',
             headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
@@ -111,7 +116,7 @@ class GenerteQuestions extends Component {
                     else {
                         data["allowedQuestions"] = {}
                         Object.keys(data.Questions).forEach(question => {
-                            data["allowedQuestions"][question] = false
+                            data["allowedQuestions"][question] = "unSelected"
                         });
 
                         this.setState({
@@ -121,14 +126,15 @@ class GenerteQuestions extends Component {
                         if (flag) {
                             $.alert({
                                 title: 'UnSaved',
-                                content: 'You have to save or  this questions before generate new',
+                                boxWidth: "600px",
+                                content: 'These questions should be saved before generating new ones',
                                 buttons: {
                                     okay: function () { },
 
                                 }
                             });
                         }
-                        console.log("Questions arrived: ", data)
+                        // console.log("Questions arrived: ", data)
                     }
                 }
                 catch (e) {
@@ -292,7 +298,7 @@ class GenerteQuestions extends Component {
 
     saveQuestions = async () => {
         let QuestionsPackge = this.state.Questions
-        console.log("QuestionsPackge : ", QuestionsPackge)
+        // console.log("QuestionsPackge : ", QuestionsPackge)
         let Questions = QuestionsPackge.Questions
         let { QuestionType } = this.state
         let { level } = this.state
@@ -308,9 +314,9 @@ class GenerteQuestions extends Component {
         let { DomainName } = this.state
         let numofQuestions = 0
         console.log(Object.keys(Questions).length)
-        for (let i = 0 , k=0; i < Object.keys(Questions).length; i++) {
-            if (QuestionsPackge["allowedQuestions"][i] == false) {
-                console.log("false")
+        for (let i = 0, k = 0; i < Object.keys(Questions).length; i++) {
+            if (QuestionsPackge["allowedQuestions"][i] == "unSelected") {
+                console.log("unSelected")
                 continue
             }
             numofQuestions++
@@ -326,7 +332,7 @@ class GenerteQuestions extends Component {
             else if (QuestionsPackge.kind == "MCQ") {
                 savedQuestions.push(Questions[i][Questions[i].length - 1])
             }
-            else{
+            else {
                 savedQuestions.push(Questions[i][3])
             }
 
@@ -358,7 +364,7 @@ class GenerteQuestions extends Component {
                 }
             }
 
-            publics.push("false")
+            // publics.push("false")
 
             if (QuestionsPackge.kind == "MCQ") {
                 add_distructors[k.toString()] = []
@@ -377,13 +383,13 @@ class GenerteQuestions extends Component {
         console.log(savedQuestions)
         // console.log(kinds)
         console.log(keywords)
-        // console.log(publics)
+        // 
         console.log(add_distructors)
         console.log(states)
 
         $.confirm({
             title: 'Confirm!',
-            boxWidth: '50%',
+            boxWidth: $(window).width() < 800 ? '80%' : '50%',
             useBootstrap: false,
             content: numofQuestions > 0 ? "Are you sure to save the selected questions??" : "You did not select any question , are you sure that you want to unsave all questions?",
             buttons: {
@@ -413,40 +419,96 @@ class GenerteQuestions extends Component {
                         }
                     }
                     else {
-                        const requestOptions = {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
-                            body: JSON.stringify({
-                                "Level": levels,
-                                "Question": savedQuestions,
-                                "kind": kinds,
-                                "state": states,
-                                "keyword": keywords,
-                                "public": publics,
-                                "add_distructors": add_distructors,
-                                "domain_name": DomainName
-                            })
-                        };
-                        let api;
 
-                        try {
-                            api = await fetch('https://quizly-app.herokuapp.com/instructor/AddQuestion', requestOptions)
-                            let data = await api.json();
-                            console.log("SavedQuestions: ", data)
-                            this.setState({
-                                screen: "generateQuestion"
+                        $.confirm({
+                            title: 'Confirm!',
+                            boxWidth: $(window).width() < 800 ? '80%' : '50%',
+                            useBootstrap: false,
+                            content: "Save as public or private questions?",
+                            buttons: {
+                                public: async () => {
+                                    for (let i = 0, k = 0; i < Object.keys(Questions).length; i++) {
+                                        publics.push(true)
+                                    }
+                                    // console.log(publics)
+                                    const requestOptions = {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                                        body: JSON.stringify({
+                                            "Level": levels,
+                                            "Question": savedQuestions,
+                                            "kind": kinds,
+                                            "state": states,
+                                            "keyword": keywords,
+                                            "public": publics,
+                                            "add_distructors": add_distructors,
+                                            "domain_name": DomainName
+                                        })
+                                    };
+                                    let api;
 
-                            })
-                            $('#generateButton').css({
-                                "opacity": "0.5",
-                                "cursor": "not-allowed"
-                            })
-                            $('#generateButton').prop('disabled', 'true')
+                                    try {
+                                        api = await fetch('https://quizly-app.herokuapp.com/instructor/AddQuestion', requestOptions)
+                                        let data = await api.json();
+                                        console.log("SavedQuestions: ", data)
+                                        this.setState({
+                                            screen: "generateQuestion"
 
-                        }
-                        catch (e) {
-                            console.log(e.message);
-                        }
+                                        })
+                                        $('#generateButton').css({
+                                            "opacity": "0.5",
+                                            "cursor": "not-allowed"
+                                        })
+                                        $('#generateButton').prop('disabled', 'true')
+
+                                    }
+                                    catch (e) {
+                                        console.log(e.message);
+                                    }
+                                },
+                                private: async () => {
+                                    for (let i = 0, k = 0; i < Object.keys(Questions).length; i++) {
+                                        publics.push(false)
+                                    }
+                                    // console.log(publics)
+                                    const requestOptions = {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                                        body: JSON.stringify({
+                                            "Level": levels,
+                                            "Question": savedQuestions,
+                                            "kind": kinds,
+                                            "state": states,
+                                            "keyword": keywords,
+                                            "public": publics,
+                                            "add_distructors": add_distructors,
+                                            "domain_name": DomainName
+                                        })
+                                    };
+                                    let api;
+
+                                    try {
+                                        api = await fetch('https://quizly-app.herokuapp.com/instructor/AddQuestion', requestOptions)
+                                        let data = await api.json();
+                                        console.log("SavedQuestions: ", data)
+                                        this.setState({
+                                            screen: "generateQuestion"
+
+                                        })
+                                        $('#generateButton').css({
+                                            "opacity": "0.5",
+                                            "cursor": "not-allowed"
+                                        })
+                                        $('#generateButton').prop('disabled', 'true')
+
+                                    }
+                                    catch (e) {
+                                        console.log(e.message);
+                                    }
+                                },
+                            }
+                        });
+
                     }
                     this.setState({
                         Questions: []
@@ -463,19 +525,24 @@ class GenerteQuestions extends Component {
         let { Questions } = this.state
         let Questions1 = Questions.allowedQuestions[question]
         console.log("Questions1: ", Questions1)
-        if (Questions1 == false) {
-            Questions.allowedQuestions[question] = true
+        if (Questions1 == "unSelected") {
+            Questions.allowedQuestions[question] = "selected"
             this.setState({
                 Questions
             })
+            $("#" + question).addClass("selected")
+            $("#" + question).addClass("clicked")
         }
+
         else {
-            Questions.allowedQuestions[question] = false
+            Questions.allowedQuestions[question] = "unSelected"
             this.setState({
                 Questions
             })
+            $("#" + question).removeClass("selected")
+            $("#" + question).removeClass("clicked")
         }
-        $("#" + question).toggleClass("selected")
+
 
     }
 
@@ -483,26 +550,84 @@ class GenerteQuestions extends Component {
         let { Questions } = this.state
         let Questions1 = Questions.allowedQuestions
         if (type == "selectAll") {
-            Object.keys(Questions.allowedQuestions).forEach(question => {
-                Questions.allowedQuestions[question] = true
-            });
+            if (this.state.selectedAll == false) {
+                Object.keys(Questions.allowedQuestions).forEach(question => {
+                    Questions.allowedQuestions[question] = "selected"
+                });
 
-            $(".generatedItem").addClass("selected")
+                $(".generatedItem").addClass("selected")
+                $(".selectdiv").css({
+                    "background-color": "#4E73DF",
+                    "color": "white"
+                })
+                this.setState({
+                    selectedAll: true
+                })
+            }
+            else {
+                Object.keys(Questions.allowedQuestions).forEach(question => {
+                    if (Questions.allowedQuestions[question] == "selected" && $("#" + question).hasClass('clicked') == false) {
+                        Questions.allowedQuestions[question] = "unSelected"
+                    }
+                    if ($("#" + question).hasClass('clicked')) {
+                        console.log("CLICKED: ", question)
+                    }
+                    else {
+                        $("#" + question).removeClass("selected")
+                    }
+                });
+                $(".selectdiv").css({
+                    "background-color": "white",
+                    "color": "#4E73DF"
+                })
+                this.setState({
+                    selectedAll: false
+                })
+                // $(".generatedItem").removeClass("selected")
+            }
         }
         else {
-            Object.keys(Questions.allowedQuestions).forEach(question => {
-                Questions.allowedQuestions[question] = false
+            $.confirm({
+                title: 'Confirm!',
+                boxWidth: $(window).width() < 800 ? '80%' : '50%',
+                useBootstrap: false,
+                content: "Are you sure you want to unselect all questions even protected?",
+                buttons: {
+                    confirm: () => {
+                        Object.keys(Questions.allowedQuestions).forEach(question => {
+                            if (Questions.allowedQuestions[question] == "selected") {
+                                // console.log("REMOVE ALL")
+                                Questions.allowedQuestions[question] = "unSelected"
+                                $("#" + question).removeClass("selected")
+                                $("#" + question).removeClass("clicked")
+                            }
+                        });
+                        $(".selectdiv").css({
+                            "background-color": "white",
+                            "color": "#4E73DF"
+                        })
+                        this.setState({
+                            selectedAll: false
+                        })
+                    },
+                    cancel: function () { },
+                }
             });
-            $(".generatedItem").removeClass("selected")
         }
         this.setState({
             Questions
         })
     }
 
+    changeState = (Question, state) => {
+        if (state == "true") {
+            console.log(Question)
+        }
+    }
+
 
     renderScreen = () => {
-        console.log("this.state.QuestionType: ", this.state.QuestionType)
+        // console.log("this.state.QuestionType: ", this.state.QuestionType)
         let { screen } = this.state
         if (screen == "generateQuestion") {
             var { domains } = this.state
@@ -567,9 +692,6 @@ class GenerteQuestions extends Component {
                         <div class="row optionItem remove" id="textarea" >
                             <div class="col-sm-12 form-group">
                                 <textarea class="generateQuestionText" ref={(textarea) => { this.textarea = textarea }} type="textarea" name="comments" id="comments" placeholder="Your Question" rows="7" onBlur={(e) => { console.log(this.state.text); this.setState({ text: e.target.value }) }} ></textarea>
-                                {/* <textarea class="generateQuestionText" ref={(textarea) => { this.textarea = textarea }} type="textarea" name="comments" id="comments" placeholder="Your Question" rows="7" onBlur={(e) => { console.log(this.state.text); this.setState({ text: e.target.value }) }} ></textarea> */}
-
-                                {/* <textarea class="generateQuestionText" ref={(textarea) => { this.textarea = textarea }} type="textarea" name="comments" id="comments" placeholder="Your Question" rows="7" onBlur={(e) => { console.log(this.state.text); this.setState({ text: e.target.value }) }} ></textarea> */}
 
                             </div>
                         </div>
@@ -616,7 +738,7 @@ class GenerteQuestions extends Component {
         else if (screen == "generatedQuestions") {
             let { Questions } = this.state
             let { QuestionType } = this.state
-            console.log("QuestionType: ", QuestionType)
+            // console.log("QuestionType: ", QuestionType)
             let Questions1 = Questions.Questions
 
             if (Questions != "") {
@@ -636,6 +758,8 @@ class GenerteQuestions extends Component {
                                 </div>
                                 <div className="line"></div>
                                 {disractorsDiv}
+                                <div className="line proline" style={{ 'marginTop': "15px", 'marginBottom': '15px' }}></div>
+                                <span className="protected"><span><i class="fas fa-lock"></i> Protected</span></span>
                             </div>
                         )
                     }
@@ -661,6 +785,9 @@ class GenerteQuestions extends Component {
                                 </div>
                                 <div className="line"></div>
                                 {disractorsDiv}
+                                <div className="line proline" style={{ 'marginTop': "15px", 'marginBottom': '15px' }}></div>
+                                <span className="protected"><span><i class="fas fa-lock"></i> Protected</span></span>
+
                             </div>
                         )
                     }
@@ -669,18 +796,10 @@ class GenerteQuestions extends Component {
                         distractorItem.push(<p>Distractor:  {Questions1[Question][1]}</p>)
                         let TorF
                         if (Questions1[Question][2] == "T") {
-                            TorF = "btn btn-secondary btn-icon-split"
+                            TorF = <span className="TorF"><span style = {{"color": "#08a431"}}><i class="fas fa-check-circle"></i> True</span></span>
                         }
                         else {
-                            TorF = "btn btn-light btn-icon-split"
-                        }
-                        let TorF2
-                        if (TorF == "btn btn-secondary btn-icon-split") {
-                            TorF2 = "btn btn-light btn-icon-split"
-
-                        }
-                        else {
-                            TorF2 = "btn btn-secondary btn-icon-split"
+                            TorF = <span className="TorF"><span style = {{"color": "#d90000"}}><i class="fas fa-times-circle"></i> False</span></span>
                         }
                         let disractorsDiv =
                             <div className="TQuestionDistractors">
@@ -695,30 +814,29 @@ class GenerteQuestions extends Component {
                                 {disractorsDiv}
                                 <div className="line"></div>
                                 <div className="trueOrFalse">
-                                    <button class={TorF}>
-                                        <span class="text">True</span>
-                                    </button>
-                                    <button class={TorF2}>
-                                        <span class="text">False</span>
-                                    </button>
+                                {TorF}
                                 </div>
+                                <div className="line proline" style={{ 'marginTop': "15px", 'marginBottom': '15px' }}></div>
+                                <span className="protected"><span><i class="fas fa-lock"></i> Protected</span></span>
                             </div>
                         )
                     }
 
                 })
 
-                console.log("ListQuestions: ", ListQuestions)
+                // console.log("ListQuestions: ", ListQuestions)
                 return (
                     <Fragment>
-                        <div className="saveQuestionsButton" style={{ "marginTop": "0px", "justifyContent": "space-between" }}>
-                            <button onClick={() => this.selectAll("selectAll")} style={{ "margin": "0px", "marginLeft": "10px" }} type="submit" className="btn btn-primary btn-icon-split btn-md selectButton " >
-                                <span className="text">Select All</span>
-                            </button>
-                            <h3>Choose which questions do you want save..</h3>
-                            <button onClick={() => this.selectAll("not all")} style={{ "margin": "0px", "marginRight": "10px" }} type="submit" className="btn btn-primary btn-icon-split btn-md selectButton " >
-                                <span className="text">Unselect All</span>
-                            </button>
+                        <div className="saveQuestionsButton" >
+                            <div onClick={() => this.selectAll("selectAll")} type="submit" className="btn btn-primary btn-icon-split btn-md selectdiv " >
+                                <span className="text"><i class="fas fa-clipboard-check"></i></span>
+                                <p>Select All</p>
+                            </div>
+                            <h3>Choose the questions you want to save</h3>
+                            <div onClick={() => this.selectAll("not all")} type="submit" className="btn btn-primary btn-icon-split btn-md unSelectdiv " >
+                                <span className="text"><i class="fas fa-trash-alt"></i></span>
+                                <p>Unselect All</p>
+                            </div>
                         </div>
                         <div className="generatedsContainer1" id="generatedsBody1" ref={(QuestionsBody1) => { this.QuestionsBody1 = QuestionsBody1 }}>
                             <div className="generatedsContainer" id="generatedsBody" ref={(QuestionsBody) => { this.QuestionsBody = QuestionsBody }}>
@@ -727,10 +845,12 @@ class GenerteQuestions extends Component {
                             </div>
                         </div>
 
-                        <div className="saveQuestionsButton">
+                        <div className="saveQ">
                             <button onClick={() => this.saveQuestions()} type="submit" className="btn btn-primary btn-icon-split btn-md selectButton " >
-                                <span className="text">Save Questions</span>
+                                <span className="text"><i class="far fa-save"></i></span>
+                                <p>Save Questions</p>
                             </button>
+
                         </div>
                     </Fragment>
                 )
@@ -807,7 +927,7 @@ class GenerteQuestions extends Component {
 
 
     render() {
-        console.log("filePath: ", this.state.filePath)
+        // console.log("filePath: ", this.state.filePath)
         if (this.state.filePath == "" && this.state.text == "") {
             $('#generateButton').css({
                 "opacity": "0.5",

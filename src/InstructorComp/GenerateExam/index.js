@@ -519,9 +519,7 @@ class GenerateExam extends Component {
                         <p onClick={() => this.changeOption("myQuestions")} id="myQuestions" className="option1"><a onClick={() => this.changeToolContent("myQuestions")} >MyQuestions</a></p>
                         <div className="line"></div>
                         <p onClick={() => this.changeOption("questionBank")} id="questionBank" className="option1"><a onClick={() => this.changeToolContent("questionBank")} >QuestionBank</a></p>
-                        <div className="line"></div>
-                        <p onClick={() => this.changeOption("GenerateQuestions")} id="GenerateQuestions" className="option1"><a>GenerateQuestions</a></p>
-
+                        
                         {/* <ExamNavbar changeToolContent={this.changeToolContent} ></ExamNavbar> */}
 
                     </div>

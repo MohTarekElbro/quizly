@@ -173,6 +173,20 @@
   height: calc(105vh - 100px);
   overflow: auto;
   margin-bottom: 10px;
+  border-radius: 20px;
+  padding-bottom: 20px;
+  width: 70%;
+  margin-left: 15%;
+  margin-right: 15%;
+}
+
+@media (max-width: 1100px) {
+  .generatedsContainer1 {
+    width: 100%;
+    margin-left: 0%;
+    margin-right: 0%;
+    margin-bottom: 0px;
+  }
 }
 
 .generatedsContainer {
@@ -185,12 +199,51 @@
       flex-wrap: wrap;
 }
 
+@media (max-width: 900px) {
+  .generatedsContainer {
+    padding: 0px;
+  }
+}
+
 .generatedsContainer .selected {
   background-color: #0c0cc040 !important;
 }
 
-.generatedsContainer .generatedItem:nth-child(odd) {
-  margin-right: 4%;
+.generatedsContainer .TorF {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center !important;
+  right: 100%;
+  font-size: 24px;
+  color: #08a431;
+}
+
+.generatedsContainer .protected,
+.generatedsContainer .proline {
+  display: none;
+}
+
+.generatedsContainer .clicked .protected {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center !important;
+  right: 100%;
+  font-size: 24px;
+  color: #4e73df;
+}
+
+.generatedsContainer .clicked .proline {
+  display: block;
 }
 
 .generatedsContainer .generatedItem {
@@ -213,6 +266,10 @@
   -webkit-box-direction: normal;
       -ms-flex-flow: column;
           flex-flow: column;
+  -ms-flex-preferred-size: 96%;
+      flex-basis: 96%;
+  margin-left: 2%;
+  margin-right: 2%;
 }
 
 .generatedsContainer .generatedItem:hover {
@@ -220,13 +277,12 @@
           box-shadow: 0 9px 18px 0 rgba(188, 188, 212, 0.4);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .generatedsContainer .generatedItem {
     display: block !important;
     -ms-flex-preferred-size: 100% !important;
         flex-basis: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+    margin: 5px !important;
   }
 }
 
@@ -347,5 +403,172 @@
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  margin-top: 0px;
+}
+
+@media (max-width: 700px) {
+  .saveQuestionsButton {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+}
+
+.saveQuestionsButton h3 {
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .saveQuestionsButton h3 {
+    font-size: 20px;
+    margin: auto 0;
+  }
+}
+
+@media (max-width: 530px) {
+  .saveQuestionsButton h3 {
+    font-size: 15px;
+    margin: auto 0;
+  }
+}
+
+.saveQuestionsButton .selectdiv {
+  position: relative;
+  overflow: visible;
+  margin: 0px;
+  z-index: 100;
+  font-size: 20px;
+  margin-right: 10px;
+  background-color: white;
+  color: #4e73df;
+  padding: auto 0;
+}
+
+@media (max-width: 400px) {
+  .saveQuestionsButton .selectdiv {
+    font-size: 17px;
+    width: 30px;
+    height: 35px;
+  }
+}
+
+.saveQuestionsButton .selectdiv:hover {
+  background-color: white;
+  color: #4e73df;
+}
+
+.saveQuestionsButton .selectdiv:hover p {
+  display: block;
+}
+
+@media (max-width: 450px) {
+  .saveQuestionsButton .selectdiv:hover p {
+    display: none;
+  }
+}
+
+.saveQuestionsButton .selectdiv p {
+  position: absolute;
+  color: white;
+  top: -20px;
+  left: -60px;
+  font-size: 12px;
+  border-radius: 20px;
+  display: none;
+  z-index: 100000;
+  padding: 7px;
+  background-color: black;
+}
+
+@media (max-width: 400px) {
+  .saveQuestionsButton .selectdiv p {
+    left: 35px;
+  }
+}
+
+.saveQuestionsButton .unSelectdiv {
+  position: relative;
+  overflow: visible;
+  margin: 0px;
+  margin-left: 10px;
+  font-size: 20px;
+}
+
+.saveQuestionsButton .unSelectdiv:focus p {
+  display: none;
+}
+
+@media (max-width: 400px) {
+  .saveQuestionsButton .unSelectdiv {
+    font-size: 17px;
+    width: 30px;
+    height: 35px;
+  }
+}
+
+.saveQuestionsButton .unSelectdiv:hover p {
+  display: block;
+}
+
+@media (max-width: 450px) {
+  .saveQuestionsButton .unSelectdiv:hover p {
+    display: none;
+  }
+}
+
+.saveQuestionsButton .unSelectdiv p {
+  position: absolute;
+  color: white;
+  top: -20px;
+  right: -70px;
+  font-size: 12px;
+  border-radius: 20px;
+  display: none;
+  z-index: 100000;
+  padding: 7px;
+  background-color: black;
+}
+
+@media (max-width: 400px) {
+  .saveQuestionsButton .unSelectdiv p {
+    right: 35px;
+  }
+}
+
+.saveQ {
+  position: fixed;
+  bottom: 50px;
+  right: 40px;
+}
+
+.saveQ button {
+  position: relative;
+  border-radius: 100% !important;
+  font-size: 25px;
+  overflow: visible;
+}
+
+.saveQ button:hover p {
+  display: block;
+}
+
+@media (max-width: 450px) {
+  .saveQ button:hover p {
+    display: none;
+  }
+}
+
+.saveQ button p {
+  position: absolute;
+  width: 100px;
+  color: white;
+  top: -40px;
+  right: -10%;
+  font-size: 12px;
+  border-radius: 20px;
+  display: none;
+  z-index: 100000;
+  padding: 7px;
+  background-color: black;
 }
 /*# sourceMappingURL=style.css.map */

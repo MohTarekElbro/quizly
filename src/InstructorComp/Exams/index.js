@@ -53,6 +53,15 @@ class Exams extends Component {
         $('.optionItem').addClass("remove")
         $(".examsList").slideToggle(10)
         window.removeEventListener('resize', this.resize());
+        $(window).resize(function () {
+            if ($(window).width() > 1133) {
+                // $('.examsList').animate({ scrollTop: 0 }, 1)
+                $(".examsList").slideDown(1)
+            }
+            else {
+                $(".examsList").slideUp(1)
+            }
+        })
     }
 
 
@@ -188,8 +197,8 @@ class Exams extends Component {
             })
         }
         // if ($(document).width() < 1150) {
-            $(".examsList").slideUp(1)
-            $(".examsList").slideDown(500)
+        $(".examsList").slideUp(1)
+        $(".examsList").slideDown(500)
         // }
         // this.showEaxmsList()
     }

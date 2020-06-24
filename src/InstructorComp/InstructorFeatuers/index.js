@@ -4,7 +4,9 @@ import { Link, BrowserRouter, withRouter } from 'react-router-dom'
 import { Component } from 'react'
 import { read_cookie } from 'sfcookies'
 import { createHashHistory } from 'history'
+import './jquery/jquery.js'
 class InstructorFeatuers extends Component {
+
 
     state = {
         domains: [],
