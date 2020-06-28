@@ -26,7 +26,7 @@ class AdminInstractors extends Component {
         window.addEventListener('scroll', this.handleScroll);
         const requestOptions = {
             method: 'Get',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api;
         this.setState({
@@ -63,7 +63,7 @@ class AdminInstractors extends Component {
         if (this.state.bottom < this.state.height + 1) {
             const requestOptions = {
                 method: 'Get',
-                headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
             };
             let api;
 
@@ -90,7 +90,7 @@ class AdminInstractors extends Component {
     Refresh = async () => {
         const requestOptions = {
             method: 'Get',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api;
 
@@ -127,7 +127,7 @@ class AdminInstractors extends Component {
         console.log(ID)
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api;
 
@@ -148,7 +148,7 @@ class AdminInstractors extends Component {
     Reject = async (ID) => {
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api;
 

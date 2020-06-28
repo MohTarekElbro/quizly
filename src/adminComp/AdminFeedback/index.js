@@ -21,7 +21,7 @@ class AdminFeedback extends Component {
         window.addEventListener('scroll', this.handleScroll);
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
             body: JSON.stringify({
                 "Email": emailFeedbacks
             })
@@ -98,7 +98,7 @@ class AdminFeedback extends Component {
         if (this.state.bottom < this.state.height + 1) {
             const requestOptions = {
                 method: 'post',
-                headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
                 body: JSON.stringify({
                     "Email": emailFeedbacks
                 })
@@ -137,7 +137,7 @@ class AdminFeedback extends Component {
         window.addEventListener('scroll', this.handleScroll);
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
             body: JSON.stringify({
                 "Email": emailFeedbacks
             })
@@ -171,7 +171,7 @@ class AdminFeedback extends Component {
         window.addEventListener('scroll', this.handleScroll);
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
             body: JSON.stringify({
                 "Email": emailFeedbacks
             })

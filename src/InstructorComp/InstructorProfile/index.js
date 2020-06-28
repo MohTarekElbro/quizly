@@ -6,18 +6,18 @@ import { read_cookie, bake_cookie } from 'sfcookies'
 class InstructorProfile extends React.Component {
 
     state = {
-        firstName: read_cookie('instructorFirstName'),
-        lastName: read_cookie ('instructorLastName'),
-        email: read_cookie('instructorEmail'),
-        age: read_cookie('instructorAge'),
-        address: read_cookie('instructorAddress'),
+        firstName: localStorage.getItem('instructorFirstName'),
+        lastName: localStorage.getItem ('instructorLastName'),
+        email: localStorage.getItem('instructorEmail'),
+        age: localStorage.getItem('instructorAge'),
+        address: localStorage.getItem('instructorAddress'),
         oldPassword: "",
         newPassword: "",
         confirmPassword: ""
     }
     componentDidMount = () => {
         $('#instructorPic')
-            .attr('src', 'https://quizly-app.herokuapp.com/instructor/' + read_cookie('instructorID') + '/pic')
+            .attr('src', 'https://quizly-app.herokuapp.com/instructor/' + localStorage.getItem('instructorID') + '/pic')
             .width(240)
             .height(300);
     }
@@ -36,7 +36,7 @@ class InstructorProfile extends React.Component {
 
         const requestOptions = {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
             body: JSON.stringify({
                 'Email': email,
                 'Password': newPassword,
@@ -52,17 +52,17 @@ class InstructorProfile extends React.Component {
                 api = await fetch('https://quizly-app.herokuapp.com/instructor/editme' + oldPassword, requestOptions)
                 const data = await api.json();
                 console.log("EditProfileData: ", data)
-                bake_cookie("instructorEmail", data.Email);
-                bake_cookie("instructorAddress", data.Address);
-                bake_cookie("instructorAge", data.Age);
-                bake_cookie("instructorFirstName", data.Frist_Name);
-                bake_cookie("instructorLastName", data.Last_Name);
+                localStorage.setItem("instructorEmail", data.Email);
+                localStorage.setItem("instructorAddress", data.Address);
+                localStorage.setItem("instructorAge", data.Age);
+                localStorage.setItem("instructorFirstName", data.Frist_Name);
+                localStorage.setItem("instructorLastName", data.Last_Name);
                 this.setState({
-                    firstName: read_cookie('instructorFirstName'),
-                    lastName: read_cookie('instructorLastName'),
-                    email: read_cookie('instructorEmail'),
-                    age: read_cookie('instructorAge'),
-                    address: read_cookie('instructorAddress'),
+                    firstName: localStorage.getItem('instructorFirstName'),
+                    lastName: localStorage.getItem('instructorLastName'),
+                    email: localStorage.getItem('instructorEmail'),
+                    age: localStorage.getItem('instructorAge'),
+                    address: localStorage.getItem('instructorAddress'),
                     oldPassword: "",
                     newPassword: "",
                     confirmPassword: ""
@@ -105,7 +105,7 @@ class InstructorProfile extends React.Component {
         formData.append('image', file)
         const requestOptions = {
             method: 'POST',
-            headers: { 'Authorization': read_cookie("token") },
+            headers: { 'Authorization': localStorage.getItem("token") },
             body: formData
         };
         let api;
@@ -114,8 +114,8 @@ class InstructorProfile extends React.Component {
             api = await fetch('https://quizly-app.herokuapp.com/upload/profilePicture', requestOptions).then(res => {
 
 
-                const api2 = fetch('https://quizly-app.herokuapp.com/instructor/' + read_cookie('instructorID') + '/pic').then(res => {
-                    bake_cookie('pic', res)
+                const api2 = fetch('https://quizly-app.herokuapp.com/instructor/' + localStorage.getItem('instructorID') + '/pic').then(res => {
+                    localStorage.setItem('pic', res)
                     console.log(res)
                 })
                 this.props.history.push('/login')

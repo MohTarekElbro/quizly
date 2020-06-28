@@ -61,7 +61,7 @@ class AmdinNav extends Component {
             body: JSON.stringify(subscription),
             headers: {
                 "content-type": "application/json",
-                'Authorization': read_cookie("token")
+                'Authorization': localStorage.getItem("token")
             }
         });
     }
@@ -73,16 +73,16 @@ class AmdinNav extends Component {
         this.notificationsList.addEventListener('scroll', this.handleScroll);
         var { version } = this.state
         var { count } = this.state
-        this.send();
+        // this.send();
         const requestOptions = {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") }
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") }
         };
         let api;
         let notiNum = 0
 
         try {
-            api = await fetch('https://quizly-app.herokuapp.com/Admin/ListMyNotification/' + read_cookie('adminEmail') + '/' + count + '/' + version, requestOptions)
+            api = await fetch('https://quizly-app.herokuapp.com/Admin/ListMyNotification/' + localStorage.getItem('adminEmail') + '/' + count + '/' + version, requestOptions)
             const data = await api.json();
             console.log(data)
             data.map((noti) => {
@@ -121,7 +121,7 @@ class AmdinNav extends Component {
         if (this.state.bottom < this.state.notifyHeight + 65) {
             const requestOptions = {
                 method: 'Get',
-                headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
             };
             let api;
 
@@ -132,7 +132,7 @@ class AmdinNav extends Component {
                 })
 
                 var { version } = this.state
-                api = await fetch('https://quizly-app.herokuapp.com/Admin/ListMyNotification/' + read_cookie('adminEmail') + '/' + count + '/' + version, requestOptions)
+                api = await fetch('https://quizly-app.herokuapp.com/Admin/ListMyNotification/' + localStorage.getItem('adminEmail') + '/' + count + '/' + version, requestOptions)
                 const data = await api.json();
 
                 this.setState({
@@ -151,9 +151,9 @@ class AmdinNav extends Component {
     
 
     Logout = () => {
-        bake_cookie("token", "")
-        bake_cookie("adminID", "")
-        bake_cookie("adminemail", "")
+        localStorage.setItem("token", "")
+        localStorage.setItem("adminID", "")
+        localStorage.setItem("adminemail", "")
         localStorage.setItem('token', "");
     }
 
@@ -174,7 +174,7 @@ class AmdinNav extends Component {
             })
             const requestOptions = {
                 method: 'GET',
-                headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") }
+                headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") }
             };
             let api;
             var url = "https://quizly-app.herokuapp.com/Admin/SeenNotification/" + notify;
@@ -318,8 +318,8 @@ class AmdinNav extends Component {
 
                     <li className="nav-item dropdown no-arrow">
                         <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span className="mr-2 d-none d-lg-inline text-gray-600 small">{read_cookie('adminEmail').replace('@gmail.com', '')}</span>
-                            <img className="img-profile rounded-circle" src={'https://quizly-app.herokuapp.com/admin/' + read_cookie("adminID") + '/pic'} />
+                            <span className="mr-2 d-none d-lg-inline text-gray-600 small">{localStorage.getItem('adminEmail').replace('@gmail.com', '')}</span>
+                            <img className="img-profile rounded-circle" src={'https://quizly-app.herokuapp.com/admin/' + localStorage.getItem("adminID") + '/pic'} />
                         </a>
                         <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in requests" aria-labelledby="userDropdown">
                             <Link className="dropdown-item" to="/adminHome/adminProfile">

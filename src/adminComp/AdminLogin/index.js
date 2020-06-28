@@ -28,12 +28,12 @@ class AdminLogin extends Component {
         const api = await fetch('https://quizly-app.herokuapp.com/Login', requestOptions)
         const data = await api.json();
         if (data.admin) {
-            bake_cookie('token', data.token);
-            bake_cookie("adminID", data.admin._id);
-            bake_cookie("adminEmail", data.admin.email);
+            localStorage.setItem('token', data.token);
+            localStorage.setItem("adminID", data.admin._id);
+            localStorage.setItem("adminEmail", data.admin.email);
             
             const api2 = await fetch('https://quizly-app.herokuapp.com/admin/' + data.admin._id + '/pic').then(res => {
-                bake_cookie('pic', res)
+                localStorage.setItem('pic', res)
             })
 
 

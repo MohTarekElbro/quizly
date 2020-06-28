@@ -22,7 +22,7 @@ class AmdinFeatuers extends Component {
 
         const requestOptions = {
             method: 'Get',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api;
 

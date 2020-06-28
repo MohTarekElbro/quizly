@@ -53,9 +53,9 @@ class InstructorFeedback extends Component {
         window.addEventListener('scroll', this.handleScroll);
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
             body: JSON.stringify({
-                "instructor": read_cookie('instructorID')
+                "instructor": localStorage.getItem('instructorID')
             })
         };
         let api;
@@ -91,10 +91,9 @@ class InstructorFeedback extends Component {
             return (
                 <div style={{ "width": "100%", "display": "flex", "justifyContent": "center" }}>
                     <div class="text-center" >
-                        <div class="error mx-auto" data-text="404">404</div>
-                        <p class="lead text-gray-800 mb-5">Page Not Found</p>
-                        <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
-                        <a href="index.html">&larr; Back to Dashboard</a>
+                        {/* <div class="error mx-auto" data-text="404">404</div> */}
+                        <p class=" error mx-auto lead text-gray-800 mb-5" data-text="No Feedbacks Available" style = {{"fontSize" : "30px"}}>No Feedbacks Available</p>
+                        {/* <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p> */}
                     </div>
                 </div>
             )
@@ -134,7 +133,7 @@ class InstructorFeedback extends Component {
     delete = async (id) => {
         const requestOptions = {
             method: 'DELETE',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
 
         };
         let api;
@@ -163,9 +162,9 @@ class InstructorFeedback extends Component {
         if (this.state.bottom < this.state.height + 1) {
             const requestOptions = {
                 method: 'post',
-                headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
                 body: JSON.stringify({
-                    "instructor": read_cookie("instructorID")
+                    "instructor": localStorage.getItem("instructorID")
                 })
             };
             let api;
@@ -200,9 +199,9 @@ class InstructorFeedback extends Component {
         var { count } = this.state
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
             body: JSON.stringify({
-                "instructor": read_cookie('instructorID')
+                "instructor": localStorage.getItem('instructorID')
             })
         };
         let api;
@@ -241,7 +240,7 @@ class InstructorFeedback extends Component {
         var { addedFeedback } = this.state
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
             body: JSON.stringify({
                 "feedback": addedFeedback
             })

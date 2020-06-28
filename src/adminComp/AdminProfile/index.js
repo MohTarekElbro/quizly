@@ -6,14 +6,14 @@ import { read_cookie, bake_cookie } from 'sfcookies'
 class AdminProfile extends React.Component {
 
     state = {
-        email: read_cookie('adminEmail'),
+        email: localStorage.getItem('adminEmail'),
         oldPassword: "",
         newPassword: "",
         confirmPassword: ""
     }
     componentDidMount = () => {
         $('#adminPic')
-            .attr('src', 'https://quizly-app.herokuapp.com/admin/'+read_cookie("adminID")+'/pic')
+            .attr('src', 'https://quizly-app.herokuapp.com/admin/'+localStorage.getItem("adminID")+'/pic')
             .width(150)
             .height(200);
     }
@@ -29,7 +29,7 @@ class AdminProfile extends React.Component {
 
         const requestOptions = {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
             body: JSON.stringify({
                 'email': email,
                 'password': newPassword
@@ -41,9 +41,9 @@ class AdminProfile extends React.Component {
                 api = await fetch(url, requestOptions)
                 const data = await api.json();
 
-                bake_cookie("adminEmail", data.email);
+                localStorage.setItem("adminEmail", data.email);
                 this.setState({
-                    email: read_cookie('adminEmail'),
+                    email: localStorage.getItem('adminEmail'),
                     oldPassword: "",
                     newPassword: "",
                     confirmPassword: ""
@@ -86,7 +86,7 @@ class AdminProfile extends React.Component {
         formData.append('image', file)
         const requestOptions = {
             method: 'POST',
-            headers: { 'Authorization': read_cookie("token") },
+            headers: { 'Authorization': localStorage.getItem("token") },
             body: formData
         };
         let api;
@@ -95,8 +95,8 @@ class AdminProfile extends React.Component {
             api = await fetch('https://quizly-app.herokuapp.com/admin/upload/profilePicture', requestOptions).then(res => {
 
                 console.log("UpdateProfile REsponse: ",res);
-                const api2 = fetch('https://quizly-app.herokuapp.com/admin/' + read_cookie('adminID') + '/pic').then(res2 => {
-                    bake_cookie('pic', res2)
+                const api2 = fetch('https://quizly-app.herokuapp.com/admin/' + localStorage.getItem('adminID') + '/pic').then(res2 => {
+                    localStorage.setItem('pic', res2)
                     console.log(res2)
                 })
                 this.props.history.push('/login')

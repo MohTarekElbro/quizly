@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import './style.css'
 import { read_cookie } from 'sfcookies'
 import $ from 'jquery'
@@ -34,103 +34,14 @@ class AddingQuestion extends Component {
 
         hhh: ""
     }
-    componentDidUpdate = () => {
-        autosize($(".addQuestionText"))
-        // console.log("UPDAAAAAAAAAAATED")
-        if (this.props.random != this.state.random) {
-            // console.log("UPDAAAAAAAAAAATED")
-            if (this.props.Question) {
-                console.log("index", this.props.Question)
-                $("#QuestionsType" + this.props.index).css("display", "none")
-                $("#domains" + this.props.index).css("display", "none")
-                let Q = this.props.Question
-                $(".public111").css("color", "black")
-                if (Q.public == true) {
-                    console.log("public")
-                    $("#public" + this.props.index).css("color", "#4e73df")
-                    $("#public" + this.props.index).click()
-                }
-                else {
-                    console.log("private")
-                    // $("input[name='public']").css("display","none")
-                    $("#private" + this.props.index).css("color", "#4e73df")
-                    $("#private" + this.props.index).click()
-                }
 
-                $(".trueorfalse").css("color", "black")
-                if (Q.state == true) {
-                    console.log("TRUE")
-                    $("#trueChoose" + this.props.index).css("color", "#4e73df")
-                    $("#trueChoose" + this.props.index).click()
-                }
-                else {
-                    console.log("FALSE")
-                    // $("input[name='public']").css("display","none")
-                    $("#falseChoose" + this.props.index).css("color", "#4e73df")
-                    $("#falseChoose" + this.props.index).click()
-                }
-                $(".level11").css("color", "black")
-                $("#" + Q.Level + this.props.index).css("color", "#4e73df")
-                $("#" + Q.Level + this.props.index).click()
-
-                var { QuestionType } = this.state
-                if (QuestionType == "MCQ") {
-                    $("#MCQ").click()
-                }
-                else if (QuestionType == "Complete") {
-                    $("#Complete").click()
-                }
-                else {
-                    $("#trueorfalse").click()
-                }
-            }
-            if (this.props.Question) {
-                const Question = this.props.Question
-                let ex = []
-                let old = []
-                let random = this.props.random
-                if (Question.distructor) {
-                    for (let i = 0; i < Question.distructor.length; i++) {
-                        ex.push(Question.distructor[i])
-                    }
-
-                    for (let i = 0; i < Question.distructor.length; i++) {
-                        old.push(Question.distructor[i])
-                    }
-                }
-                this.setState({
-                    Question: Question.Question,
-                    QuestionType: Question.kind,
-                    public: Question.public ? true : false,
-                    numOfDis: Question.distructor ? Question.distructor.length : 0,
-                    existedLength: Question.distructor ? Question.distructor.length : 0,
-                    distructorsValue: old,
-                    existedDistructors: ex,
-                    hhh: Question.distructor,
-                    state: Question.state ? Question.state : true,
-                    level: Question.Level,
-                    DomainName: Question.domain.domain_name,
-                    keyword: Question.keyword,
-                    random: random
-                })
-                // $("input[type=radio]").css("opacity" , "0")
-            }
-            this.setState({
-                random: this.props.random
-            })
-        }
-
-    }
-
-
-    componentDidMount = async () => {
-
+    propsQuestions = () => {
         if (this.props.Question) {
-
-            console.log("index", this.props.Question)
+            // console.log("index", this.props.Question)
             $("#QuestionsType" + this.props.index).css("display", "none")
             $("#domains" + this.props.index).css("display", "none")
             let Q = this.props.Question
+            $(".public111").css("color", "black")
             if (Q.public == true) {
                 console.log("public")
                 $("#public" + this.props.index).css("color", "#4e73df")
@@ -201,9 +112,126 @@ class AddingQuestion extends Component {
             })
             // $("input[type=radio]").css("opacity" , "0")
         }
+    }
+
+    tempPropsQuestions = () => {
+        // console.log("MOHAMED")
+        if (this.props.tempQuestion) {
+            console.log("tempQuestion: ", this.props.tempQuestion)
+            $("#QuestionsType" + this.props.index).css("display", "none")
+            $("#domains" + this.props.index).css("display", "none")
+            let Q = this.props.tempQuestion
+            $(".public111").css("color", "black")
+            $("#private" + this.props.index).css("color", "#4e73df")
+            $("#private" + this.props.index).click()
+
+            $(".trueorfalse").css("color", "black")
+
+            // console.log("Q.Level: " , Q.Level)
+            $(".level11").css("color", "black")
+            $("#" + this.props.Level + this.props.index).css("color", "#4e73df")
+            $("#" + this.props.Level + this.props.index).click()
+
+            // var { QuestionType } = this.state
+            console.log("this.props.QuestionType: ", this.props.QuestionType)
+            if (this.props.QuestionType == "MCQ") {
+                $("#MCQ").click()
+            }
+            else if (this.props.QuestionType == "Complete") {
+                $("#Complete").click()
+            }
+            else {
+                $("#trueorfalse").click()
+                if (Q[2] == "T") {
+                    console.log("TRUEeeee")
+                    $("#trueChoose" + this.props.index).css("color", "#4e73df")
+                    $("#trueChoose" + this.props.index).click()
+                }
+                else {
+                    console.log("FALSEeee")
+                    // $("input[name='public']").css("display","none")
+                    $("#falseChoose" + this.props.index).css("color", "#4e73df")
+                    $("#falseChoose" + this.props.index).click()
+                }
+            }
+        }
+
+        if (this.props.tempQuestion) {
+            const Question = this.props.tempQuestion
+            let ex = []
+            // console.log(Question)
+            let old = []
+            let random = this.props.random
+            if (this.props.QuestionType == "MCQ") {
+
+                for (let i = 1; i < Question.length - 1; i++) {
+                    ex.push(Question[i])
+                }
+                this.setState({
+                    numOfDis: Question.length - 2,
+                    distructorsValue: ex,
+                    keyword: Question[0],
+                    Question: Question[Question.length - 1],
+                })
+            }
+            else if (this.props.QuestionType == "trueorfalse") {
+                console.log("Question: ", Question)
+                this.setState({
+                    numOfDis: 1,
+                    distructorsValue: [Question[1]],
+                    keyword: Question[0],
+                    Question: Question[3],
+
+                })
+                console.log("Question[2]: ", Question[2])
+                if (Question[2] == "F") {
+
+                    this.setState({
+                        state: false
+                    })
+                }
+                else {
+                    this.setState({
+                        state: true
+                    })
+                }
+            }
+            else{
+                this.setState({
+                    keyword: Question[1],
+                    Question: Question[0],
+                })
+            }
+            this.setState({
+                QuestionType: this.props.QuestionType,
+                public: false,
+                level: this.props.Level,
+                DomainName: this.props.domain,
+                random: random
+            })
+
+        }
+    }
+    componentDidUpdate = () => {
+        autosize($(".addQuestionText"))
+        // console.log("UPDAAAAAAAAAAATED")
+        if (this.props.random != this.state.random) {
+            // console.log("UPDAAAAAAAAAAATED")
+            this.propsQuestions()
+            this.tempPropsQuestions()
+
+        }
+
+    }
+
+
+
+    componentDidMount = async () => {
+        this.tempPropsQuestions()
+        this.propsQuestions()
         const requestOptions1 = {
             method: 'Get',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api1;
 
@@ -230,7 +258,7 @@ class AddingQuestion extends Component {
 
                 <div class="row">
                     <div class="col-sm-12 form-group">
-                        <input type="submit" class=" btn-secondary btn btn-lg  btn-block" value={this.props.Question ? "Edit" : "Add"} />
+                        <input type="submit" class=" btn-secondary btn btn-lg  btn-block" value={this.props.Question || this.props.tempQuestion ? "Edit" : "Add"} />
                     </div>
                 </div>
             </form>
@@ -364,8 +392,9 @@ class AddingQuestion extends Component {
                         }
 
                     }} />
-                {a}
-                {span}
+
+                {this.props.tempQuestion ? <Fragment></Fragment> : a}
+                {this.props.tempQuestion ? <Fragment></Fragment> : span}
 
             </div>
         )
@@ -395,7 +424,7 @@ class AddingQuestion extends Component {
                 </div>
                 <div class="row">
                     <div class="col-sm-12 form-group">
-                        <input type="submit" class=" btn-success btn btn-lg btn-block" value={this.props.Question ? "Edit" : "Add"} />
+                        <input type="submit" class=" btn-success btn btn-lg btn-block" value={this.props.Question || this.props.tempQuestion ? "Edit" : "Add"} />
                     </div>
                 </div>
             </form>
@@ -405,20 +434,7 @@ class AddingQuestion extends Component {
     //////////////////////////MCQ Functions////////////////////////////////
     //////////////////////////TrueOrFalse////////////////////////////////
 
-    statechange = () => {
-        $("#state1").toggleClass("btn-secondary").toggleClass('btn-light')
-        $("#state2").toggleClass("btn-secondary").toggleClass('btn-light')
-        if (this.state.state == true) {
-            this.setState({
-                state: false
-            })
-        }
-        else {
-            this.setState({
-                state: true
-            })
-        }
-    }
+
 
     TrueOrFalseForm = () => {
         return (
@@ -427,35 +443,130 @@ class AddingQuestion extends Component {
                     <p>
                         <label class="margin radio-inline trueorfalse" id={this.props.index ? "trueChoose" + this.props.index : "trueChoose"} style={this.state.state ? { "color": "#4e73df" } : { "color": "black" }}>
                             <input type="radio" name="state" onChange={(e) => {
-                                this.setState({ state: e.target.value })
+                                // console.log("e.target.value: ", e.target.value)
+                                this.setState({ state: true })
                                 $(".trueorfalse").css("color", "black")
                                 $("#trueChoose" + this.props.index).css("color", "#4e73df")
+                                if (this.props.tempQuestion) {
+                                    let Question = this.state.Question
+                                    let keyword = this.state.keyword
+                                    let distructor = this.state.distructorsValue[0]
+                                    // console.log(Question,keyword,distructor)
+                                    Question = Question.replace(distructor, keyword)
+                                    this.setState({
+                                        Question
+                                    })
+                                }
 
-                            }} value="true" />
+                            }} value={true} />
                             True
                         </label>
 
                         <label class="margin radio-inline trueorfalse" id={this.props.index ? "falseChoose" + this.props.index : "falseChoose"} style={this.state.state ? { "color": "black" } : { "color": "#4e73df" }}>
                             <input type="radio" name="state" onChange={(e) => {
-                                this.setState({ state: e.target.value })
+                                // console.log("e.target.value: ", typeof(e.target.value))
+
+                                this.setState({ state: false })
                                 $(".trueorfalse").css("color", "black")
                                 $("#falseChoose" + this.props.index).css("color", "#4e73df")
+                                if (this.props.tempQuestion) {
+                                    let Question = this.state.Question
+                                    let keyword = this.state.keyword
+                                    let distructor = this.state.distructorsValue[0]
+                                    // console.log(Question,keyword,distructor)
 
-                            }} value="false" />
+                                    Question = Question.replace(keyword, distructor)
+                                    this.setState({
+                                        Question
+                                    })
+                                }
+
+                            }} value={false} />
                             False
                         </label>
                     </p>
                 </div>
                 <div className="distructors">
                     <input type="text" className="form-control bg-light  small " style={{ "marginBottom": "20px" }} placeholder="Keyword"
-                        aria-label="Search" aria-describedby="basic-addon2" value={this.state.keyword} onChange={(e) => { this.setState({ keyword: e.target.value }) }} />
+                        aria-label="Search" aria-describedby="basic-addon2" value={this.state.keyword} onChange={(e) => {
+                            let keyword = this.state.keyword
+                            let Question = this.state.Question
+                            if (e.target.value.length > 0) {
+                                if (this.props.tempQuestion1) {
+                                    if (this.state.state == true) {
+                                        Question = Question.replace(keyword, e.target.value)
+                                        this.setState({
+                                            Question
+                                        })
+                                    }
+                                }
+                                this.setState({
+                                    keyword: e.target.value,
+                                })
+                            }
+                            else {
+                                if (this.props.tempQuestion1) {
+                                    if (this.state.state == true) {
+                                        Question = Question.replace(keyword, "keyword")
+                                        this.setState({
+                                            Question
+                                        })
+                                    }
+                                    this.setState({
+                                        keyword: "keyword",
+                                    })
+                                }
+                                else {
+                                    this.setState({
+                                        keyword: e.target.value,
+                                    })
+                                }
+
+                            }
+
+
+                        }} />
                     <input type="text" className="form-control bg-light  small " style={{ "marginBottom": "20px" }} placeholder="Distructor"
                         aria-label="Search" aria-describedby="basic-addon2" value={this.state.distructorsValue[0]} onChange={(e) => {
                             let { distructorsValue } = this.state
-                            distructorsValue[0] = e.target.value
-                            this.setState({
-                                distructorsValue
-                            })
+                            let Question = this.state.Question
+                            if (e.target.value.length > 0) {
+                                if (this.props.tempQuestion1) {
+                                    if (this.state.state == false) {
+                                        Question = Question.replace(distructorsValue[0], e.target.value)
+                                        this.setState({
+                                            Question
+                                        })
+                                    }
+
+                                }
+                                distructorsValue[0] = e.target.value
+                                this.setState({
+                                    distructorsValue,
+                                })
+                            }
+                            else {
+                                if (this.props.tempQuestion1) {
+                                    if (this.state.state == false) {
+                                        Question = Question.replace(distructorsValue[0], "distructor")
+                                        this.setState({
+                                            Question
+                                        })
+                                    }
+
+                                    distructorsValue[0] = "distructor"
+                                    this.setState({
+                                        distructorsValue,
+                                    })
+                                }
+                                else {
+                                    distructorsValue[0] = e.target.value
+                                    this.setState({
+                                        distructorsValue,
+                                    })
+                                }
+
+                            }
 
 
 
@@ -466,7 +577,7 @@ class AddingQuestion extends Component {
 
                 <div class="row">
                     <div class="col-sm-12 form-group">
-                        <input type="submit" class=" btn-secondary btn btn-lg  btn-block" value={this.props.Question ? "Edit" : "Add"} />
+                        <input type="submit" class=" btn-secondary btn btn-lg  btn-block" value={this.props.Question || this.props.tempQuestion ? "Edit" : "Add"} />
                     </div>
                 </div>
             </form>
@@ -500,17 +611,26 @@ class AddingQuestion extends Component {
     }
 
     addPublic = (e) => {
+        let p = true
+        if (e.target.value == "true") {
+            p = true
+        }
+        else {
+            p = false
+        }
+        // console.log("e.target.value: ", typeof (p))
+
         this.setState({
-            public: e.target.value
+            public: p
         })
         $(".public111").css("color", "black")
-        console.log(e.target.value)
+        // console.log(e.target.value)
         if (e.target.value == "true") {
-            console.log("true")
+            // console.log("true")
             $("#public" + this.props.index).css("color", "#4e73df")
         }
         else {
-            console.log("false")
+            // console.log("false")
             $("#private" + this.props.index).css("color", "#4e73df")
         }
 
@@ -518,6 +638,7 @@ class AddingQuestion extends Component {
     }
 
     selectLevel = (e) => {
+        console.log("LEVEL: ", e.target.value)
         this.setState({
             level: e.target.value
         })
@@ -609,7 +730,7 @@ class AddingQuestion extends Component {
             }
             const requestOptions1 = {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
                 body: JSON.stringify({
                     "Question": Question,
                     "NewDistructor": newDistructors,
@@ -721,11 +842,24 @@ class AddingQuestion extends Component {
 
         }
 
+        else if (this.props.tempQuestion) {
+            if (this.props.QuestionType == "MCQ") {
+                this.props.editRenderdQuestion(this.props.index, this.state.Question, this.state.keyword, this.state.distructorsValue, this.state.public, this.state.level)
+            }
+            else if (this.props.QuestionType == "trueorfalse") {
+                this.props.editRenderdQuestion(this.props.index, this.state.Question, this.state.keyword, this.state.distructorsValue, this.state.public, this.state.level, this.state.state)
+            }
+            else{
+                this.props.editRenderdQuestion(this.props.index, this.state.Question, this.state.keyword, this.state.public, this.state.level)
+            }
+            $("#closeModal").click()
+        }
+
         else {
 
             const requestOptions1 = {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
                 body: JSON.stringify({
                     "Level": level,
                     "Question": Question,
@@ -762,7 +896,7 @@ class AddingQuestion extends Component {
                             confirm: async () => {
                                 const requestOptions1 = {
                                     method: 'Post',
-                                    headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                                    headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
                                     body: JSON.stringify({
                                         "Level": level,
                                         "Question": Question,
@@ -840,7 +974,7 @@ class AddingQuestion extends Component {
         return (
             <div class="flex row" style={{ "margin": "20px 0px 30px" }}>
                 <div class="form-container">
-                    <h2 className="center">{this.props.Question ? "Edit Question" : "Add Question"}</h2>
+                    <h2 className="center">{this.props.Question || this.props.tempQuestion ? "Edit Question" : "Add Question"}</h2>
                     <div class="row" id={"QuestionsType" + this.props.index}>
                         <div class="col-sm-12 form-group levels">
                             <p>

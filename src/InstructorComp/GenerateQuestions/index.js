@@ -11,6 +11,8 @@ import { confirm } from 'jquery-confirm'
 import ReactToPdf from 'react-to-pdf'
 
 import ReactPDF, { Page, Text, View, Document, StyleSheet, PDFViewer } from '@react-pdf/renderer';
+import Modal from '../../components/Modal';
+import AddingQuestion from '../AddingQuestion';
 
 // value={this.state.search} onChange={(e) => { this.setState({ search: e.target.value }) }}
 class GenerteQuestions extends Component {
@@ -31,7 +33,11 @@ class GenerteQuestions extends Component {
         screen: "loading1",
         fileName: "",
 
-        selectedAll: false
+        publics: [],
+        levels: [],
+
+        selectedAll: false,
+        EditQuestionModal: (<div></div>)
 
     }
 
@@ -53,7 +59,7 @@ class GenerteQuestions extends Component {
         })
         const requestOptions1 = {
             method: 'Get',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api1;
 
@@ -69,10 +75,6 @@ class GenerteQuestions extends Component {
             console.log(e);
         }
 
-
-
-
-
         const socket = socketIOClient("https://quizly-app.herokuapp.com")
         socket.on('sendQuestions', () => {
             this.getQuestions(false)
@@ -81,17 +83,23 @@ class GenerteQuestions extends Component {
             })
         })
 
-
+        if(this.props.generateQuestions){
+            console.log($(".levels"))
+            $(".levels").css("width" ,"100%")
+        } 
     }
 
+  
     getQuestions = async (flag = true) => {
+
         const requestOptions1 = {
             method: 'Get',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api1;
 
         try {
+
             api1 = await fetch('https://quizly-app.herokuapp.com/instructor/GetMyRequest', requestOptions1)
             console.log(api1)
             if (api1.status == 400) {
@@ -103,17 +111,19 @@ class GenerteQuestions extends Component {
             else {
                 const requestOptions = {
                     method: 'Get',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
                 };
                 let api;
 
                 try {
+
                     api = await fetch('https://quizly-app.herokuapp.com/instructor/GetTempQuestions', requestOptions1)
                     let data = await api.json()
                     if (api.status == 404) {
 
                     }
                     else {
+
                         data["allowedQuestions"] = {}
                         Object.keys(data.Questions).forEach(question => {
                             data["allowedQuestions"][question] = "unSelected"
@@ -122,6 +132,21 @@ class GenerteQuestions extends Component {
                         this.setState({
                             Questions: data,
                             screen: "generatedQuestions"
+                        })
+                        let { Questions } = this.state
+                        let Questions1 = Questions.Questions
+                        // console.log("PRIVTEESSS: ", data.Questions)
+                        let keys = Object.keys(data.Questions)
+                        let { publics } = this.state
+                        let { levels } = this.state
+                        for (let i = 0; i < keys.length; i++) {
+                            // console.log("PULICSSSSSSSSS")
+                            publics.push(false)
+                            levels.push("medium")
+                        }
+                        this.setState({
+                            publics,
+                            levels
                         })
                         if (flag) {
                             $.alert({
@@ -164,7 +189,7 @@ class GenerteQuestions extends Component {
         formData.append('resource', file)
         const requestOptions = {
             method: 'POST',
-            headers: { 'Authorization': read_cookie("token") },
+            headers: { 'Authorization': localStorage.getItem("token") },
             body: formData
         };
         let api;
@@ -203,7 +228,7 @@ class GenerteQuestions extends Component {
         formData.append('resource', file)
         const requestOptions = {
             method: 'POST',
-            headers: { 'Authorization': read_cookie("token") },
+            headers: { 'Authorization': localStorage.getItem("token") },
             body: formData
         };
         let api;
@@ -235,7 +260,7 @@ class GenerteQuestions extends Component {
                 console.log("TEXT BABE")
                 requestOptions = {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
                     body: JSON.stringify({
                         "data": text,
                         "Diffculty": level,
@@ -246,7 +271,7 @@ class GenerteQuestions extends Component {
             else {
                 requestOptions = {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
                     body: JSON.stringify({
                         "path": filePath,
                         "Diffculty": level,
@@ -304,12 +329,12 @@ class GenerteQuestions extends Component {
         let { level } = this.state
 
 
-        let levels = []
+        let { levels } = this.state
         let savedQuestions = []
         let kinds = []
         let keywords = []
         let states = []
-        let publics = []
+        let { publics } = this.state
         let add_distructors = {}
         let { DomainName } = this.state
         let numofQuestions = 0
@@ -320,12 +345,12 @@ class GenerteQuestions extends Component {
                 continue
             }
             numofQuestions++
-            if (level == "H") {
-                levels.push("hard")
-            }
-            else {
-                levels.push("medium")
-            }
+            // if (level == "H") {
+            //     levels.push("hard")
+            // }
+            // else {
+            //     levels.push("medium")
+            // }
             if (QuestionsPackge.kind == "Complete") {
                 savedQuestions.push(Questions[i][0])
             }
@@ -376,6 +401,7 @@ class GenerteQuestions extends Component {
                 add_distructors[k.toString()] = []
                 add_distructors[k.toString()].push(Questions[i][1])
             }
+            
             k++
         }
 
@@ -397,7 +423,7 @@ class GenerteQuestions extends Component {
                     if (numofQuestions == 0) {
                         const requestOptions = {
                             method: 'GET',
-                            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
                         };
                         let api;
 
@@ -419,96 +445,40 @@ class GenerteQuestions extends Component {
                         }
                     }
                     else {
+                        const requestOptions = {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
+                            body: JSON.stringify({
+                                "Level": levels,
+                                "Question": savedQuestions,
+                                "kind": kinds,
+                                "state": states,
+                                "keyword": keywords,
+                                "public": publics,
+                                "add_distructors": add_distructors,
+                                "domain_name": DomainName
+                            })
+                        };
+                        let api;
 
-                        $.confirm({
-                            title: 'Confirm!',
-                            boxWidth: $(window).width() < 800 ? '80%' : '50%',
-                            useBootstrap: false,
-                            content: "Save as public or private questions?",
-                            buttons: {
-                                public: async () => {
-                                    for (let i = 0, k = 0; i < Object.keys(Questions).length; i++) {
-                                        publics.push(true)
-                                    }
-                                    // console.log(publics)
-                                    const requestOptions = {
-                                        method: 'POST',
-                                        headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
-                                        body: JSON.stringify({
-                                            "Level": levels,
-                                            "Question": savedQuestions,
-                                            "kind": kinds,
-                                            "state": states,
-                                            "keyword": keywords,
-                                            "public": publics,
-                                            "add_distructors": add_distructors,
-                                            "domain_name": DomainName
-                                        })
-                                    };
-                                    let api;
+                        try {
+                            api = await fetch('https://quizly-app.herokuapp.com/instructor/AddQuestion', requestOptions)
+                            let data = await api.json();
+                            console.log("SavedQuestions: ", data)
+                            this.setState({
+                                screen: "generateQuestion"
 
-                                    try {
-                                        api = await fetch('https://quizly-app.herokuapp.com/instructor/AddQuestion', requestOptions)
-                                        let data = await api.json();
-                                        console.log("SavedQuestions: ", data)
-                                        this.setState({
-                                            screen: "generateQuestion"
+                            })
+                            $('#generateButton').css({
+                                "opacity": "0.5",
+                                "cursor": "not-allowed"
+                            })
+                            $('#generateButton').prop('disabled', 'true')
 
-                                        })
-                                        $('#generateButton').css({
-                                            "opacity": "0.5",
-                                            "cursor": "not-allowed"
-                                        })
-                                        $('#generateButton').prop('disabled', 'true')
-
-                                    }
-                                    catch (e) {
-                                        console.log(e.message);
-                                    }
-                                },
-                                private: async () => {
-                                    for (let i = 0, k = 0; i < Object.keys(Questions).length; i++) {
-                                        publics.push(false)
-                                    }
-                                    // console.log(publics)
-                                    const requestOptions = {
-                                        method: 'POST',
-                                        headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
-                                        body: JSON.stringify({
-                                            "Level": levels,
-                                            "Question": savedQuestions,
-                                            "kind": kinds,
-                                            "state": states,
-                                            "keyword": keywords,
-                                            "public": publics,
-                                            "add_distructors": add_distructors,
-                                            "domain_name": DomainName
-                                        })
-                                    };
-                                    let api;
-
-                                    try {
-                                        api = await fetch('https://quizly-app.herokuapp.com/instructor/AddQuestion', requestOptions)
-                                        let data = await api.json();
-                                        console.log("SavedQuestions: ", data)
-                                        this.setState({
-                                            screen: "generateQuestion"
-
-                                        })
-                                        $('#generateButton').css({
-                                            "opacity": "0.5",
-                                            "cursor": "not-allowed"
-                                        })
-                                        $('#generateButton').prop('disabled', 'true')
-
-                                    }
-                                    catch (e) {
-                                        console.log(e.message);
-                                    }
-                                },
-                            }
-                        });
-
+                        }
+                        catch (e) {
+                            console.log(e.message);
+                        }
                     }
                     this.setState({
                         Questions: []
@@ -626,6 +596,59 @@ class GenerteQuestions extends Component {
     }
 
 
+
+    editModalFun = (index, Question) => {
+        let { Questions } = this.state
+        let { EditQuestionModal } = this.state
+        console.log(Question)
+        EditQuestionModal = (<AddingQuestion Level={"medium"} domain={Questions.domain} QuestionType={Questions.kind} editRenderdQuestion={this.editRenderdQuestion} random={Math.random()} tempQuestion={Question} index={index} />)
+        this.setState({
+            EditQuestionModal
+        })
+        // console.log("MODAL EDITED");
+
+    }
+    editRenderdQuestion = (index, Question, keyword, distractors = [], publication, level, state = false) => {
+        let { Questions } = this.state
+        let { publics } = this.state
+        let { levels } = this.state
+        let realQuestions = Questions.Questions
+        console.log("realQuestions: ", realQuestions[index], state)
+        if (Questions.kind == "MCQ") {
+            realQuestions[index][0] = keyword
+            realQuestions[index][realQuestions[index].length - 1] = Question
+            for (let i = 1; i < realQuestions[index].length - 1; i++) {
+                realQuestions[index][i] = distractors[i - 1]
+            }
+
+        }
+        else if (Questions.kind == "trueorfalse") {
+            realQuestions[index][0] = keyword
+            realQuestions[index][3] = Question
+            realQuestions[index][1] = distractors[0]
+            if (state == false) {
+                realQuestions[index][2] = "F"
+            }
+            else {
+                realQuestions[index][2] = "T"
+            }
+        }
+        else{
+            realQuestions[index][0] = Question
+            realQuestions[index][1] = keyword
+        }
+        console.log("realQuestions2: ", realQuestions[index])
+        publics[parseInt(index)] = publication
+        levels[parseInt(index)] = level
+        // console.log("realQuestions2: ", levels)
+        this.setState({
+            publics,
+            levels,
+            Questions
+        })
+    }
+
+
     renderScreen = () => {
         // console.log("this.state.QuestionType: ", this.state.QuestionType)
         let { screen } = this.state
@@ -641,7 +664,7 @@ class GenerteQuestions extends Component {
                     <div class="generate-form  ">
                         <h2 className="center">Generate Questions</h2>
                         <div className="selects">
-                            <div className=" levels">
+                            <div className=" levels" style = {this.props.generateQuestions?{"width":"100%"}:{}}>
                                 <span style={{ "margin": "auto 0", "height": "30px" }}>Type of Questions: </span>
                                 <select data-menu id="QuestionType" className="select2" name="QuestionType" value={this.state.QuestionType} onChange={(e) => { this.setState({ QuestionType: e.target.value }) }} >
                                     <option value={"MCQ"}>MCQ</option>
@@ -650,14 +673,14 @@ class GenerteQuestions extends Component {
                                 </select >
                             </div>
 
-                            <div className=" levels">
+                            <div className=" levels" style = {this.props.generateQuestions?{"width":"100%"}:{}}>
                                 <span style={{ "margin": "auto 0", "height": "30px" }}>Domain: </span>
                                 <select data-menu id="QuestionType" className="select1" name="QuestionType" value={this.state.DomainName} onChange={(e) => { this.setState({ DomainName: e.target.value }) }} >
                                     {ListDomains}
                                 </select >
                             </div>
 
-                            <div className=" levels">
+                            <div className=" levels" style = {this.props.generateQuestions?{"width":"100%"}:{}}>
                                 <span style={{ "margin": "auto 0", "height": "30px" }}>Level of Questions: </span>
                                 <select data-menu id="QuestionType" className="select2" name="QuestionType" value={this.state.level} onChange={(e) => { this.setState({ level: e.target.value }) }} >
                                     <option value={"H"}>Hard</option>
@@ -665,7 +688,7 @@ class GenerteQuestions extends Component {
                                 </select >
                             </div>
 
-                            <div className=" levels">
+                            <div className=" levels" style = {this.props.generateQuestions?{"width":"100%"}:{}}>
                                 <span style={{ "margin": "auto 0", "height": "30px" }}>Num of Answers: </span>
                                 <select data-menu id="QuestionType" className="select2" name="QuestionType" value={this.state.numOfAnswers} onChange={(e) => { this.setState({ numOfAnswers: e.target.value }) }} >
                                     <option value={2}>{2}</option>
@@ -691,7 +714,7 @@ class GenerteQuestions extends Component {
 
                         <div class="row optionItem remove" id="textarea" >
                             <div class="col-sm-12 form-group">
-                                <textarea class="generateQuestionText" ref={(textarea) => { this.textarea = textarea }} type="textarea" name="comments" id="comments" placeholder="Your Question" rows="7" onBlur={(e) => { console.log(this.state.text); this.setState({ text: e.target.value }) }} ></textarea>
+                                <textarea class="generateQuestionText" ref={(textarea) => { this.textarea = textarea }} type="text" name="comments" id="comments" placeholder="Your Question" rows="7" value = {this.state.text} onChange={(e) => {this.setState({ text: e.target.value }) }} ></textarea>
 
                             </div>
                         </div>
@@ -741,6 +764,7 @@ class GenerteQuestions extends Component {
             // console.log("QuestionType: ", QuestionType)
             let Questions1 = Questions.Questions
 
+
             if (Questions != "") {
                 let ListQuestions = Object.keys(Questions1).map((Question, index) => {
                     let distractorItem = [];
@@ -752,15 +776,20 @@ class GenerteQuestions extends Component {
                                 {distractorItem}
                             </div>
                         return (
-                            <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" >
-                                <div className="generatedContent">
-                                    Question:  {Questions1[Question][0]}
+                            <Fragment>
+                                <div onClick={() => this.editModalFun(Question, Questions1[Question])} data-toggle="modal" data-target={"#generatedCard"} type="button" className="editQuestion"><i class="fas fa-edit"></i><p className="editHover">Edit Question</p> </div>
+
+                                <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" >
+
+                                    <div className="generatedContent">
+                                        Question:  {Questions1[Question][0]}
+                                    </div>
+                                    <div className="line"></div>
+                                    {disractorsDiv}
+                                    <div className="line proline" style={{ 'marginTop': "15px", 'marginBottom': '15px' }}></div>
+                                    <span className="protected"><span><i class="fas fa-lock"></i> Protected</span></span>
                                 </div>
-                                <div className="line"></div>
-                                {disractorsDiv}
-                                <div className="line proline" style={{ 'marginTop': "15px", 'marginBottom': '15px' }}></div>
-                                <span className="protected"><span><i class="fas fa-lock"></i> Protected</span></span>
-                            </div>
+                            </Fragment>
                         )
                     }
 
@@ -779,46 +808,56 @@ class GenerteQuestions extends Component {
                             </div>
 
                         return (
-                            <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" >
-                                <div className="generatedContent">
-                                    Question:  {Questions1[Question][Questions1[Question].length - 1]}
+                            <Fragment>
+                                <div onClick={() => this.editModalFun(Question, Questions1[Question])} data-toggle="modal" data-target={"#generatedCard"} type="button" className="editQuestion"><i class="fas fa-edit"></i><p className="editHover">Edit Question</p> </div>
+                                <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" >
+                                    <div className="generatedContent">
+                                        Question:  {Questions1[Question][Questions1[Question].length - 1]}
+                                    </div>
+                                    <div className="line"></div>
+                                    {disractorsDiv}
+                                    <div className="line proline" style={{ 'marginTop': "15px", 'marginBottom': '15px' }}></div>
+                                    <span className="protected"><span><i class="fas fa-lock"></i> Protected</span></span>
                                 </div>
-                                <div className="line"></div>
-                                {disractorsDiv}
-                                <div className="line proline" style={{ 'marginTop': "15px", 'marginBottom': '15px' }}></div>
-                                <span className="protected"><span><i class="fas fa-lock"></i> Protected</span></span>
-
-                            </div>
+                            </Fragment>
                         )
                     }
                     else {
                         distractorItem.push(<p>Answer:  {Questions1[Question][0]}</p>)
                         distractorItem.push(<p>Distractor:  {Questions1[Question][1]}</p>)
-                        let TorF
+                        let TorF = <div></div>
                         if (Questions1[Question][2] == "T") {
-                            TorF = <span className="TorF"><span style = {{"color": "#08a431"}}><i class="fas fa-check-circle"></i> True</span></span>
+                            console.log("TTTTT")
+                            // TorF = <span className={"TorF" + index}><span style={{ "color": "#08a431" }}><i class="fas fa-check-circle"></i> True</span></span>
+                            $(".TF" + index).find("span").html("<i class='fas fa-check-circle'></i> True").css("color", "#08a431")
                         }
                         else {
-                            TorF = <span className="TorF"><span style = {{"color": "#d90000"}}><i class="fas fa-times-circle"></i> False</span></span>
+                            console.log("FFFFF")
+                            // TorF = <span className={"TorF" + index}><span style={{ "color": "#d90000" }}><i class="fas fa-times-circle"></i> False</span></span>
+                            $(".TF" + index).find("span").html('<i class="fas fa-times-circle"></i> False').css("color", "#d90000")
                         }
                         let disractorsDiv =
                             <div className="TQuestionDistractors">
                                 {distractorItem}
                             </div>
                         return (
-                            <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" >
-                                <div className="generatedContent">
-                                    Question:  {Questions1[Question][3]}
+                            <Fragment>
+                                <div onClick={() => this.editModalFun(Question, Questions1[Question])} data-toggle="modal" data-target={"#generatedCard"} type="button" className="editQuestion"><i class="fas fa-edit"></i><p className="editHover">Edit Question</p> </div>
+                                <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" >
+
+                                    <div className="generatedContent">
+                                        Question:  {Questions1[Question][3]}
+                                    </div>
+                                    <div className="line"></div>
+                                    {disractorsDiv}
+                                    <div className="line"></div>
+                                    <div className="trueOrFalse">
+                                        <span className={"TorF TF" + index}><span></span></span>
+                                    </div>
+                                    <div className="line proline" style={{ 'marginTop': "15px", 'marginBottom': '15px' }}></div>
+                                    <span className="protected"><span><i class="fas fa-lock"></i> Protected</span></span>
                                 </div>
-                                <div className="line"></div>
-                                {disractorsDiv}
-                                <div className="line"></div>
-                                <div className="trueOrFalse">
-                                {TorF}
-                                </div>
-                                <div className="line proline" style={{ 'marginTop': "15px", 'marginBottom': '15px' }}></div>
-                                <span className="protected"><span><i class="fas fa-lock"></i> Protected</span></span>
-                            </div>
+                            </Fragment>
                         )
                     }
 
@@ -842,6 +881,8 @@ class GenerteQuestions extends Component {
                             <div className="generatedsContainer" id="generatedsBody" ref={(QuestionsBody) => { this.QuestionsBody = QuestionsBody }}>
 
                                 {ListQuestions}
+                                <Modal modalName={"generatedCard"} body={this.state.EditQuestionModal} title={"Edit Question"} closeButton="close" />
+
                             </div>
                         </div>
 

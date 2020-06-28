@@ -28,14 +28,11 @@
         width: 50%;
         margin-bottom: 10px;
         @media (max-width: 1350px) {
-            width: 50% !important;
+            width: 50% ;
         }
         @media (max-width: 900px) {
             width: 100% !important;
         }
-    }
-    @media (max-width: 600px) {
-        width: 100% !important;
     }
     .margin {
         input {
@@ -166,7 +163,6 @@
         text-align: center !important;
         right: 100%;
         font-size: 24px;
-        color: #08a431;
     }
 
     .protected,
@@ -187,19 +183,62 @@
             display: block;
         }
     }
+
+    .editQuestion {
+        cursor: pointer;
+        margin-left: 10px;
+        // display: none;
+        // height: 0px;
+        // right: 55%;
+        width: 0px;
+        // margin: 10px;
+        color: #4e73df;
+        position: relative;
+        font-size: 25px;
+        background: transparent;
+        margin: 10px auto 5px;
+
+        .editHover {
+            position: absolute;
+            padding: 5px;
+            z-index: 3;
+            right: 10px !important;
+            // opacity: 0;
+
+            display: none;
+            width: 85px;
+            font-size: 13px;
+            color: white;
+            background-color: black;
+            border-radius: 100px;
+            top: 0px;
+        }
+        &:hover {
+            .editHover {
+                display: block;
+            }
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
     .generatedItem {
         flex-basis: 48%;
         cursor: pointer;
         width: 100%;
         background-color: white;
         transition: 0.3s;
-        margin-bottom: 30px;
-
+        margin-bottom: 10px;
+        display: block !important;
+        flex-basis: 100% !important;
+        // margin: 5px !important;
         box-shadow: 0 2px 4px 0 rgba(188, 188, 211, 0.4);
         border-radius: 10px;
         padding: 20px;
-        display: flex;
-        flex-flow: column;
+        // display: flex;
+        // flex-flow: column;
         flex-basis: 96%;
         margin-left: 2%;
         margin-right: 2%;
@@ -208,9 +247,11 @@
         }
 
         @media (max-width: 900px) {
-            display: block !important;
-            flex-basis: 100% !important;
-            margin: 5px !important;
+            //     display: block !important;
+            width: 98% !important;
+            margin-left: 1% !important;
+            margin-right: 1% !important;
+            //     margin: 5px !important;
         }
 
         @media (max-width: 1150px) {

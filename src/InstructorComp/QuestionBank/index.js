@@ -30,7 +30,7 @@ class QuestionBank extends Component {
     componentDidMount = async () => {
         const requestOptions1 = {
             method: 'Get',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api1;
 
@@ -53,7 +53,7 @@ class QuestionBank extends Component {
     Refresh = async () => {
         const requestOptions = {
             method: 'Get',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api;
 
@@ -95,7 +95,7 @@ class QuestionBank extends Component {
         console.log(domainName, QuestionType)
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
             body: JSON.stringify({
                 "Domain_Name": domainName,
                 "Question_Type": QuestionType,
@@ -151,7 +151,7 @@ class QuestionBank extends Component {
             console.log(domainName, QuestionType)
             const requestOptions = {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
                 body: JSON.stringify({
                     "Domain_Name": domainName,
                     "Question_Type": QuestionType,

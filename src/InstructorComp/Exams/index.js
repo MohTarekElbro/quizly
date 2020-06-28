@@ -14,10 +14,7 @@ import Modal from '../../components/Modal'
 import { withRouter } from 'react-router-dom'
 // import '../../custom.js'
 
-const sliderStyle = {
-    position: 'relative',
-    width: '350px',
-}
+
 
 
 class Exams extends Component {
@@ -40,6 +37,10 @@ class Exams extends Component {
         durationUpdate: [0, 240].slice(),
         durationReversed: false,
 
+        sliderStyle: {
+            position: 'relative',
+            width: ($(".FindForm").width() * 1).toString() + "px",
+        },
         countDomain: [0, 100],
         countValues: [0, 100].slice(),
         countUpdate: [0, 100].slice(),
@@ -53,8 +54,8 @@ class Exams extends Component {
         $('.optionItem').addClass("remove")
         $(".examsList").slideToggle(10)
         window.removeEventListener('resize', this.resize());
-        $(window).resize(function () {
-            if ($(window).width() > 1133) {
+        $(".FindForm").resize(function () {
+            if ($(".FindForm").width() > 1133) {
                 // $('.examsList').animate({ scrollTop: 0 }, 1)
                 $(".examsList").slideDown(1)
             }
@@ -73,7 +74,7 @@ class Exams extends Component {
         window.addEventListener('resize', this.resize());
         const requestOptions1 = {
             method: 'Get',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api1;
 
@@ -100,7 +101,7 @@ class Exams extends Component {
     Refresh = async () => {
         const requestOptions = {
             method: 'Get',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api;
 
@@ -144,7 +145,7 @@ class Exams extends Component {
         console.log("faculty: ", faculty)
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
             body: JSON.stringify({
                 "subject_name": subject_name,
                 "Search": {
@@ -232,7 +233,7 @@ class Exams extends Component {
             else {
                 const requestOptions = {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
                     body: JSON.stringify({
                         "Domain_Name": subject_name,
                         "Question_Type": QuestionType,
@@ -409,6 +410,14 @@ class Exams extends Component {
         else {
             $(".examsList").slideUp(1)
         }
+        console.log(($(".FindForm").width() * 1).toString() + "px")
+        let { sliderStyle } = this.state
+        console.log(sliderStyle)
+        // sliderStyle['width'] = ($(".FindForm").width() * 1).toString() + "px"
+
+        this.setState({
+            sliderStyle
+        })
     }
 
     showEaxmsList = () => {
@@ -434,15 +443,103 @@ class Exams extends Component {
         // }
     }
 
+    pulsOrNot1 = (type, dir) => {
+        console.log(type, dir)
+        let { countValues } = this.state
+        let { durationUpdate } = this.state
+        if (dir == "right") {
+            if (type == "plus") {
+                if (countValues[1] + 1 <= 240) {
+                    countValues[1]++
+                    durationUpdate[1]++
+                }
+            }
+            else {
+                // console.log("not")
+                countValues[1]--
+                durationUpdate[1]--
+            }
+            console.log(countValues)
+        }
+        else {
+            if (type == "plus") {
+                // console.log("plus")
+                countValues[0]++
+                durationUpdate[0]++
+            }
+            else {
+                if (countValues[0] - 1 >= 0) {
+                    countValues[0]--
+                    durationUpdate[0]--
+                }
+            }
+
+        }
+        if (countValues[0] != 0 || countValues[1] != 240) {
+            $("#durationItem").addClass("edited")
+        }
+        else {
+            $("#durationItem").removeClass("edited")
+        }
+        this.setState({
+            countValues,
+            durationUpdate
+        })
+    }
+
+
+
+    pulsOrNot = (type, dir) => {
+        console.log(type, dir)
+        let { countValues } = this.state
+        let { countUpdate } = this.state
+        if (dir == "right") {
+            if (type == "plus") {
+                if (countValues[1] + 1 <= 240) {
+                    countValues[1]++
+                    countUpdate[1]++
+                }
+            }
+            else {
+                // console.log("not")
+                countValues[1]--
+                countUpdate[1]--
+            }
+            console.log(countValues)
+        }
+        else {
+            if (type == "plus") {
+                // console.log("plus")
+                countValues[0]++
+                countUpdate[0]++
+            }
+            else {
+                if (countValues[0] - 1 >= 0) {
+                    countValues[0]--
+                    countUpdate[0]--
+                }
+            }
+
+        }
+        if (countValues[0] != 0 || countValues[1] != 100) {
+            $("#numOfQuestionsItem").addClass("edited")
+        }
+        else {
+            $("#numOfQuestionsItem").removeClass("edited")
+        }
+        this.setState({
+            countValues,
+            countUpdate
+        })
+    }
 
     render() {
 
-
-
-        const {
+        let {
             state: { durationDomain, durationValues, durationUpdate, durationReversed },
         } = this
-        const {
+        console.log(durationValues)
+        let {
             state: { countDomain, countValues, countUpdate, countReversed },
         } = this
 
@@ -511,20 +608,24 @@ class Exams extends Component {
                             <span className="text">Search</span>
                         </button>
                     </div>
-                    <form onSubmit={this.findExams} className="FindForm">
-                        <input id="subject_name" type="text" className="form-control bg-light small inputSearch optionItem remove " placeholder="subject_name"
+                    <form onSubmit={this.findExams} className="FindForm" ref={(FindForm) => { this.FindForm = FindForm }}>
+                        <input id="subject_name" type="text" className="form-control bg-light small inputSearch optionItem remove " placeholder="Subject Name"
                             aria-label="Search" aria-describedby="basic-addon2" value={this.state.subject_name} onChange={(e) => { this.setState({ subject_name: e.target.value }); if (e.target.value != "") $("#" + e.target.id + "Item").addClass("edited"); else { $("#" + e.target.id + "Item").removeClass("edited") } }} />
                         <div id="duration" className="allRange optionItem remove">
                             <p>Duration of the exam: </p>
                             <div className="range">
-                                <span className="updateShow1"> {durationUpdate[0]} </span>
+                                <span className="updateShow1">
+                                    <div className="pulsOrNot not" onClick={() => this.pulsOrNot("not", "left")}><i class="fas fa-minus-square"></i></div>
+                                    <div className="pulsOrNot plus" onClick={() => this.pulsOrNot("plus", "left")}><i class="fas fa-plus-square"></i></div>
+                                    {durationUpdate[0]}
+                                </span>
                                 <div className="rangeSlider">
                                     <Slider
                                         mode={2}
                                         step={1}
                                         domain={durationDomain}
                                         reversed={durationReversed}
-                                        rootStyle={sliderStyle}
+                                        rootStyle={this.state.sliderStyle}
                                         onUpdate={durationUpdate => {
                                             this.setState({ durationUpdate })
                                         }}
@@ -537,7 +638,7 @@ class Exams extends Component {
                                                 $("#durationItem").removeClass("edited")
                                             }
                                         }}
-                                        values={durationValues}
+                                        values={this.state.durationValues}
                                     >
                                         <Rail>
                                             {({ getRailProps }) => <SliderRail getRailProps={getRailProps} />}
@@ -573,19 +674,29 @@ class Exams extends Component {
 
                                     </Slider>
                                 </div>
-                                <span className="updateShow2"> {durationUpdate[1]} </span>
+                                <span className="updateShow2">
+                                    <div className="pulsOrNot not" onClick={() => this.pulsOrNot("not", "right")}><i class="fas fa-minus-square"></i></div>
+                                    <div className="pulsOrNot plus" onClick={() => this.pulsOrNot("plus", "right")}><i class="fas fa-plus-square"></i></div>
+                                    {durationUpdate[1]}
+                                </span>
+
+
                             </div>
                         </div>
                         <div id="numOfQuestions" className="allRange optionItem remove">
                             <p>Number of questions: </p>
                             <div className="range">
-                                <span className="updateShow1"> {countUpdate[0]} </span>
+                                <span className="updateShow1">
+                                    <div className="pulsOrNot not" onClick={() => this.pulsOrNot("not", "left")}><i class="fas fa-minus-square"></i></div>
+                                    <div className="pulsOrNot plus" onClick={() => this.pulsOrNot("plus", "left")}><i class="fas fa-plus-square"></i></div>
+                                    {countUpdate[0]}
+                                </span>
                                 <div className="rangeSlider">
                                     <Slider
                                         mode={2}
                                         step={1}
                                         domain={countDomain}
-                                        rootStyle={sliderStyle}
+                                        rootStyle={this.state.sliderStyle}
                                         onUpdate={(countUpdate) => {
                                             this.setState({ countUpdate })
                                             // console.log(countUpdate[0] , countUpdate[1])
@@ -637,7 +748,11 @@ class Exams extends Component {
 
                                     </Slider>
                                 </div>
-                                <span className="updateShow2"> {countUpdate[1]} </span>
+                                <span className="updateShow2">
+                                    <div className="pulsOrNot not" onClick={() => this.pulsOrNot("not", "right")}><i class="fas fa-minus-square"></i></div>
+                                    <div className="pulsOrNot plus" onClick={() => this.pulsOrNot("plus", "right")}><i class="fas fa-plus-square"></i></div>
+                                    {countUpdate[1]}
+                                </span>
                             </div>
                         </div>
                         <div id="date" className="dates optionItem remove">
@@ -655,7 +770,7 @@ class Exams extends Component {
                         <input id="university" type="text" className="form-control bg-light small inputSearch optionItem remove " placeholder="University"
                             aria-label="Search" aria-describedby="basic-addon2" value={this.state.university} onChange={(e) => { this.setState({ university: e.target.value }); if (e.target.value != "") $("#" + e.target.id + "Item").addClass("edited"); else { $("#" + e.target.id + "Item").removeClass("edited") } }} />
 
-                        <input id="faculty" type="text" className="form-control bg-light small inputSearch optionItem remove " placeholder="faculty"
+                        <input id="faculty" type="text" className="form-control bg-light small inputSearch optionItem remove " placeholder="Faculty"
                             aria-label="Search" aria-describedby="basic-addon2" value={this.state.faculty} onChange={(e) => { this.setState({ faculty: e.target.value }); if (e.target.value != "") $("#" + e.target.id + "Item").addClass("edited"); else { $("#" + e.target.id + "Item").removeClass("edited") } }} />
 
                     </form>

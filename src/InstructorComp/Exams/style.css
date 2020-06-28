@@ -28,17 +28,8 @@
   margin: 0 20px;
 }
 
-.options .edited::after {
-  content: "";
-  border: 10px solid transparent;
-  border-top: 4px solid black;
-  border-right: 4px solid black;
-  border-left: 4px solid black;
-  border-bottom: 4px solid black;
-  position: absolute;
-  top: 33px;
-  border-radius: 100%;
-  margin-left: 6px;
+.options .edited {
+  color: blue;
 }
 
 .options .option {
@@ -102,6 +93,8 @@
 }
 
 .allRange {
+  width: 50%;
+  margin: auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -114,6 +107,18 @@
           justify-content: center;
 }
 
+@media (max-width: 1200px) {
+  .allRange {
+    width: 80%;
+  }
+}
+
+@media (max-width: 800px) {
+  .allRange {
+    width: 95%;
+  }
+}
+
 .allRange p {
   margin: auto;
 }
@@ -124,23 +129,40 @@
   display: flex;
 }
 
+.allRange .range .pulsOrNot {
+  cursor: pointer;
+  color: #4e73df;
+  position: absolute;
+  right: 25%;
+}
+
+.allRange .range .plus {
+  top: -20px;
+}
+
+.allRange .range .not {
+  bottom: -22px;
+}
+
 .allRange .updateShow1 {
+  position: relative;
   margin: 0px 20px 10px 0;
-  width: 32px;
+  width: 40px;
   border: 2px solid #2e59d9;
   text-align: center;
 }
 
 .allRange .updateShow2 {
-  margin: 0px 10px 10px 20px;
-  width: 32px;
+  position: relative;
+  margin: 0px 0px 10px 20px;
+  width: 40px;
   border: 2px solid #2e59d9;
   text-align: center;
 }
 
 .allRange .rangeSlider {
   height: 20px;
-  width: 350px;
+  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

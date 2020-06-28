@@ -56,7 +56,7 @@ class Login extends Component {
             api = await fetch('https://quizly-app.herokuapp.com/instructor/login', requestOptions)
 
             const data = await api.json();
-            
+
             console.log(api)
             if (api.status == 404) {
                 $("*").css("cursor", "default")
@@ -71,13 +71,21 @@ class Login extends Component {
                 });
             }
             if (data.instructor) {
-                bake_cookie('token', data.token);
-                bake_cookie("instructorID", data.instructor._id);
-                bake_cookie("instructorEmail", data.instructor.Email);
-                bake_cookie("instructorFirstName", data.instructor.Frist_Name);
-                bake_cookie("instructorLastName", data.instructor.Last_Name);
-                bake_cookie("instructorAge", data.instructor.Age);
-                bake_cookie("instructorAddress", data.instructor.Address);
+                localStorage.setItem('token', data.token);
+                localStorage.setItem("instructorID", data.instructor._id);
+                localStorage.setItem("instructorEmail", data.instructor.Email);
+                localStorage.setItem("instructorFirstName", data.instructor.Frist_Name);
+                localStorage.setItem("instructorLastName", data.instructor.Last_Name);
+                localStorage.setItem("instructorAge", data.instructor.Age);
+                localStorage.setItem("instructorAddress", data.instructor.Address);
+                
+                // bake_cookie('token', data.token);
+                // bake_cookie("instructorID", data.instructor._id);
+                // bake_cookie("instructorEmail", data.instructor.Email);
+                // bake_cookie("instructorFirstName", data.instructor.Frist_Name);
+                // bake_cookie("instructorLastName", data.instructor.Last_Name);
+                // bake_cookie("instructorAge", data.instructor.Age);
+                // bake_cookie("instructorAddress", data.instructor.Address);
                 // const api2 = await fetch('https://quizly-app.herokuapp.com/instructor/'+data.instructor._id+'/pic').then(res => {
                 //     bake_cookie('pic' , res)
                 // })

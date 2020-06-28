@@ -31,7 +31,7 @@ class InstructorNav extends Component {
         if (this.state.bottom < this.state.notifyHeight + 65) {
             const requestOptions = {
                 method: 'Get',
-                headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
             };
             let api;
 
@@ -42,7 +42,7 @@ class InstructorNav extends Component {
                 })
 
                 var { version } = this.state
-                api = await fetch('https://quizly-app.herokuapp.com/Admin/ListMyNotification/' + read_cookie('adminEmail') + '/' + count + '/' + version, requestOptions)
+                api = await fetch('https://quizly-app.herokuapp.com/Admin/ListMyNotification/' + localStorage.getItem('adminEmail') + '/' + count + '/' + version, requestOptions)
                 const data = await api.json();
 
                 this.setState({
@@ -92,7 +92,7 @@ class InstructorNav extends Component {
     //         body: JSON.stringify(subscription),
     //         headers: {
     //             "content-type": "application/json",
-    //             'Authorization': read_cookie("token")
+    //             'Authorization': localStorage.getItem("token")
     //         }
     //     });
     //     console.log("Notifications: ", api)
@@ -107,13 +107,13 @@ class InstructorNav extends Component {
         // this.send();
         const requestOptions = {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") }
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") }
         };
         let api;
         let notiNum = 0
 
         try {
-            api = await fetch('https://quizly-app.herokuapp.com/Instructor/ListMyNotification/' + read_cookie('instructorEmail') + '/' + count + '/' + version, requestOptions)
+            api = await fetch('https://quizly-app.herokuapp.com/Instructor/ListMyNotification/' + localStorage.getItem('instructorEmail') + '/' + count + '/' + version, requestOptions)
             const data = await api.json();
             console.log(data)
             data.map((noti) => {
@@ -141,10 +141,44 @@ class InstructorNav extends Component {
     }
 
 
-    Logout = () => {
-        bake_cookie("token", "")
-        bake_cookie("instructorID", "")
-        bake_cookie("instructorEmail", "")
+    Logout = async (type = "one") => {
+        const requestOptions = {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") }
+        };
+        let api;
+        if (type == "one") {
+
+            try {
+                api = await fetch('https://quizly-app.herokuapp.com/instructor/logout', requestOptions)
+                const data = await api.json();
+                console.log(data)
+
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+        else{
+            try {
+                api = await fetch('https://quizly-app.herokuapp.com/instructor/logoutfromall', requestOptions)
+                const data = await api.json();
+                console.log(data)
+
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+        localStorage.removeItem("token")
+        localStorage.removeItem("instructorID")
+        localStorage.removeItem("instructorEmail")
+        localStorage.removeItem("instructorFirstName")
+        localStorage.removeItem("instructorLastName")
+        localStorage.removeItem("instructorAddress")
+        localStorage.removeItem("instructorAge")
+        localStorage.removeItem("pic")
+
     }
 
     componentWillMount() {
@@ -164,7 +198,7 @@ class InstructorNav extends Component {
             })
             const requestOptions = {
                 method: 'GET',
-                headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") }
+                headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") }
             };
             let api;
             var url = "https://quizly-app.herokuapp.com/Instructor/SeenNotification/" + notify;
@@ -202,7 +236,7 @@ class InstructorNav extends Component {
 
 
     render() {
-        const url = 'https://quizly-app.herokuapp.com/instructor/' + read_cookie('instructorID') + '/pic';
+        const url = 'https://quizly-app.herokuapp.com/instructor/' + localStorage.getItem('instructorID') + '/pic';
         const { Requests } = this.state;
         let Notifications = 0;
         const NotificationsList = Requests.map((request, index) => {
@@ -289,7 +323,7 @@ class InstructorNav extends Component {
 
                     <li className="nav-item dropdown no-arrow">
                         <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span className="mr-2 d-none d-lg-inline text-gray-600 small">{read_cookie('instructorFirstName')}</span>
+                            <span className="mr-2 d-none d-lg-inline text-gray-600 small">{localStorage.getItem('instructorFirstName')}</span>
                             <img className="img-profile rounded-circle" src={url} />
                         </a>
                         <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in requests" aria-labelledby="userDropdown">
@@ -308,14 +342,14 @@ class InstructorNav extends Component {
                                 <i className="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 My Questions
                             </Link>
-                            <a className="dropdown-item" href="#">
-                                <i className="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Activity Log
-                            </a>
                             <div className="dropdown-divider"></div>
-                            <Link className="dropdown-item" to="/login" onClick={this.Logout} >
+                            <Link className="dropdown-item" to="/login" onClick={() => this.Logout("one")} >
                                 <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Logout
+                            </Link>
+                            <Link className="dropdown-item" to="/login" onClick={() => this.Logout("all")} >
+                                <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Logout from all devices
                             </Link>
                         </div>
                     </li>

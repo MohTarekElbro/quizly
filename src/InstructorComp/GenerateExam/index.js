@@ -7,6 +7,7 @@ import Questions from '../../components/Questions'
 import $ from 'jquery'
 import { read_cookie } from 'sfcookies'
 import jsPDF from 'jspdf'
+import GenerteQuestions from '../GenerateQuestions'
 
 class GenerateExam extends Component {
     state = {
@@ -22,6 +23,8 @@ class GenerateExam extends Component {
     }
     componentDidMount = () => {
         this.titlesValidation()
+        this.changeToolContent("GenerateQuestions")
+        $("#GenerateQuestions").click()
 
     }
     componentDidUpdate = () => {
@@ -116,6 +119,11 @@ class GenerateExam extends Component {
             else if (id == 'myQuestions') {
                 this.setState({
                     examToolContent: <Questions url="https://quizly-app.herokuapp.com/instructor/getmyQuestions/" pageType={id} getItem={this.getQuestion} deletedQuestions={deletedQuestions} />
+                })
+            }
+            else {
+                this.setState({
+                    examToolContent: <GenerteQuestions generateQuestions = "generate" />
                 })
             }
         }
@@ -256,7 +264,7 @@ class GenerateExam extends Component {
         // console.log(newQuestion, oldDistractor, newDistractor)
         const requestOptions1 = {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
             body: JSON.stringify({
                 "Question": newQuestion,
                 "NewDistructor": newDistractor1,
@@ -295,7 +303,7 @@ class GenerateExam extends Component {
 
         const requestOptions1 = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
             body: JSON.stringify({
                 "subject_name": subject,
                 "university": university,
@@ -514,12 +522,13 @@ class GenerateExam extends Component {
 
                 <div className="examHalf examTools">
                     <div className="options1">
+                        <p onClick={() => this.changeOption("GenerateQuestions")} id="GenerateQuestions" className="option1"><a onClick={() => this.changeToolContent("GenerateQuestions")} >GenerateQuestions</a></p>
+                        <div className="line"></div>
                         <p onClick={() => this.changeOption("addingNewQuestion")} id="addingNewQuestion" className="option1"><a onClick={() => this.changeToolContent("addingNewQuestion")} >AddNewQuestion</a> </p>
                         <div className="line"></div>
                         <p onClick={() => this.changeOption("myQuestions")} id="myQuestions" className="option1"><a onClick={() => this.changeToolContent("myQuestions")} >MyQuestions</a></p>
                         <div className="line"></div>
                         <p onClick={() => this.changeOption("questionBank")} id="questionBank" className="option1"><a onClick={() => this.changeToolContent("questionBank")} >QuestionBank</a></p>
-                        
                         {/* <ExamNavbar changeToolContent={this.changeToolContent} ></ExamNavbar> */}
 
                     </div>

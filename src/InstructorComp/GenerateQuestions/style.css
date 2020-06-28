@@ -50,18 +50,12 @@
 
 @media (max-width: 1350px) {
   .generate-form .levels {
-    width: 50% !important;
+    width: 50%;
   }
 }
 
 @media (max-width: 900px) {
   .generate-form .levels {
-    width: 100% !important;
-  }
-}
-
-@media (max-width: 600px) {
-  .generate-form {
     width: 100% !important;
   }
 }
@@ -220,7 +214,6 @@
   text-align: center !important;
   right: 100%;
   font-size: 24px;
-  color: #08a431;
 }
 
 .generatedsContainer .protected,
@@ -246,6 +239,39 @@
   display: block;
 }
 
+.generatedsContainer .editQuestion {
+  cursor: pointer;
+  margin-left: 10px;
+  width: 0px;
+  color: #4e73df;
+  position: relative;
+  font-size: 25px;
+  background: transparent;
+  margin: 10px auto 5px;
+}
+
+.generatedsContainer .editQuestion .editHover {
+  position: absolute;
+  padding: 5px;
+  z-index: 3;
+  right: 10px !important;
+  display: none;
+  width: 85px;
+  font-size: 13px;
+  color: white;
+  background-color: black;
+  border-radius: 100px;
+  top: 0px;
+}
+
+.generatedsContainer .editQuestion:hover .editHover {
+  display: block;
+}
+
+.generatedsContainer .editQuestion:focus {
+  outline: none;
+}
+
 .generatedsContainer .generatedItem {
   -ms-flex-preferred-size: 48%;
       flex-basis: 48%;
@@ -254,18 +280,14 @@
   background-color: white;
   -webkit-transition: 0.3s;
   transition: 0.3s;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
+  display: block !important;
+  -ms-flex-preferred-size: 100% !important;
+      flex-basis: 100% !important;
   -webkit-box-shadow: 0 2px 4px 0 rgba(188, 188, 211, 0.4);
           box-shadow: 0 2px 4px 0 rgba(188, 188, 211, 0.4);
   border-radius: 10px;
   padding: 20px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-flow: column;
-          flex-flow: column;
   -ms-flex-preferred-size: 96%;
       flex-basis: 96%;
   margin-left: 2%;
@@ -279,10 +301,9 @@
 
 @media (max-width: 900px) {
   .generatedsContainer .generatedItem {
-    display: block !important;
-    -ms-flex-preferred-size: 100% !important;
-        flex-basis: 100% !important;
-    margin: 5px !important;
+    width: 98% !important;
+    margin-left: 1% !important;
+    margin-right: 1% !important;
   }
 }
 

@@ -11,16 +11,18 @@ import AddingQuestion from '../AddingQuestion'
 import GenerateExam from '../GenerateExam'
 import Exams from '../Exams'
 import GenerteQuestions from '../GenerateQuestions'
+import $ from 'jquery'
 
 class InstructorHome extends Component {
     componentWillMount() {
-        const token = read_cookie("token")
+        const token = localStorage.getItem("token")
         this.setState({
             token
         })
     }
     componentDidMount = () => {
-        
+        $(window).animate({ scrollTop: 0 }, 1)
+        this.props.history.push("/instructorHome/generateExam")
     }
     state = {
         token: ""

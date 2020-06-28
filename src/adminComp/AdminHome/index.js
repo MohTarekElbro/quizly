@@ -10,7 +10,7 @@ import AdminFeedback from '../AdminFeedback'
 
 class AdminHome extends Component {
     componentWillMount() {
-        const token = read_cookie("token")
+        const token = localStorage.getItem("token")
         this.setState({
             token
         })

@@ -16,17 +16,20 @@
     .searchExamButton {
         margin: 0 20px;
     }
-    .edited::after {
-        content: "";
-        border: 10px solid transparent;
-        border-top: 4px solid black;
-        border-right: 4px solid black;
-        border-left: 4px solid black;
-        border-bottom: 4px solid black;
-        position: absolute;
-        top: 33px;
-        border-radius: 100%;
-        margin-left: 6px;
+    // .edited::after {
+    //     content: "";
+    //     border: 10px solid transparent;
+    //     border-top: 4px solid black;
+    //     border-right: 4px solid black;
+    //     border-left: 4px solid black;
+    //     border-bottom: 4px solid black;
+    //     position: absolute;
+    //     top: 33px;
+    //     border-radius: 100%;
+    //     margin-left: 6px;
+    // }
+    .edited{
+        color: blue;
     }
     .option {
         margin: auto;
@@ -68,7 +71,14 @@
 }
 
 .allRange {
-    // width: 100%;
+    width: 50%;
+    @media (max-width: 1200px) {
+        width: 80%;
+    }
+    @media (max-width: 800px) {
+        width: 95%;
+    }
+    margin: auto;
     // display: flex;
     // justify-content: center;
     p {
@@ -79,23 +89,38 @@
     justify-content: center;
     .range {
         display: flex;
+        .pulsOrNot{
+            cursor: pointer;
+            color: #4e73df;
+            position: absolute;
+            right: 25%;
+        }
+        .plus{
+            top:-20px;
+            
+        }
+        .not{
+            bottom:-22px;
+        }
     }
 
     .updateShow1 {
+        position: relative;
         margin: 0px 20px 10px 0;
-        width: 32px;
+        width: 40px;
         border: 2px solid #2e59d9;
         text-align: center;
     }
     .updateShow2 {
-        margin: 0px 10px 10px 20px;
-        width: 32px;
+        position: relative;
+        margin: 0px 0px 10px 20px;
+        width: 40px;
         border: 2px solid #2e59d9;
         text-align: center;
     }
     .rangeSlider {
         height: 20px;
-        width: 350px;
+        width: 100%;
         display: flex;
         flex-flow: column;
         justify-content: center;

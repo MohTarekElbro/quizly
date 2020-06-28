@@ -18,7 +18,7 @@ class InstructorFeatuers extends Component {
         loadjs('js/sb-admin-2.js')
         const requestOptions = {
             method: 'Get',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api;
 
@@ -41,7 +41,7 @@ class InstructorFeatuers extends Component {
         const newdata = []
         const requestOptions = {
             method: 'Get',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api;
 
@@ -120,14 +120,14 @@ class InstructorFeatuers extends Component {
                 <li className="nav-item">
                     <Link className="nav-link collapsed" to="/instructorHome/generateQuestions" >
                         <i class="fas fa-question-circle"></i>
-                        <span>GenerateQuestions</span>
+                        <span>Generate Questions</span>
                     </Link>
                 </li>
 
                 <li className="nav-item">
                     <Link className="nav-link collapsed" to="/instructorHome/addingQuestion" >
                         <i class="fas fa-question-circle"></i>
-                        <span>AddNewQuestion</span>
+                        <span>Add New Question</span>
                     </Link>
                 </li>
 
@@ -136,7 +136,7 @@ class InstructorFeatuers extends Component {
                         pathname: "/instructorHome/questionBank",
                         state: {
                             url: "https://quizly-app.herokuapp.com/instructor/getmyQuestions/",
-                            pageType:"myQuestions"
+                            pageType: "myQuestions"
                         }
                     }}  >
                         <i class="fas fa-question-circle"></i>
@@ -151,7 +151,7 @@ class InstructorFeatuers extends Component {
                         pathname: "/instructorHome/questionBank",
                         state: {
                             url: "https://quizly-app.herokuapp.com/questionbank/",
-                            pageType:"questionBank"
+                            pageType: "questionBank"
                         }
                     }}  >
                         <i class="fas fa-question-circle"></i>
@@ -193,7 +193,7 @@ class InstructorFeatuers extends Component {
 
 
 
-                <li className="nav-item">
+                {/* <li className="nav-item">
                     <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                         <i className="fas fa-fw fa-wrench"></i>
                         <span>Domains</span>
@@ -205,6 +205,14 @@ class InstructorFeatuers extends Component {
                             <Link className="collapse-item" to="/instructorHome/instructorRequests">Requested Domains</Link>
                         </div>
                     </div>
+                </li> */}
+
+                <li className="nav-item">
+                    <Link className="nav-link collapsed" to="/instructorHome/instructorRequests" >
+                        <i className="fas fa-fw fa-wrench"></i>
+                        <span>Domains</span>
+                    </Link>
+
                 </li>
 
                 <li className="nav-item">

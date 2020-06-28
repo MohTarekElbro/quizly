@@ -60,7 +60,7 @@ class QuestionBank extends Component {
                 // console.log("backQuestion: ", this.props.backQuestion)
                 var { Questions } = this.state
                 // console.log("oldQuestions: ", Questions)
-                if ((this.props.pageType == "questionBank" && this.props.backQuestion.public == true) || ((this.props.pageType == "myQuestions" || this.props.pageType == "addingNewQuestion") && this.props.backQuestion.owner == read_cookie("instructorID"))) {
+                if ((this.props.pageType == "questionBank" && this.props.backQuestion.public == true) || ((this.props.pageType == "myQuestions" || this.props.pageType == "addingNewQuestion") && this.props.backQuestion.owner == localStorage.getItem("instructorID"))) {
                     Questions.push(this.props.backQuestion)
                     this.setState({
                         Questions,
@@ -143,7 +143,7 @@ class QuestionBank extends Component {
         }
         const requestOptions1 = {
             method: 'Get',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api1;
 
@@ -169,7 +169,7 @@ class QuestionBank extends Component {
     Refresh = async () => {
         const requestOptions = {
             method: 'Get',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api;
 
@@ -225,7 +225,7 @@ class QuestionBank extends Component {
         // console.log(domainName, QuestionType)
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
             body: JSON.stringify({
                 "Domain_Name": domainName,
                 "Question_Type": QuestionType,
@@ -436,7 +436,7 @@ class QuestionBank extends Component {
 
                 const requestOptions = {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
                     body: JSON.stringify({
                         "Domain_Name": domainName,
                         "Question_Type": QuestionType,
@@ -662,7 +662,7 @@ class QuestionBank extends Component {
                 confirm: async () => {
                     const requestOptions1 = {
                         method: 'delete',
-                        headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+                        headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
                     };
                     let api1;
 
@@ -846,12 +846,12 @@ class QuestionBank extends Component {
                     {title}
                     <form onSubmit={this.findQuestions} className="FindForm">
                         <select data-menu id="QuestionType" className="custom-select" name="QuestionType" value={this.state.QuestionType} onChange={(e) => { this.setState({ QuestionType: e.target.value }) }}>
-                            <option value="all">All</option>
+                            <option value="all">All types</option>
                             {ListTypes}
                         </select>
 
                         <select id="domain" name="domain" className="custom-select" value={this.state.domainName} onChange={(e) => { this.setState({ domainName: e.target.value }) }}>
-                            <option value="all">All</option>
+                            <option value="all">All domains</option>
                             {ListDomains}
 
                         </select>
@@ -860,7 +860,7 @@ class QuestionBank extends Component {
                             aria-label="Search" aria-describedby="basic-addon2" value={this.state.search} onChange={(e) => { this.setState({ search: e.target.value }) }} />
                         <div className="input-group-append">
                             <button type="submit" className="btn btn-primary btn-icon-split btn-sm requests2" >
-                                <span className="text">Find</span>
+                                <span className="text">Search</span>
                             </button>
                         </div>
                     </form>

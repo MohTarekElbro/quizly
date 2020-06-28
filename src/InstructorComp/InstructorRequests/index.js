@@ -20,7 +20,7 @@ class InstructorRequests extends Component {
     componentDidMount = async () => {
         const requestOptions = {
             method: 'Get',
-            headers: { 'Content-Type': 'application/json' , 'Authorization' : read_cookie('token')},
+            headers: { 'Content-Type': 'application/json' , 'Authorization' : localStorage.getItem('token')},
         };
         let api;
 
@@ -75,7 +75,7 @@ class InstructorRequests extends Component {
         console.log(ID)
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': read_cookie("token") },
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
         };
         let api;
 
