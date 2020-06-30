@@ -319,39 +319,8 @@ class InstructorFeedback extends Component {
         window.removeEventListener('scroll', this.handleScroll);
     }
     render() {
-        const { Feedbacks } = this.state
         const { pageContent } = this.state
 
-        const ListFeedbacks = Feedbacks.map((Feedback, index) => {
-            var month = new Date(Feedback.date).toString().split(" ")[1]
-            var day = new Date(Feedback.date).toString().split(" ")[2]
-
-            return (
-                <div className="instructorItem ">
-                    <div className="listDate ">
-                        <div className="date1">
-                            <p>{day}</p>
-                            <p>{month}</p>
-                        </div>
-
-                    </div>
-                    <div className="listData ">
-                        <p className="center">Email: {Feedback.creator.Email} </p>
-                        <p>Feedback: {Feedback.feedback} </p>
-                    </div>
-                    <div className="listButtons ">
-
-                        <button onClick={() => { this.delete(Feedback._id) }} className="btn btn-danger btn-icon-split btn-sm">
-                            <span className="icon text-white-50">
-                                <i className="far fa-times-circle"></i>
-                            </span>
-                            <span className="text">Delete</span>
-                        </button>
-                    </div>
-                </div>
-
-            )
-        })
         return (
             <div className="paddingTop card shadow mb-4" style={{ "margin-top": "70px" }}>
                 <div className="card-header py-3">

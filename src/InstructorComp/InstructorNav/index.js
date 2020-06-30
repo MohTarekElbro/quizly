@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { read_cookie, bake_cookie } from 'sfcookies'
 import socketIOClient from "socket.io-client";
 import './style2.css'
@@ -179,6 +179,8 @@ class InstructorNav extends Component {
         localStorage.removeItem("instructorAge")
         localStorage.removeItem("pic")
 
+        this.props.history.push('/login')
+
     }
 
     componentWillMount() {
@@ -343,14 +345,14 @@ class InstructorNav extends Component {
                                 My Questions
                             </Link>
                             <div className="dropdown-divider"></div>
-                            <Link className="dropdown-item" to="/login" onClick={() => this.Logout("one")} >
+                            <button className="dropdown-item"  onClick={() => this.Logout("one")} >
                                 <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Logout
-                            </Link>
-                            <Link className="dropdown-item" to="/login" onClick={() => this.Logout("all")} >
+                            </button>
+                            <button className="dropdown-item"  onClick={() => this.Logout("all")} >
                                 <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Logout from all devices
-                            </Link>
+                            </button>
                         </div>
                     </li>
 
@@ -361,4 +363,4 @@ class InstructorNav extends Component {
     }
 }
 
-export default InstructorNav;
+export default withRouter( InstructorNav);

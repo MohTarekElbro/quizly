@@ -150,11 +150,42 @@ class AmdinNav extends Component {
 
     
 
-    Logout = () => {
-        localStorage.setItem("token", "")
-        localStorage.setItem("adminID", "")
-        localStorage.setItem("adminemail", "")
-        localStorage.setItem('token', "");
+    Logout = async (type = "one") => {
+        const requestOptions = {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") }
+        };
+        let api;
+        if (type == "one") {
+
+            try {
+                api = await fetch('https://quizly-app.herokuapp.com/admin/logout', requestOptions)
+                const data = await api.json();
+                console.log(data)
+
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+        else{
+            try {
+                api = await fetch('https://quizly-app.herokuapp.com/admin/logoutAll', requestOptions)
+                const data = await api.json();
+                console.log(data)
+
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+        localStorage.removeItem("token")
+        localStorage.removeItem("adminID")
+        localStorage.removeItem("adminEmail")
+        localStorage.removeItem("adminemail")
+        localStorage.removeItem("pic")
+        this.props.history.push('/adminLogin')
+
     }
 
     componentWillMount() {
@@ -278,23 +309,6 @@ class AmdinNav extends Component {
 
                 <ul className="navbar-nav ml-auto navUL">
 
-                    <li className="nav-item dropdown no-arrow d-sm-none">
-                        <a className="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-togg e="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i className="fas fa-search fa-fw"></i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                            <form className="form-inline mr-auto w-100 navbar-search">
-                                <div className="input-group">
-                                    <input type="text" className="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
-                                    <div className="input-group-append">
-                                        <button className="btn btn-primary" type="button">
-                                            <i className="fas fa-search fa-sm"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </li>
 
                     <li className="nav-item dropdown no-arrow mx-1">
                         <a className="nav-link noti dropdown-toggle"  href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -326,19 +340,16 @@ class AmdinNav extends Component {
                                 <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
                             </Link>
-                            <Link className="dropdown-item" id="" to="/adminHome/adminInstractors">
-                                <i className="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Settings
+                            <Link className="dropdown-item"  to="/adminHome/adminInstractors">
+                                <i className="fas fa-chalkboard-teacher fa-sm fa-fw mr-2 text-gray-400"></i>
+                                {/* <i className="fas fa-chalkboard-teacher"></i> */}
+                                Instructor's Requests
                             </Link>
-                            <a className="dropdown-item" href="#">
-                                <i className="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Activity Log
-                            </a>
                             <div className="dropdown-divider"></div>
-                            <Link className="dropdown-item" to="/login" onClick={this.Logout} >
+                            <button className="dropdown-item"  onClick={this.Logout} >
                                 <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Logout
-                            </Link>
+                            </button>
                         </div>
                     </li>
 

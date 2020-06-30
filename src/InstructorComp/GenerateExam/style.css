@@ -11,7 +11,7 @@
           justify-content: space-between;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .GenerateExamContainer {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
@@ -44,6 +44,18 @@
 
 .GenerateExamContainer .options1 .searchExamButton {
   margin: 0 20px;
+}
+
+.GenerateExamContainer .options1 .notShown {
+  font-weight: normal;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.GenerateExamContainer .options1 .shown {
+  font-weight: bold;
+  font-size: 18px;
+  text-decoration: underline;
 }
 
 .GenerateExamContainer .options1 .option1 {
@@ -86,7 +98,7 @@
   padding: 0px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .GenerateExamContainer .examHalf {
     width: 100%;
     margin-bottom: 30px;

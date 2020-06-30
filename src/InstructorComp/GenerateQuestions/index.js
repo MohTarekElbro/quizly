@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import './style.css'
 import { read_cookie, bake_cookie } from 'sfcookies';
+import { Default } from 'react-spinners-css';
 import { Ouroboro } from 'react-spinners-css';
 import { saveAs, encodeBase64 } from '@progress/kendo-file-saver';
 import socketIOClient from "socket.io-client";
@@ -83,13 +84,13 @@ class GenerteQuestions extends Component {
             })
         })
 
-        if(this.props.generateQuestions){
+        if (this.props.generateQuestions) {
             console.log($(".levels"))
-            $(".levels").css("width" ,"100%")
-        } 
+            $(".levels").css("width", "100%")
+        }
     }
 
-  
+
     getQuestions = async (flag = true) => {
 
         const requestOptions1 = {
@@ -206,19 +207,6 @@ class GenerteQuestions extends Component {
             console.log(e.message);
         }
 
-        // let input = this.txtFile
-        // // 
-        // if (input.files && input.files[0]) {
-        //     var reader = new FileReader();
-        //     reader.onload = function (e) {
-        //         $('#txtFile')
-        //             .attr('src', e.target.result)
-        //             .width(240)
-        //             .height(300);
-        //         
-        //     };
-        //     reader.readAsDataURL(input.files[0]);
-        // }
     }
 
     saveFile = async () => {
@@ -401,7 +389,7 @@ class GenerteQuestions extends Component {
                 add_distructors[k.toString()] = []
                 add_distructors[k.toString()].push(Questions[i][1])
             }
-            
+
             k++
         }
 
@@ -633,7 +621,7 @@ class GenerteQuestions extends Component {
                 realQuestions[index][2] = "T"
             }
         }
-        else{
+        else {
             realQuestions[index][0] = Question
             realQuestions[index][1] = keyword
         }
@@ -664,7 +652,7 @@ class GenerteQuestions extends Component {
                     <div class="generate-form  ">
                         <h2 className="center">Generate Questions</h2>
                         <div className="selects">
-                            <div className=" levels" style = {this.props.generateQuestions?{"width":"100%"}:{}}>
+                            <div className=" levels" style={this.props.generateQuestions ? { "width": "100%" } : {}}>
                                 <span style={{ "margin": "auto 0", "height": "30px" }}>Type of Questions: </span>
                                 <select data-menu id="QuestionType" className="select2" name="QuestionType" value={this.state.QuestionType} onChange={(e) => { this.setState({ QuestionType: e.target.value }) }} >
                                     <option value={"MCQ"}>MCQ</option>
@@ -673,14 +661,14 @@ class GenerteQuestions extends Component {
                                 </select >
                             </div>
 
-                            <div className=" levels" style = {this.props.generateQuestions?{"width":"100%"}:{}}>
+                            <div className=" levels" style={this.props.generateQuestions ? { "width": "100%" } : {}}>
                                 <span style={{ "margin": "auto 0", "height": "30px" }}>Domain: </span>
                                 <select data-menu id="QuestionType" className="select1" name="QuestionType" value={this.state.DomainName} onChange={(e) => { this.setState({ DomainName: e.target.value }) }} >
                                     {ListDomains}
                                 </select >
                             </div>
 
-                            <div className=" levels" style = {this.props.generateQuestions?{"width":"100%"}:{}}>
+                            <div className=" levels" style={this.props.generateQuestions ? { "width": "100%" } : {}}>
                                 <span style={{ "margin": "auto 0", "height": "30px" }}>Level of Questions: </span>
                                 <select data-menu id="QuestionType" className="select2" name="QuestionType" value={this.state.level} onChange={(e) => { this.setState({ level: e.target.value }) }} >
                                     <option value={"H"}>Hard</option>
@@ -688,7 +676,7 @@ class GenerteQuestions extends Component {
                                 </select >
                             </div>
 
-                            <div className=" levels" style = {this.props.generateQuestions?{"width":"100%"}:{}}>
+                            <div className=" levels" style={this.props.generateQuestions ? { "width": "100%" } : {}}>
                                 <span style={{ "margin": "auto 0", "height": "30px" }}>Num of Answers: </span>
                                 <select data-menu id="QuestionType" className="select2" name="QuestionType" value={this.state.numOfAnswers} onChange={(e) => { this.setState({ numOfAnswers: e.target.value }) }} >
                                     <option value={2}>{2}</option>
@@ -714,7 +702,7 @@ class GenerteQuestions extends Component {
 
                         <div class="row optionItem remove" id="textarea" >
                             <div class="col-sm-12 form-group">
-                                <textarea class="generateQuestionText" ref={(textarea) => { this.textarea = textarea }} type="text" name="comments" id="comments" placeholder="Your Question" rows="7" value = {this.state.text} onChange={(e) => {this.setState({ text: e.target.value }) }} ></textarea>
+                                <textarea class="generateQuestionText" ref={(textarea) => { this.textarea = textarea }} type="text" name="comments" id="comments" placeholder="Your Question" rows="7" value={this.state.text} onChange={(e) => { this.setState({ text: e.target.value }) }} ></textarea>
 
                             </div>
                         </div>
@@ -753,7 +741,7 @@ class GenerteQuestions extends Component {
             return (
                 <div className="loading">
                     <div>
-                        <Ouroboro color="#be97e8" />
+                        <Default color="#4e73df" />
                     </div>
                 </div>
             )

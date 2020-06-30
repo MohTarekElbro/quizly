@@ -15,19 +15,37 @@ import './vendor/select2/select2.min.css'
 import './vendor/css-hamburgers/hamburgers.min.css'
 import './vendor/daterangepicker/daterangepicker.css'
 import axios from 'axios'
+import { DualRing } from 'react-spinners-css';
 
 
 
 class Login extends Component {
-    state = {
-        url: ""
-    }
-    componentDidMount = () => {
-        axios.get('js/data.json').then(res => {
-            this.setState({
-                url: res.data.url
-            })
-        })
+
+    componentDidMount = async () => {
+
+
+        if (localStorage.getItem("token")) {
+            // window.addEventListener('scroll', this.handleScroll);
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    "token": localStorage.getItem("token")
+                })
+            };
+            let api;
+            try {
+                api = await fetch('https://quizly-app.herokuapp.com/check', requestOptions)
+                const data = await api.json();
+                if (data.type == "instructor") {
+                    this.props.history.push("/instructorHome/generateExam")
+                }
+
+            }
+            catch (e) {
+                console.log("Error: ", e);
+            }
+        }
     }
 
 
@@ -35,6 +53,7 @@ class Login extends Component {
 
     LoginAt = async (e) => {
         $("*").css("cursor", "progress")
+        $(".newLoading").css("display", "flex")
         e.preventDefault();
         const username = e.target.elements.username.value;
         const password = e.target.elements.password.value;
@@ -49,9 +68,7 @@ class Login extends Component {
         };
 
         let api;
-        let { url } = this.state
 
-        console.log("URL: ", url)
         try {
             api = await fetch('https://quizly-app.herokuapp.com/instructor/login', requestOptions)
 
@@ -60,6 +77,8 @@ class Login extends Component {
             console.log(api)
             if (api.status == 404) {
                 $("*").css("cursor", "default")
+                $(".newLoading").css("display", "none")
+
                 $.alert({
                     title: 'Failed!',
                     boxWidth: '400px',
@@ -78,7 +97,7 @@ class Login extends Component {
                 localStorage.setItem("instructorLastName", data.instructor.Last_Name);
                 localStorage.setItem("instructorAge", data.instructor.Age);
                 localStorage.setItem("instructorAddress", data.instructor.Address);
-                
+
                 // bake_cookie('token', data.token);
                 // bake_cookie("instructorID", data.instructor._id);
                 // bake_cookie("instructorEmail", data.instructor.Email);
@@ -91,7 +110,8 @@ class Login extends Component {
                 // })
 
                 $("*").css("cursor", "default")
-                this.props.history.push("/instructorHome");
+                $(".newLoading").css("display", "none")
+                this.props.history.push("/instructorHome/generateExam");
             }
             else {
                 console.log("0")
@@ -109,6 +129,9 @@ class Login extends Component {
 
         return (
             <div className="limiter">
+                <div className="newLoading">
+                    <DualRing color="red" />
+                </div>
                 <div className="container-login100">
                     <div className="wrap-login100">
                         <form className="login100-form validate-form" onSubmit={this.LoginAt}>

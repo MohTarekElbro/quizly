@@ -13,22 +13,32 @@ class InstructorRequests extends Component {
 
     state = {
         Requests: [],
-        loadjs
+        loadjs,
+        pageContent: "addNewDomain",
+        domainName: "",
+        description: "",
+        fileName: "",
+        filePath: ""
+
+
+
     }
 
 
     componentDidMount = async () => {
+
         const requestOptions = {
             method: 'Get',
-            headers: { 'Content-Type': 'application/json' , 'Authorization' : localStorage.getItem('token')},
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('token') },
         };
         let api;
 
         try {
-            api = await fetch('https://quizly-app.herokuapp.com/domain/requests/list', requestOptions)
+            api = await fetch('https://quizly-app.herokuapp.com/domain', requestOptions)
             const data = await api.json();
             this.setState({
-                Requests: data
+                Requests: data,
+
             })
 
         }
@@ -95,17 +105,157 @@ class InstructorRequests extends Component {
 
 
     AddNewDomain = async () => {
+        console.log(this.state.domainName, this.state.description, this.state.filePath)
+        let file = this.txtFile.files[0]
+        let formData = new FormData()
+        formData.append('material', file)
+        formData.append("Requested_domain", this.state.domainName)
+        formData.append("description", this.state.description)
+        const requestOptions = {
+            method: 'post',
+            headers: { 'Authorization': localStorage.getItem('token') },
+            body: formData
+        };
+        let api;
+
+        try {
+            api = await fetch('https://quizly-app.herokuapp.com/domain/request', requestOptions)
+            const data = await api.json();
+            console.log(data)
+
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+
+    uploadImage = async (e) => {
+        let file = this.txtFile.files[0]
+        // console.log(file.name)
+        this.setState({
+            fileName: file.name
+        })
+        $('.saveImg').css('display', 'block')
 
     }
 
+    newDomainForm = () => {
+        return (
+            <div class="flex row" >
+                <div class="form-container  ">
+                    <h2>Add New Domain</h2>
+                    {/* this.textarea.value = this.state.description */}
 
+                    <div class="row optionItem " id="textarea" >
+                        <div class="col-sm-12 form-group">
+                            <textarea placeholder="Description" class="generateQuestionText" type="text" value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} />
 
+                        </div>
+                    </div>
+                    <div className="levels">
+                        <input type="text" className="form-control bg-light  small inputSearch" style={{ "marginBottom": "20px" }} placeholder="Domain Name"
+                            aria-label="Search" aria-describedby="basic-addon2" value={this.state.domainName} onChange={(e) => { this.setState({ domainName: e.target.value }) }} />
+                    </div>
+
+                    <div className="uploadTxtFile  optionItem" id="uploadInput">
+                        <label className="uploadFile" style={{ "marginTop": "0px" }}>
+                            <input type="file" name='txtFile' ref={(txtFile) => { this.txtFile = txtFile }} onChange={() => this.uploadImage()} className="fileInput form-control" />
+                            <i className="fas fa-upload"></i> Upload File
+                            </label>
+
+                        <p className="" > {this.state.fileName}</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 form-group">
+                            <button class="btn btn-lg btn-warning btn-block submit" onClick={() => this.AddNewDomain()} value="Post" >Post</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        )
+    }
+
+    listDomains = (Domains) => {
+        if (Domains[0] == null) {
+            console.log("MMMMMMMMMMMMMMMMMMM")
+            return (
+                <div style={{ "width": "100%", "display": "flex", "justifyContent": "center", }}>
+                    <div class="text-center" >
+                        {/* <div class="error mx-auto" data-text="404">404</div> */}
+                        <p class=" error mx-auto lead text-gray-800 mb-5" data-text="No Domains Available" style={{ "fontSize": "30px" }}>No Domains Available</p>
+                        {/* <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p> */}
+                    </div>
+                </div>
+            )
+        }
+        else {
+            console.log("Domains: ", Domains)
+            return Domains.map((Domain, index) => {
+                var month = new Date(Domain.createdAt).toString().split(" ")[1]
+                var day = new Date(Domain.createdAt).toString().split(" ")[2]
+
+                return (
+                    <div className="instructorItem ">
+                        <div className="listDate ">
+                            <div className="date1">
+                                <p>{day}</p>
+                                <p>{month}</p>
+                            </div>
+
+                        </div>
+                        <div className="listData ">
+                            <p className="center">Email: {Domain.requester} </p>
+                            <p className="center">Domain: {Domain.domain_name} </p>
+                            <p className="center">Description: {Domain.description} </p>
+                        </div>
+                        <div className="listButtons ">
+
+                            <button onClick={() => { this.delete(Domain._id) }} className="btn btn-danger btn-icon-split btn-sm">
+                                <span className="icon text-white-50">
+                                    <i className="far fa-times-circle"></i>
+                                </span>
+                                <span className="text">Delete</span>
+                            </button>
+                        </div>
+                    </div>
+                )
+            })
+        }
+    }
+    showNewDomain = (type) => {
+        if (type == "add") {
+            this.setState({
+                pageContent: "addNewDomain"
+            })
+        }
+        else {
+            this.setState({
+                pageContent: "listDomains"
+            })
+        }
+
+        window.removeEventListener('scroll', this.handleScroll);
+    }
 
 
     render() {
-        console.log("Render")
+        // console.log("Render")
+        if (this.textarea) {
+            this.textarea.value = this.state.description
 
+        }
         const { Requests } = this.state
+        const { pageContent } = this.state
+        let content;
+        if (pageContent == "addNewDomain") {
+            content = this.newDomainForm()
+        }
+        else if (pageContent == "listDomains") {
+            console.log("MMMM")
+            content = this.listDomains(this.state.Requests)
+        }
 
         const ListRequests = Requests.map((Request, index) => {
             return (
@@ -114,7 +264,7 @@ class InstructorRequests extends Component {
                     {/* <td>{Request.requester.Email}</td> */}
                     <td>{Request.votes}</td>
                     <td>
-                        <button type="button"  onClick={() => { this.Vote(Request.Requested_domain) }} class="btn btn-success btn-icon-split btn-sm " data-toggle="modal" data-target="#exampleModal">
+                        <button type="button" onClick={() => { this.Vote(Request.Requested_domain) }} class="btn btn-success btn-icon-split btn-sm " data-toggle="modal" data-target="#exampleModal">
                             <span class="icon text-white-50">
                                 <i class="fas fa-vote-yea"></i>
                             </span>
@@ -130,38 +280,22 @@ class InstructorRequests extends Component {
         return (
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary requests1">DataTables Example</h6>
-                    <button onClick={this.Refresh} class="btn btn-primary btn-icon-split btn-sm requests2" >
+                    <button onClick={() => this.showNewDomain("list")} class="btn btn-primary btn-icon-split btn-sm requests2" >
                         <span class="icon text-white-50">
                             <i class="fas fa-redo-alt"></i>
                         </span>
                         {/* <span class="text">Refresh</span> */}
                     </button>
 
-                    <button onClick={this.AddNewDomain} class="btn btn-success btn-icon-split btn-sm requests2" >
+                    <button onClick={() => this.showNewDomain("add")} class="btn btn-success btn-icon-split btn-sm requests2" >
                         {/* <span class="icon text-white-50">
                             <i class="fas fa-redo-alt"></i>
                         </span> */}
                         <span class="text">Request New Domain</span>
                     </button>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellSpacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Domain</th>
-                                    {/* <th>Owner</th> */}
-                                    <th>Votes</th>
-                                    <th>Vote</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {ListRequests}
-                            </tbody>
-                        </table>
-                    </div>
+                <div className="ListContainer" >
+                    {content}
                 </div>
             </div>
         )

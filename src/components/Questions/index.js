@@ -126,7 +126,7 @@ class QuestionBank extends Component {
 
 
     componentDidMount = async () => {
-
+        $('.FindFrom').animate({ scrollTop: 0 }, 1)
         if (this.props.url) {
             this.setState({
                 commingUrl: this.props.url

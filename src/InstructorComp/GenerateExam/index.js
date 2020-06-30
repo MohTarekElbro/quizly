@@ -8,6 +8,8 @@ import $ from 'jquery'
 import { read_cookie } from 'sfcookies'
 import jsPDF from 'jspdf'
 import GenerteQuestions from '../GenerateQuestions'
+import _, { throttle } from 'lodash'
+
 
 class GenerateExam extends Component {
     state = {
@@ -19,12 +21,56 @@ class GenerateExam extends Component {
         university: "Helwan",
         faculty: "Computer science",
         duration: 120,
+        slided: "more"
 
+    }
+    componentWillMount = () => {
+        $(window).resize(_.throttle(() => {
+            if ($(document).width() > 1000) {
+                // $('.examsList').animate({ scrollTop: 0 }, 1)
+                if (this.state.slided == "less") {
+                    console.log("More")
+                    $(".ExamToolBody").slideDown(1)
+                    $(".examTools").css({
+                        "height": "height: calc(100vh - 100px);",
+                        "margin-bottom": "30px"
+                    })
+                    this.setState({
+                        slided: "more"
+                    })
+                }
+
+            }
+            else {
+                if (this.state.slided == "more") {
+                    console.log("less")
+                    $(".ExamToolBody").slideUp(1)
+                    $(".examTools").css({
+                        "height": "auto",
+                        "margin-bottom": "0px"
+                    })
+                    this.setState({
+                        slided: "less"
+                    })
+                }
+            }
+        }, 500))
     }
     componentDidMount = () => {
         this.titlesValidation()
-        this.changeToolContent("GenerateQuestions")
-        $("#GenerateQuestions").click()
+
+        if ($(document).width() < 1000) {
+            // $('.examsList').animate({ scrollTop: 0 }, 1)
+            $(".ExamToolBody").slideUp(1)
+            $(".examTools").css({
+                "height": "auto",
+                "margin-bottom": "0px"
+            })
+        }
+        else {
+            this.changeToolContent("GenerateQuestions")
+            $("#GenerateQuestions").click()
+        }
 
     }
     componentDidUpdate = () => {
@@ -123,7 +169,7 @@ class GenerateExam extends Component {
             }
             else {
                 this.setState({
-                    examToolContent: <GenerteQuestions generateQuestions = "generate" />
+                    examToolContent: <GenerteQuestions generateQuestions="generate" />
                 })
             }
         }
@@ -349,16 +395,43 @@ class GenerateExam extends Component {
     }
 
     changeOption = (id) => {
-        $(".option1").css({
-            'font-weight': 'normal',
-            'font-size': '16px',
-            'text-decoration': 'none'
-        })
-        $("#" + id).css({
-            'font-weight': 'bold',
-            'font-size': '17px',
-            'text-decoration': 'underline'
-        })
+        $(".option1").addClass('notShown')
+        if ($("#" + id).hasClass("shown") == true && $(document).width() < 1000) {
+            // $('.ExamToolBody').animate({ scrollTop: 0 }, 1)
+            $("#" + id).addClass('notShown')
+            $("#" + id).removeClass('shown')
+            if ($(document).width() < 1000) {
+                $(".examTools").css({
+                    "height": "auto",
+                    "margin-bottom": "0px"
+                })
+                // 
+
+                $(".ExamToolBody").slideUp(500)
+                $('.ExamToolBody').animate({ scrollTop: 0 }, 1)
+            }
+            // $('.ExamToolBody').animate({ scrollTop: 0 }, 1)
+
+        }
+        else {
+            $("#" + id).removeClass('notShown')
+            $(".option1").removeClass('shown')
+            $("#" + id).addClass('shown')
+            $('.ExamToolBody').animate({ scrollTop: 0 }, 1)
+            if ($(document).width() < 1000) {
+                $(".examTools").css({
+                    "height": "height: calc(100vh - 100px);",
+                    "margin-bottom": "30px"
+                })
+                $('.ExamToolBody').animate({ scrollTop: 0 }, 1)
+
+                $(".ExamToolBody").slideDown(500)
+            }
+            
+            $('.ExamToolBody').animate({ scrollTop: 0 }, 1)
+
+
+        }
     }
 
     generatePdf = () => {

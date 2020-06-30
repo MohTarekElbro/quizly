@@ -7,22 +7,57 @@ import AdminInstractors from '../AdminInstractors'
 import { read_cookie } from 'sfcookies'
 import QuestionBank from '../../components/Questions'
 import AdminFeedback from '../AdminFeedback'
+import { Default } from 'react-spinners-css';
+
 
 class AdminHome extends Component {
-    componentWillMount() {
-        const token = localStorage.getItem("token")
-        this.setState({
-            token
-        })
-    }
+
     state = {
-        token: ""
+        token: "loading"
+    }
+    componentWillMount = async() => {
+
+        if (localStorage.getItem("token")) {
+            window.addEventListener('scroll', this.handleScroll);
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    "token": localStorage.getItem("token")
+                })
+            };
+            let api;
+            try {
+                api = await fetch('https://quizly-app.herokuapp.com/check', requestOptions)
+                const data = await api.json();
+                if (data.type == "admin") {
+                    this.setState({
+                        token:"true"
+                    })
+                }
+                else{
+                    this.setState({
+                        token:"false"
+                    })
+                }
+
+            }
+            catch (e) {
+                
+                console.log("Error: ", e);
+            }
+        }
+        else{
+            this.setState({
+                token:"false"
+            })
+        }
     }
 
 
 
     render() {
-        if (this.state.token.includes("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9")) {
+        if (this.state.token == "true") {
             return (
                 <div id="wrapper"  >
                     <AmdinFeatuers />
@@ -53,13 +88,22 @@ class AdminHome extends Component {
                 </div>
             )
         }
-        else {
+        else if (this.state.token == "false") {
             return (
-                <div class="text-center">
-                    <div class="error mx-auto" data-text="404">404</div>
-                    <p class="lead text-gray-800 mb-5">Page Not Found</p>
-                    <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
-                    <a href="index.html">&larr; Back to Dashboard</a>
+                <div className="text-center">
+                    <div className="error mx-auto" data-text="404">404</div>
+                    <p className="lead text-gray-800 mb-5">Page Not Found</p>
+                    <p className="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
+                </div>
+            )
+        }
+        else{
+            return(
+                <div className="loading">
+                    <div>
+                        {/* <h2>Wait for generating questions...</h2> */}
+                        <Default color="#4e73df" />
+                    </div>
                 </div>
             )
         }
