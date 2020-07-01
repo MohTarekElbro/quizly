@@ -513,11 +513,11 @@ class GenerateExam extends Component {
             if (Question.kind == "MCQ") {
                 Question.distructor.push(Question.keyword)
                 this.shuffleArray(Question.distructor)
-                Question.distructor.map((dis, index) => {
+                Question.distructor.map((dis, ind) => {
                     let splitDis = doc.splitTextToSize(dis, 530);
                     for (let i = 0; i < splitDis.length; i++) {
                         if (i == 0) {
-                            doc.text(30, leng, letters[index + 1] + "- " + splitDis[i])
+                            doc.text(30, leng, letters[ind + 1] + "- " + splitDis[i])
                         }
                         else {
                             doc.text(30, leng, splitDis[i])
@@ -534,23 +534,29 @@ class GenerateExam extends Component {
                         doc.addPage()
                         leng = newStart
                     }
+                    leng += 30
+                    if (leng > pageHeight) {
+                        doc.addPage()
+                        leng = newStart
+                    }
                 })
 
             }
             else if (Question.kind == "T/F") {
-                doc.text(30, leng, letters[index + 1] + "- " + "True")
+                doc.text(30, leng, letters[1] + "- " + "True")
                 leng += 20
                 if (leng >= pageHeight) {
                     doc.addPage()
                     leng = newStart
                 }
-                doc.text(30, leng, letters[index + 5] + "- " + "False")
+                doc.text(30, leng, letters[5] + "- " + "False")
+                leng += 30
+                if (leng > pageHeight) {
+                    doc.addPage()
+                    leng = newStart
+                }
             }
-            leng += 30
-            if (leng > pageHeight) {
-                doc.addPage()
-                leng = newStart
-            }
+
         })
 
 
