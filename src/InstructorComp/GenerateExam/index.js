@@ -9,6 +9,7 @@ import { read_cookie } from 'sfcookies'
 import jsPDF from 'jspdf'
 import GenerteQuestions from '../GenerateQuestions'
 import _, { throttle } from 'lodash'
+import { DualRing } from 'react-spinners-css'
 
 
 class GenerateExam extends Component {
@@ -17,10 +18,10 @@ class GenerateExam extends Component {
         Questions: [],
         deletedQuestions: [],
         currentPage: "",
-        subject: "SW",
-        university: "Helwan",
-        faculty: "Computer science",
-        duration: 120,
+        subject: "",
+        university: "",
+        faculty: "",
+        duration: "",
         slided: "more"
 
     }
@@ -131,6 +132,7 @@ class GenerateExam extends Component {
                 "cursor": "pointer"
             })
             $('.generateButton').prop('disabled', 'false')
+            return true
         }
         else {
             $('.generateButton').css({
@@ -138,6 +140,7 @@ class GenerateExam extends Component {
                 "cursor": "not-allowed"
             })
             $('.generateButton').prop('disabled', 'true')
+            return false
         }
 
     }
@@ -335,52 +338,61 @@ class GenerateExam extends Component {
     }
 
     generateExam = async () => {
-        $("*").css("cursor", "progress");
-        $("#generateExam").css("display", "none")
-        var Questions = []
-        var { deletedQuestions } = this.state
-        deletedQuestions.forEach(element => {
-            Questions.push(element._id)
-        });
-        var { subject } = this.state
-        var { university } = this.state
-        var { faculty } = this.state
-        var { duration } = this.state
+        if (this.titlesValidation()) {
+            $("*").css("cursor", "progress");
+            $(".newLoading").css("display", "flex")
 
-        const requestOptions1 = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
-            body: JSON.stringify({
-                "subject_name": subject,
-                "university": university,
-                "faculty": faculty,
-                "duration": duration,
-                "Questions": Questions
+            $("#generateExam").css("display", "none")
+            var Questions = []
+            var { deletedQuestions } = this.state
+            deletedQuestions.forEach(element => {
+                Questions.push(element._id)
+            });
+            var { subject } = this.state
+            var { university } = this.state
+            var { faculty } = this.state
+            var { duration } = this.state
+
+            const requestOptions1 = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
+                body: JSON.stringify({
+                    "subject_name": subject,
+                    "university": university,
+                    "faculty": faculty,
+                    "duration": duration,
+                    "Questions": Questions
+
+                })
+            };
+            let api1;
+
+            try {
+                api1 = await fetch('https://quizly-app.herokuapp.com/exam/create', requestOptions1)
+                let data = await api1.json();
+                // console.log(data)
+
+            }
+            catch (e) {
+                // console.log(e)
+            }
+
+            this.generatePdf()
+            $("*").css("cursor", "default");
+            $(".newLoading").css("display", "none")
+            $("#generateExam").css("display", "block")
+            this.setState({
+                examToolContent: "",
+                Questions: [],
+                deletedQuestions: [],
+                currentPage: "",
+                subject: "",
+                university: "",
+                faculty: "",
+                duration: "",
 
             })
-        };
-        let api1;
-
-        try {
-            api1 = await fetch('https://quizly-app.herokuapp.com/exam/create', requestOptions1)
-            let data = await api1.json();
-            // console.log(data)
-
         }
-        catch (e) {
-            // console.log(e)
-        }
-
-        this.generatePdf()
-        $("*").css("cursor", "default");
-        $("#generateExam").css("display", "block")
-        this.setState({
-            examToolContent: "",
-            Questions: [],
-            deletedQuestions: [],
-            currentPage: "",
-
-        })
     }
 
     shuffleArray = (array) => {
@@ -427,7 +439,7 @@ class GenerateExam extends Component {
 
                 $(".ExamToolBody").slideDown(500)
             }
-            
+
             $('.ExamToolBody').animate({ scrollTop: 0 }, 1)
 
 
@@ -525,6 +537,15 @@ class GenerateExam extends Component {
                 })
 
             }
+            else if (Question.kind == "T/F") {
+                doc.text(30, leng, letters[index + 1] + "- " + "True")
+                leng += 20
+                if (leng >= pageHeight) {
+                    doc.addPage()
+                    leng = newStart
+                }
+                doc.text(30, leng, letters[index + 5] + "- " + "False")
+            }
             leng += 30
             if (leng > pageHeight) {
                 doc.addPage()
@@ -592,7 +613,9 @@ class GenerateExam extends Component {
 
             <div className="GenerateExamContainer" >
                 {/* <div onClick={() => this.showEaxmsList()} className="examsBar2"><i className="fas fa-bars"></i></div> */}
-
+                <div className="newLoading">
+                    <DualRing color="red" />
+                </div>
                 <div className="examHalf examTools">
                     <div className="options1">
                         <p onClick={() => this.changeOption("GenerateQuestions")} id="GenerateQuestions" className="option1"><a onClick={() => this.changeToolContent("GenerateQuestions")} >GenerateQuestions</a></p>

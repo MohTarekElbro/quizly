@@ -240,6 +240,7 @@
   -webkit-box-direction: normal;
       -ms-flex-flow: column;
           flex-flow: column;
+  position: relative;
 }
 
 .GenerateExamContainer .examTools .ExamToolsNav {

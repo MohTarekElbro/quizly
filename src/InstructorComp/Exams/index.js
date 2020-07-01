@@ -9,6 +9,8 @@ import { Slider, Rail, Handles, Tracks, Ticks } from 'react-compound-slider'
 // import ValueViewer from 'docs/src/pages/ValueViewer' // for examples only - displays the table above slider
 import { SliderRail, Handle, Track, Tick } from '../sliderComps'
 import loadjs from 'loadjs'
+import jsPDF from 'jspdf'
+
 import './style.css'
 import Modal from '../../components/Modal'
 import { withRouter } from 'react-router-dom'
@@ -63,6 +65,130 @@ class Exams extends Component {
                 $(".examsList").slideUp(1)
             }
         })
+    }
+
+    generatePdf = (exam) => {
+        var doc = new jsPDF('p', 'pt')
+        // doc.fromHTML($('#examhalf').get(0), 5, 10)
+        let letters = {
+            1: "A",
+            2: "B",
+            3: "C",
+            4: "D",
+            5: "E",
+            6: "F",
+            7: "G",
+            8: "H",
+            9: "I",
+            10: "J",
+            11: "K",
+            12: "L",
+            13: "M",
+            14: "N",
+
+        }
+        let text = "Answer The Following Questions"
+        let xOffset = (doc.internal.pageSize.width / 2) - (doc.getStringUnitWidth(text) * doc.internal.getFontSize() / 2);
+        doc.text(15, 30, "Subject: " + exam.subject_name)
+        doc.text(15, 50, "University: " + exam.university)
+        doc.text(15, 70, "Faculty: " + exam.faculty)
+        doc.text(15, 90, "Duration: " + exam.duration)
+
+        doc.text(40, 120, "__________________________________________________________")
+        doc.text(40, 121, "__________________________________________________________")
+        doc.text(40, 122, "__________________________________________________________")
+        doc.text(40, 123, "__________________________________________________________")
+        let leng = 190
+        let newStart = 25
+        let pageHeight = doc.internal.pageSize.height;
+        doc.text(xOffset, 160, text)
+        var Questions = []
+
+        Questions = exam.Myexam.map((Question, index) => {
+            let splitQuestion = doc.splitTextToSize(Question.Question, 550);
+            for (let i = 0; i < splitQuestion.length; i++) {
+                if (i == 0) {
+                    doc.text(15, leng, index + 1 + "- " + splitQuestion[i])
+                }
+                else {
+                    doc.text(15, leng, splitQuestion[i])
+                }
+                leng += 25
+                if (leng >= pageHeight) {
+                    doc.addPage()
+                    leng = newStart
+                }
+            }
+            if (leng > pageHeight) {
+                doc.addPage()
+                leng = newStart
+            }
+            // doc.text(30, leng, 1 + "- " + Question.keyword)
+            // leng += 20
+            // if (leng > pageHeight) {
+            //     doc.addPage()
+            //     leng = newStart
+            // }
+
+
+            if (Question.kind == "MCQ") {
+                let distructorss = []
+                distructorss.push(Question.keyword)
+                for (let i = 0; i < Question.distructor.length; i++) {
+                    distructorss.push(Question.distructor[i].distructor)
+                }
+                // Question.distructor.push(Question.keyword)
+                this.shuffleArray(distructorss)
+                distructorss.map((dis, id) => {
+                    console.log(dis)
+                    let splitDis = doc.splitTextToSize(dis, 530);
+                    for (let i = 0; i < splitDis.length; i++) {
+                        if (i == 0) {
+                            doc.text(30, leng, letters[id + 1] + "- " + splitDis[i])
+                        }
+                        else {
+                            doc.text(30, leng, splitDis[i])
+                        }
+                        leng += 20
+                        if (leng >= pageHeight) {
+                            doc.addPage()
+                            leng = newStart
+                        }
+                    }
+                    // doc.text(30, leng, letters[index + 1] + "- " + dis)
+                    // leng += 20
+                    if (leng > pageHeight) {
+                        doc.addPage()
+                        leng = newStart
+                    }
+                })
+                leng += 30
+                if (leng > pageHeight) {
+                    doc.addPage()
+                    leng = newStart
+                }
+
+            }
+            else if (Question.kind == "T/F") {
+                doc.text(30, leng, letters[1] + "- " + "True")
+                leng += 20
+                if (leng >= pageHeight) {
+                    doc.addPage()
+                    leng = newStart
+                }
+                doc.text(30, leng, letters[5] + "- " + "False")
+                leng += 30
+                if (leng > pageHeight) {
+                    doc.addPage()
+                    leng = newStart
+                }
+            }
+
+        })
+
+
+
+        doc.save("exam.pdf")
     }
 
 
@@ -395,6 +521,13 @@ class Exams extends Component {
                     </div>
                 <div>
                     {Questions}
+                </div>
+
+                <div className="generateButtonContainer">
+
+                    <button onClick={() => this.generatePdf(exam)} type="submit" id="generateExam" className="btn btn-primary btn-icon-split btn-md generateButton " >
+                        <span className="text">GeneratePdf</span>
+                    </button>
                 </div>
             </div>
         )

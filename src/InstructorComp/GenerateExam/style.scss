@@ -177,6 +177,8 @@
     .examTools {
         display: flex;
         flex-flow: column;
+        position: relative;
+
         // @media (max-width : 1000px){
         //     position: absolute;
         //     display: none;

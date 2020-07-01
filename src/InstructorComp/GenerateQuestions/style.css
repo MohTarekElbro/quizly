@@ -168,6 +168,7 @@
   overflow: auto;
   margin-bottom: 10px;
   border-radius: 20px;
+  position: relative;
   padding-bottom: 20px;
   width: 70%;
   margin-left: 15%;
@@ -557,8 +558,8 @@
 }
 
 .saveQ {
-  position: fixed;
-  bottom: 50px;
+  position: absolute;
+  bottom: 60px;
   right: 40px;
 }
 

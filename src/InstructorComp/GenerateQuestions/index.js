@@ -747,6 +747,23 @@ class GenerteQuestions extends Component {
             )
         }
         else if (screen == "generatedQuestions") {
+            let genetatedContStyle = {
+                "width": "100%",
+                "margin-left": "0%",
+                "margin-right": "0%",
+                "margin-bottom": "0px"
+            }
+
+            let h3Style = {
+                "font-size": "20px",
+                "margin": "auto 0",
+            }
+
+            let itemStyle = {
+                "width": "98%" ,
+                "margin-left": "1%" ,
+                "margin-right": "1%" ,
+            }
             let { Questions } = this.state
             let { QuestionType } = this.state
             // console.log("QuestionType: ", QuestionType)
@@ -767,7 +784,7 @@ class GenerteQuestions extends Component {
                             <Fragment>
                                 <div onClick={() => this.editModalFun(Question, Questions1[Question])} data-toggle="modal" data-target={"#generatedCard"} type="button" className="editQuestion"><i class="fas fa-edit"></i><p className="editHover">Edit Question</p> </div>
 
-                                <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" >
+                                <div style = {this.props.generateQuestions?itemStyle:{}} id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" >
 
                                     <div className="generatedContent">
                                         Question:  {Questions1[Question][0]}
@@ -798,7 +815,7 @@ class GenerteQuestions extends Component {
                         return (
                             <Fragment>
                                 <div onClick={() => this.editModalFun(Question, Questions1[Question])} data-toggle="modal" data-target={"#generatedCard"} type="button" className="editQuestion"><i class="fas fa-edit"></i><p className="editHover">Edit Question</p> </div>
-                                <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" >
+                                <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" style = {this.props.generateQuestions?itemStyle:{}}>
                                     <div className="generatedContent">
                                         Question:  {Questions1[Question][Questions1[Question].length - 1]}
                                     </div>
@@ -831,7 +848,7 @@ class GenerteQuestions extends Component {
                         return (
                             <Fragment>
                                 <div onClick={() => this.editModalFun(Question, Questions1[Question])} data-toggle="modal" data-target={"#generatedCard"} type="button" className="editQuestion"><i class="fas fa-edit"></i><p className="editHover">Edit Question</p> </div>
-                                <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" >
+                                <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" style = {this.props.generateQuestions?itemStyle:{}} >
 
                                     <div className="generatedContent">
                                         Question:  {Questions1[Question][3]}
@@ -854,19 +871,19 @@ class GenerteQuestions extends Component {
                 // console.log("ListQuestions: ", ListQuestions)
                 return (
                     <Fragment>
-                        <div className="saveQuestionsButton" >
+                        <div className="saveQuestionsButton" style={this.props.generateQuestions ? { "width": "90%", "marginLeft": "5%", "marginRight": "5%" } : {}}>
                             <div onClick={() => this.selectAll("selectAll")} type="submit" className="btn btn-primary btn-icon-split btn-md selectdiv " >
                                 <span className="text"><i class="fas fa-clipboard-check"></i></span>
                                 <p>Select All</p>
                             </div>
-                            <h3>Choose the questions you want to save</h3>
+                            <h3 style={this.props.generateQuestions ? h3Style : {}}>Choose the questions you want to save</h3>
                             <div onClick={() => this.selectAll("not all")} type="submit" className="btn btn-primary btn-icon-split btn-md unSelectdiv " >
                                 <span className="text"><i class="fas fa-trash-alt"></i></span>
                                 <p>Unselect All</p>
                             </div>
                         </div>
-                        <div className="generatedsContainer1" id="generatedsBody1" ref={(QuestionsBody1) => { this.QuestionsBody1 = QuestionsBody1 }}>
-                            <div className="generatedsContainer" id="generatedsBody" ref={(QuestionsBody) => { this.QuestionsBody = QuestionsBody }}>
+                        <div style={this.props.generateQuestions ? genetatedContStyle : {}} className="generatedsContainer1" id="generatedsBody1" ref={(QuestionsBody1) => { this.QuestionsBody1 = QuestionsBody1 }}>
+                            <div style = {this.props.generateQuestions?{"padding":"5px"}:{}} className="generatedsContainer" id="generatedsBody" ref={(QuestionsBody) => { this.QuestionsBody = QuestionsBody }}>
 
                                 {ListQuestions}
                                 <Modal modalName={"generatedCard"} body={this.state.EditQuestionModal} title={"Edit Question"} closeButton="close" />
@@ -874,7 +891,7 @@ class GenerteQuestions extends Component {
                             </div>
                         </div>
 
-                        <div className="saveQ">
+                        <div className="saveQ" style={this.props.generateQuestions ? {} : { "position": "fixed" }}>
                             <button onClick={() => this.saveQuestions()} type="submit" className="btn btn-primary btn-icon-split btn-md selectButton " >
                                 <span className="text"><i class="far fa-save"></i></span>
                                 <p>Save Questions</p>
