@@ -3,6 +3,7 @@ import './style.css'
 import $ from 'jquery'
 import socketIOClient from "socket.io-client";
 import { read_cookie } from 'sfcookies'
+import { DualRing } from 'react-spinners-css';
 
 class SignUp extends Component {
     state = {
@@ -14,7 +15,12 @@ class SignUp extends Component {
         img: "",
     }
 
+    componentDidMount = () => {
+        $(".newLoading").css("display", "none")
+    }
+
     submit = async (e) => {
+        $(".newLoading").css("display", "flex")
         const socket = socketIOClient("https://quizly-app.herokuapp.com")
         e.preventDefault()
         let file = this.cardPic.files[0]
@@ -33,14 +39,37 @@ class SignUp extends Component {
         let api;
 
         try {
-            
-            api = await fetch('https://quizly-app.herokuapp.com/instructor/signup', requestOptions)            
-            socket.emit('AddRequest')
+
+            api = await fetch('https://quizly-app.herokuapp.com/instructor/signup', requestOptions)
+            console.log(api.status)
+            if (api.status == 200) {
+                $.alert({
+                    title: 'Success!',
+                    content: 'Your request has been sent to the supervisor, wait for the response on your email',
+                    buttons: {
+                        okay: function () { $(".newLoading").css("display", "none") },
+
+                    }
+                });
+            }
+            else {
+                $(".newLoading").css("display", "none")
+            }
+
+
 
         }
         catch (e) {
-            console.log(e)
+            // const data = await api.json();
+            console.log("ERROR: ", e)
+            $(".newLoading").css("display", "none")
+            // console.log(data)  
+            // if(api.status == 200){
+            //     socket.emit('AddRequest')
+            // }
+
         }
+
 
     }
 
@@ -76,6 +105,9 @@ class SignUp extends Component {
     render() {
         return (
             <div className="main">
+                <div className="newLoading">
+                    <DualRing color="red" />
+                </div>
                 <div className="container1">
                     <div className="signup-content">
                         <div className="signup-img">

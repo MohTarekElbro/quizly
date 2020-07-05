@@ -21,7 +21,7 @@ class AmdinNav extends Component {
         version: 0
     }
 
-    
+
 
 
 
@@ -101,10 +101,26 @@ class AmdinNav extends Component {
         }
 
         const socket = socketIOClient("https://quizly-app.herokuapp.com")
-        socket.on('Send', () => {
-            this.setState({
-                Notifications:this.state.Notifications+1
-            })
+        socket.on('Send', async () => {
+            try {
+                let notiNum = 0
+                let api = await fetch('https://quizly-app.herokuapp.com/Admin/ListMyNotification/' + localStorage.getItem('adminEmail') + '/' + count + '/' + version, requestOptions)
+                const data = await api.json();
+                console.log(data)
+                data.map((noti) => {
+                    if (noti.Seen == false) {
+                        notiNum = notiNum + 1
+                    }
+                })
+                this.setState({
+                    Requests: data,
+                    Notifications: notiNum
+
+                })
+            }
+            catch (e) {
+                console.log(e);
+            }
             this.send();
         })
     }
@@ -148,7 +164,7 @@ class AmdinNav extends Component {
     }
 
 
-    
+
 
     Logout = async (type = "one") => {
         const requestOptions = {
@@ -168,7 +184,7 @@ class AmdinNav extends Component {
                 console.log(e);
             }
         }
-        else{
+        else {
             try {
                 api = await fetch('https://quizly-app.herokuapp.com/admin/logoutAll', requestOptions)
                 const data = await api.json();
@@ -201,7 +217,7 @@ class AmdinNav extends Component {
     seeNotification = async (notify, ifSeen) => {
         if (ifSeen == false) {
             this.setState({
-                Notifications:this.state.Notifications-1
+                Notifications: this.state.Notifications - 1
             })
             const requestOptions = {
                 method: 'GET',
@@ -311,9 +327,9 @@ class AmdinNav extends Component {
 
 
                     <li className="nav-item dropdown no-arrow mx-1">
-                        <a className="nav-link noti dropdown-toggle"  href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a className="nav-link noti dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i className="fas fa-bell fa-fw"></i>
-                            <span className="badge badge-danger badge-counter requests9">{this.state.Notifications==0?"":this.state.Notifications+"+"}</span>
+                            <span className="badge badge-danger badge-counter requests9">{this.state.Notifications == 0 ? "" : this.state.Notifications + "+"}</span>
                         </a>
                         <div className=" dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                             <h6 className="dropdown-header">
@@ -340,13 +356,13 @@ class AmdinNav extends Component {
                                 <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
                             </Link>
-                            <Link className="dropdown-item"  to="/adminHome/adminInstractors">
+                            <Link className="dropdown-item" to="/adminHome/adminInstractors">
                                 <i className="fas fa-chalkboard-teacher fa-sm fa-fw mr-2 text-gray-400"></i>
                                 {/* <i className="fas fa-chalkboard-teacher"></i> */}
                                 Instructor's Requests
                             </Link>
                             <div className="dropdown-divider"></div>
-                            <button className="dropdown-item"  onClick={this.Logout} >
+                            <button className="dropdown-item" onClick={this.Logout} >
                                 <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Logout
                             </button>

@@ -131,13 +131,13 @@ class InstructorNav extends Component {
             console.log(e);
         }
 
-        const socket = socketIOClient("https://quizly-app.herokuapp.com")
-        socket.on('Send', () => {
-            this.setState({
-                Notifications: this.state.Notifications + 1
-            })
-            // this.send();
-        })
+        // const socket = socketIOClient("https://quizly-app.herokuapp.com")
+        // socket.on('Send', () => {
+        //     this.setState({
+        //         Notifications: this.state.Notifications + 1
+        //     })
+        //     // this.send();
+        // })
     }
 
 

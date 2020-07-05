@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import './style.css'
 import { bake_cookie, read_cookie } from 'sfcookies'
 import $ from 'jquery'
+import socketIOClient from "socket.io-client";
+
 import loadjs from 'loadjs'
 import Modal from '../../components/Modal'
 // import '../../custom.js'
@@ -12,7 +14,7 @@ import Modal from '../../components/Modal'
 class AdminInstractors extends Component {
 
     state = {
-        Instractors: [],
+        Instructors: [],
         loadjs,
         bottom: 0,
         height: 0,
@@ -22,6 +24,11 @@ class AdminInstractors extends Component {
 
 
     componentDidMount = async () => {
+
+        const socket = socketIOClient("https://quizly-app.herokuapp.com")
+        socket.on('Send', () => {
+            this.Refresh()
+        })
         var { count } = this.state
         window.addEventListener('scroll', this.handleScroll);
         const requestOptions = {
@@ -37,7 +44,7 @@ class AdminInstractors extends Component {
             api = await fetch('https://quizly-app.herokuapp.com/admin/singuprequests/' + count + '/0', requestOptions)
             const data = await api.json();
             this.setState({
-                Instractors: data
+                Instructors: data
             })
 
         }
@@ -77,7 +84,7 @@ class AdminInstractors extends Component {
                 api = await fetch('https://quizly-app.herokuapp.com/admin/singuprequests/' + count + '/' + version, requestOptions)
                 const data = await api.json();
                 this.setState({
-                    Instractors: this.state.Instractors.concat(data)
+                    Instructors: this.state.Instructors.concat(data)
                 })
 
             }
@@ -98,7 +105,7 @@ class AdminInstractors extends Component {
             api = await fetch('https://quizly-app.herokuapp.com/admin/singuprequests', requestOptions)
             const data = await api.json();
             this.setState({
-                Instractors: data
+                Instructors: data
             })
 
         }
@@ -107,8 +114,8 @@ class AdminInstractors extends Component {
         }
 
 
-        this.props.history.push("/adminProfile")
-        this.props.history.push("/adminHome/adminInstractors")
+        // this.props.history.push("/adminProfile")
+        // this.props.history.push("/adminHome/adminInstractors")
         // console.log("demoStarted")
         // this.setState({
         //     loadjs :loadjs('js/demo/datatables-demo.js')
@@ -125,6 +132,7 @@ class AdminInstractors extends Component {
 
     Accept = async (ID) => {
         console.log(ID)
+        let Instructors = this.state.Instructors
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
@@ -133,7 +141,15 @@ class AdminInstractors extends Component {
 
         try {
             api = await fetch('https://quizly-app.herokuapp.com/admin/singuprequests/' + ID + '/accept', requestOptions)
-            const data = await api.json();
+            // const data = await api.json();
+            for(let i = 0 ; i<Instructors.length ; i++){
+                if(Instructors[i]._id == ID){
+                    Instructors.splice(i , 1)
+                }
+            }
+            this.setState({
+                Instructors
+            })
 
 
         }
@@ -141,11 +157,11 @@ class AdminInstractors extends Component {
             console.log("no response");
         }
 
-        const refresh = () => this.Refresh()
-        refresh()
     }
 
     Reject = async (ID) => {
+        let Instructors = this.state.Instructors
+        // console.log(Instructors.length)
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
@@ -154,15 +170,22 @@ class AdminInstractors extends Component {
 
         try {
             api = await fetch('https://quizly-app.herokuapp.com/admin/singuprequests/' + ID + '/reject', requestOptions)
-            const data = await api.json();
-
+            // const data = await api.json();
+            for(let i = 0 ; i<Instructors.length ; i++){
+                if(Instructors[i]._id == ID){
+                    Instructors.splice(i , 1)
+                }
+            }
+            this.setState({
+                Instructors
+            })
 
         }
         catch (e) {
             console.log("no response");
         }
-        const refresh = () => this.Refresh()
-        refresh()
+        // const refresh = () => this.Refresh()
+        // refresh()
     }
 
     cardIdPic = (id) => {
@@ -175,9 +198,9 @@ class AdminInstractors extends Component {
 
     render() {
 
-        const { Instractors } = this.state
+        const { Instructors } = this.state
 
-        const ListInstractors = Instractors.map((Instractor, index) => {
+        const ListInstractors = Instructors.map((Instractor, index) => {
             var month = new Date(Instractor.RequestDate).toString().split(" ")[1]
             var day = new Date(Instractor.RequestDate).toString().split(" ")[2]
             
