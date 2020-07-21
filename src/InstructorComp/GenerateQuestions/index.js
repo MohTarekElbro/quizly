@@ -3,6 +3,7 @@ import './style.css'
 import { read_cookie, bake_cookie } from 'sfcookies';
 import { Default } from 'react-spinners-css';
 import { Ouroboro } from 'react-spinners-css';
+import { Ring } from 'react-spinners-css';
 import { saveAs, encodeBase64 } from '@progress/kendo-file-saver';
 import socketIOClient from "socket.io-client";
 import $ from 'jquery'
@@ -18,7 +19,7 @@ import AddingQuestion from '../AddingQuestion';
 // value={this.state.search} onChange={(e) => { this.setState({ search: e.target.value }) }}
 class GenerteQuestions extends Component {
     state = {
-        QuestionType: "trueorfalse",
+        QuestionType: "MCQ",
         public: "false",
         numOfDis: 1,
         distractorsValue: [],
@@ -54,6 +55,7 @@ class GenerteQuestions extends Component {
 
 
     componentDidMount = async () => {
+        
         $(".selectdiv").css({
             "background-color": "white",
             "color": "#4E73DF"
@@ -182,29 +184,45 @@ class GenerteQuestions extends Component {
     uploadImage = async (e) => {
         let file = this.txtFile.files[0]
         // console.log(file.name)
-        this.setState({
-            fileName: file.name
-        })
-        $('.saveImg').css('display', 'block')
-        let formData = new FormData()
-        formData.append('resource', file)
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Authorization': localStorage.getItem("token") },
-            body: formData
-        };
-        let api;
-
-        try {
-            api = await fetch('https://quizly-app.herokuapp.com/upload/resources', requestOptions)
-            let data = await api.json();
-            console.log(data.path)
+        if (file.name.includes(".txt")) {
             this.setState({
-                filePath: data.path
+                fileName: <div style = {{"position":"absolute" , "right" : "60%" , "top" : "-15px"}}>
+                    <Ring size = "30" color="black" />
+                </div>
             })
+            $('.saveImg').css('display', 'block')
+            let formData = new FormData()
+            formData.append('resource', file)
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Authorization': localStorage.getItem("token") },
+                body: formData
+            };
+            let api;
+
+            try {
+                api = await fetch('https://quizly-app.herokuapp.com/upload/resources', requestOptions)
+                let data = await api.json();
+                // console.log(data.path)
+
+                this.setState({
+                    filePath: data.path,
+                    fileName:file.name
+                })
+            }
+            catch (e) {
+                console.log(e.message);
+            }
         }
-        catch (e) {
-            console.log(e.message);
+        else {
+            $.alert({
+                title: 'Error!',
+                content: 'You must upload "txt" file',
+                buttons: {
+                    okay: function () { },
+
+                }
+            });
         }
 
     }
@@ -306,6 +324,15 @@ class GenerteQuestions extends Component {
                 console.log(e.message);
 
             }
+        } else {
+            $.alert({
+                title: 'Error!',
+                content: "You must upload file or write a generation text",
+                buttons: {
+                    okay: function () { },
+
+                }
+            });
         }
     }
 
@@ -668,15 +695,9 @@ class GenerteQuestions extends Component {
                                 </select >
                             </div>
 
-                            <div className=" levels" style={this.props.generateQuestions ? { "width": "100%" } : {}}>
-                                <span style={{ "margin": "auto 0", "height": "30px" }}>Level of Questions: </span>
-                                <select data-menu id="QuestionType" className="select2" name="QuestionType" value={this.state.level} onChange={(e) => { this.setState({ level: e.target.value }) }} >
-                                    <option value={"H"}>Hard</option>
-                                    <option value={"M"}>Medium</option>
-                                </select >
-                            </div>
 
-                            <div className=" levels" style={this.props.generateQuestions ? { "width": "100%" } : {}}>
+
+                            <div className=" levels" style={this.props.generateQuestions || this.state.QuestionType != "MCQ" ? { "width": "100%" } : {}}>
                                 <span style={{ "margin": "auto 0", "height": "30px" }}>Num of Answers: </span>
                                 <select data-menu id="QuestionType" className="select2" name="QuestionType" value={this.state.numOfAnswers} onChange={(e) => { this.setState({ numOfAnswers: e.target.value }) }} >
                                     <option value={2}>{2}</option>
@@ -685,11 +706,20 @@ class GenerteQuestions extends Component {
                                     <option value={5}>{5}</option>
                                 </select >
                             </div>
+
+                            <div className=" levels" style={this.state.QuestionType == "MCQ" ? this.props.generateQuestions ? { "width": "100%" } : {} : { 'display': "none" }} >
+                                <span style={{ "margin": "auto 0", "height": "30px" }}>Level of Questions: </span>
+                                <select data-menu id="QuestionType" className="select2" name="QuestionType" value={this.state.level} onChange={(e) => { this.setState({ level: e.target.value }) }} >
+                                    <option value={"H"}>Hard</option>
+                                    <option value={"M"}>Medium</option>
+                                </select >
+                            </div>
                         </div>
 
                         <div className="options">
                             <p onClick={() => this.changeOption("uploadInput")} style={{
                                 'font-weight': 'bold',
+                                "text-decoration": "underline",
                                 'font-size': '17px'
                             }} className="option" id="uploadInputItem" >Upload Txt file</p>
                             <div className="line"></div>
@@ -710,10 +740,10 @@ class GenerteQuestions extends Component {
                         <div className="uploadTxtFile  optionItem" id="uploadInput">
                             <label className="uploadFile" style={{ "marginTop": "0px" }}>
                                 <input type="file" name='txtFile' ref={(txtFile) => { this.txtFile = txtFile }} onChange={() => this.uploadImage()} className="fileInput form-control" />
-                                <i className="fas fa-upload"></i> Upload File
+                                <i className="fas fa-upload"></i> Upload Txt File
                             </label>
 
-                            <p className="" > {this.state.fileName}</p>
+                            <p className="" style = {{"position":"relative"}} > {this.state.fileName}</p>
                         </div>
 
                         <div className="generateQuestionsButton">
@@ -760,9 +790,9 @@ class GenerteQuestions extends Component {
             }
 
             let itemStyle = {
-                "width": "98%" ,
-                "margin-left": "1%" ,
-                "margin-right": "1%" ,
+                "width": "98%",
+                "margin-left": "1%",
+                "margin-right": "1%",
             }
             let { Questions } = this.state
             let { QuestionType } = this.state
@@ -784,7 +814,7 @@ class GenerteQuestions extends Component {
                             <Fragment>
                                 <div onClick={() => this.editModalFun(Question, Questions1[Question])} data-toggle="modal" data-target={"#generatedCard"} type="button" className="editQuestion"><i class="fas fa-edit"></i><p className="editHover">Edit Question</p> </div>
 
-                                <div style = {this.props.generateQuestions?itemStyle:{}} id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" >
+                                <div style={this.props.generateQuestions ? itemStyle : {}} id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" >
 
                                     <div className="generatedContent">
                                         Question:  {Questions1[Question][0]}
@@ -815,7 +845,7 @@ class GenerteQuestions extends Component {
                         return (
                             <Fragment>
                                 <div onClick={() => this.editModalFun(Question, Questions1[Question])} data-toggle="modal" data-target={"#generatedCard"} type="button" className="editQuestion"><i class="fas fa-edit"></i><p className="editHover">Edit Question</p> </div>
-                                <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" style = {this.props.generateQuestions?itemStyle:{}}>
+                                <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" style={this.props.generateQuestions ? itemStyle : {}}>
                                     <div className="generatedContent">
                                         Question:  {Questions1[Question][Questions1[Question].length - 1]}
                                     </div>
@@ -848,7 +878,7 @@ class GenerteQuestions extends Component {
                         return (
                             <Fragment>
                                 <div onClick={() => this.editModalFun(Question, Questions1[Question])} data-toggle="modal" data-target={"#generatedCard"} type="button" className="editQuestion"><i class="fas fa-edit"></i><p className="editHover">Edit Question</p> </div>
-                                <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" style = {this.props.generateQuestions?itemStyle:{}} >
+                                <div id={Question} key={Question} onClick={() => this.selectQuestion(Question)} className="generatedItem" style={this.props.generateQuestions ? itemStyle : {}} >
 
                                     <div className="generatedContent">
                                         Question:  {Questions1[Question][3]}
@@ -883,7 +913,7 @@ class GenerteQuestions extends Component {
                             </div>
                         </div>
                         <div style={this.props.generateQuestions ? genetatedContStyle : {}} className="generatedsContainer1" id="generatedsBody1" ref={(QuestionsBody1) => { this.QuestionsBody1 = QuestionsBody1 }}>
-                            <div style = {this.props.generateQuestions?{"padding":"5px"}:{}} className="generatedsContainer" id="generatedsBody" ref={(QuestionsBody) => { this.QuestionsBody = QuestionsBody }}>
+                            <div style={this.props.generateQuestions ? { "padding": "5px" } : {}} className="generatedsContainer" id="generatedsBody" ref={(QuestionsBody) => { this.QuestionsBody = QuestionsBody }}>
 
                                 {ListQuestions}
                                 <Modal modalName={"generatedCard"} body={this.state.EditQuestionModal} title={"Edit Question"} closeButton="close" />
@@ -932,10 +962,12 @@ class GenerteQuestions extends Component {
         $("#" + id).removeClass('remove')
         $(".option").css({
             'font-weight': 'normal',
+            "text-decoration": "none",
             'font-size': '16px'
         })
         $("#" + id + "Item").css({
             'font-weight': 'bold',
+            "text-decoration": "underline",
             'font-size': '17px'
         })
     }

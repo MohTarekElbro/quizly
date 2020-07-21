@@ -106,37 +106,97 @@ class InstructorRequests extends Component {
 
     AddNewDomain = async () => {
         console.log(this.state.domainName, this.state.description, this.state.filePath)
-        let file = this.txtFile.files[0]
-        let formData = new FormData()
-        formData.append('material', file)
-        formData.append("Requested_domain", this.state.domainName)
-        formData.append("description", this.state.description)
-        const requestOptions = {
-            method: 'post',
-            headers: { 'Authorization': localStorage.getItem('token') },
-            body: formData
-        };
-        let api;
+        if (this.state.domainName == "") {
+            console.log("this.state.domainName: " , this.state.domainName)
+            $.alert({
+                title: 'Error!',
+                content: 'You must enter your domain name',
+                buttons: {
+                    okay: function () { },
 
-        try {
-            api = await fetch('https://quizly-app.herokuapp.com/domain/request', requestOptions)
-            const data = await api.json();
-            console.log(data)
-
+                }
+            });
         }
-        catch (e) {
-            console.log(e);
+        else if (this.state.description == "") {
+            console.log("this.state.description: " , this.state.description)
+
+            $.alert({
+                title: 'Error!',
+                content: 'You must enter your domain description',
+                buttons: {
+                    okay: function () { },
+
+                }
+            });
+        }
+        else if (this.state.fileName == "") {
+            $.alert({
+                title: 'Error!',
+                content: 'You must upload your pdf file',
+                buttons: {
+                    okay: function () { },
+
+                }
+            });
+        }
+        else {
+            let file = this.txtFile.files[0]
+            let formData = new FormData()
+            formData.append('material', file)
+            formData.append("Requested_domain", this.state.domainName)
+            formData.append("description", this.state.description)
+            const requestOptions = {
+                method: 'post',
+                headers: { 'Authorization': localStorage.getItem('token') },
+                body: formData
+            };
+            let api;
+
+            try {
+                api = await fetch('https://quizly-app.herokuapp.com/domain/request', requestOptions)
+                const data = await api.json();
+                this.setState({
+                    domainName: "",
+                    description: "",
+                    fileName: "",
+                    filePath: ""
+                })
+                $.alert({
+                    title: 'Success!',
+                    content: 'your request has been sent',
+                    buttons: {
+                        okay: function () { },
+    
+                    }
+                });
+                console.log(data)
+
+            }
+            catch (e) {
+                console.log(e);
+            }
         }
     }
 
     uploadImage = async (e) => {
         let file = this.txtFile.files[0]
         // console.log(file.name)
-        this.setState({
-            fileName: file.name
-        })
-        $('.saveImg').css('display', 'block')
+        if (file.name.includes(".pdf")) {
+            this.setState({
+                fileName: file.name
+            })
+            $('.saveImg').css('display', 'block')
+        }
+        else {
+            $.alert({
+                title: 'Error!',
+                content: 'You must upload "pdf" file',
+                buttons: {
+                    okay: function () { },
 
+                }
+            });
+        }
     }
 
     newDomainForm = () => {
@@ -160,7 +220,7 @@ class InstructorRequests extends Component {
                     <div className="uploadTxtFile  optionItem" id="uploadInput">
                         <label className="uploadFile" style={{ "marginTop": "0px" }}>
                             <input type="file" name='txtFile' ref={(txtFile) => { this.txtFile = txtFile }} onChange={() => this.uploadImage()} className="fileInput form-control" />
-                            <i className="fas fa-upload"></i> Upload File
+                            <i className="fas fa-upload"></i> Upload PDF file
                             </label>
 
                         <p className="" > {this.state.fileName}</p>
@@ -207,7 +267,7 @@ class InstructorRequests extends Component {
                         </div>
                         <div className="listData ">
                             <p className="center">Email: {Domain.requester} </p>
-                            <p className="center">Domain: {Domain.domain_name} </p>
+                            <p className="center">Domain: {Domain.Requested_domain} </p>
                             <p className="center">Description: {Domain.description} </p>
                         </div>
                         <div className="listButtons ">

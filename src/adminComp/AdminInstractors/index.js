@@ -19,11 +19,70 @@ class AdminInstractors extends Component {
         bottom: 0,
         height: 0,
         count: 10,
-        version: 0
+        version: 0,
+        Notifications: []
+    }
+
+    seeNotification = async (notify, ifSeen) => {
+        if (ifSeen == false) {
+            this.setState({
+                Notifications: this.state.Notifications - 1
+            })
+            const requestOptions = {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") }
+            };
+            let api;
+            var url = "https://quizly-app.herokuapp.com/Admin/SeenNotification/" + notify._id;
+            console.log("URL: ", url)
+
+            try {
+                api = await fetch(url, requestOptions)
+                const data = await api.json();
+                console.log("SeenNotify: ", data)
+                let i = 0;
+                var { Requests } = this.state
+                Requests.map((request, index) => {
+                    if (request._id == data._id) {
+                        i = index;
+                    }
+                })
+                Requests[i] = data
+                this.setState({
+                    Requests: Requests
+                })
+
+
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
     }
 
 
     componentDidMount = async () => {
+        const requestOptions1 = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") }
+        };
+        let api1;
+        let notifications = [];
+        try {
+            api1 = await fetch('https://quizly-app.herokuapp.com/Admin/ListMyNotification/' + localStorage.getItem('adminEmail') + '/' + 100 + '/' + 0, requestOptions1)
+            
+            notifications = await api1.json();
+            // console.log("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM")
+
+            console.log("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM: " , notifications.length)
+            this.setState({
+                Notifications: notifications
+
+            })
+        }
+        catch (e) {
+            console.log(e);
+        }
 
         const socket = socketIOClient("https://quizly-app.herokuapp.com")
         socket.on('Send', () => {
@@ -45,6 +104,14 @@ class AdminInstractors extends Component {
             const data = await api.json();
             this.setState({
                 Instructors: data
+            })
+
+            data.map((ins) => {
+                notifications.map((noti) => {
+                    if (ins.Email == noti.Sender_email) {
+                        this.seeNotification(noti , noti.Seen)
+                    }
+                })
             })
 
         }
@@ -142,9 +209,9 @@ class AdminInstractors extends Component {
         try {
             api = await fetch('https://quizly-app.herokuapp.com/admin/singuprequests/' + ID + '/accept', requestOptions)
             // const data = await api.json();
-            for(let i = 0 ; i<Instructors.length ; i++){
-                if(Instructors[i]._id == ID){
-                    Instructors.splice(i , 1)
+            for (let i = 0; i < Instructors.length; i++) {
+                if (Instructors[i]._id == ID) {
+                    Instructors.splice(i, 1)
                 }
             }
             this.setState({
@@ -171,9 +238,9 @@ class AdminInstractors extends Component {
         try {
             api = await fetch('https://quizly-app.herokuapp.com/admin/singuprequests/' + ID + '/reject', requestOptions)
             // const data = await api.json();
-            for(let i = 0 ; i<Instructors.length ; i++){
-                if(Instructors[i]._id == ID){
-                    Instructors.splice(i , 1)
+            for (let i = 0; i < Instructors.length; i++) {
+                if (Instructors[i]._id == ID) {
+                    Instructors.splice(i, 1)
                 }
             }
             this.setState({
@@ -203,7 +270,7 @@ class AdminInstractors extends Component {
         const ListInstractors = Instructors.map((Instractor, index) => {
             var month = new Date(Instractor.RequestDate).toString().split(" ")[1]
             var day = new Date(Instractor.RequestDate).toString().split(" ")[2]
-            
+
             return (
 
                 <div className="instructorItem ">

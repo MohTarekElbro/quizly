@@ -1,0 +1,9 @@
+.validError {
+  position: absolute;
+  bottom: -15px;
+  left: 20px;
+  color: red;
+  font-size: 13px;
+  display: none;
+}
+/*# sourceMappingURL=style1.css.map */

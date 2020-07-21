@@ -12,11 +12,11 @@ class AddingQuestion extends Component {
 
     state = {
         QuestionType: "MCQ",
-        public: false,
+        public: "",
         numOfDis: 1,
         distructorsValue: [],
         state: 'true',
-        level: "medium",
+        level: "",
         domains: [],
         DomainName: "SW",
         keyword: "",
@@ -672,6 +672,24 @@ class AddingQuestion extends Component {
             $.alert({
                 title: 'Error!',
                 content: 'Enter the answer!',
+                buttons: {
+                    okay: function () { },
+                }
+            });
+        }
+        else if (Publication != false && Publication != true) {
+            $.alert({
+                title: 'Error!',
+                content: 'Choose if public or private!',
+                buttons: {
+                    okay: function () { },
+                }
+            });
+        }
+        else if (level == "") {
+            $.alert({
+                title: 'Error!',
+                content: 'Choose Question level!',
                 buttons: {
                     okay: function () { },
                 }

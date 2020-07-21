@@ -670,15 +670,29 @@ class QuestionBank extends Component {
                         api1 = await fetch('https://quizly-app.herokuapp.com/Question/delete/' + id, requestOptions1)
                         let data = await api1.json();
                         console.log(api1.status, " ", data)
-                        var { Questions } = this.state
-                        for (let i = 0; i < Questions.length; i++) {
-                            if (id == Questions[i]._id) {
-                                Questions.splice(i, 1)
-                            }
+                        if (api1.status == 303) {
+                            $.alert({
+                                title: 'Error!',
+                                boxWidth: '400px',
+                                content: data.massage+"s",
+                                buttons: {
+                                    okay: function () { },
+                
+                                }
+                            });
                         }
-                        this.setState({
-                            Questions
-                        })
+                        else {
+                            var { Questions } = this.state
+
+                            for (let i = 0; i < Questions.length; i++) {
+                                if (id == Questions[i]._id) {
+                                    Questions.splice(i, 1)
+                                }
+                            }
+                            this.setState({
+                                Questions
+                            })
+                        }
 
                     }
                     catch (e) {

@@ -17,7 +17,7 @@ class InstructorFeedback extends Component {
         loadjs,
         bottom: 0,
         height: 0,
-        count: 10,
+        count: 100,
         version: 0,
         deletedID: false,
         addedFeedback: "",
@@ -231,7 +231,7 @@ class InstructorFeedback extends Component {
             pageContent: this.listFeedbacks(Feedbacks)
         })
 
-        window.addEventListener('scroll', this.handleScroll);
+        // window.addEventListener('scroll', this.handleScroll);
 
     }
 

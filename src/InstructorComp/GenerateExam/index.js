@@ -78,7 +78,7 @@ class GenerateExam extends Component {
         this.titlesValidation()
     }
 
-    titlesValidation = () => {
+    titlesValidation = (generate = false) => {
         var { subject } = this.state
         var { university } = this.state
         var { faculty } = this.state
@@ -135,6 +135,16 @@ class GenerateExam extends Component {
             return true
         }
         else {
+            if (generate) {
+                $.alert({
+                    title: 'Error!',
+                    content: !flag1 ? 'you must enter the subject name' : !flag2 ? 'you must enter the University name' : !flag3 ? 'you must enter the Collage name' : !flag4 ? "you must enter the exam duration" : "you must enter at least one Question",
+                    buttons: {
+                        okay: function () { },
+
+                    }
+                });
+            }
             $('.generateButton').css({
                 "opacity": "0.5",
                 "cursor": "not-allowed"
@@ -235,21 +245,57 @@ class GenerateExam extends Component {
             this.setState({
                 subject: titleValue
             })
+            if (this.state.university == "") {
+                $("#University").click()
+            }
+            else if (this.state.faculty == "") {
+                $("#Faculty").click()
+            }
+            else if (this.state.duration == "") {
+                $("#Duration").click()
+            }
         }
         else if (title == "University") {
             this.setState({
                 university: titleValue
             })
+            if (this.state.faculty == "") {
+                $("#Faculty").click()
+            }
+            else if (this.state.duration == "") {
+                $("#Duration").click()
+            }
+            else if (this.state.subject == "") {
+                $("#Subject").click()
+            }
         }
         else if (title == "Faculty") {
             this.setState({
                 faculty: titleValue
             })
+            if (this.state.duration == "") {
+                $("#Duration").click()
+            }
+            else if (this.state.subject == "") {
+                $("#Subject").click()
+            }
+            else if (this.state.university == "") {
+                $("#University").click()
+            }
         }
         else {
             this.setState({
                 duration: titleValue
             })
+            if (this.state.subject == "") {
+                $("#Subject").click()
+            }
+            else if (this.state.university == "") {
+                $("#University").click()
+            }
+            if (this.state.faculty == "") {
+                $("#Faculty").click()
+            }
         }
     }
 
@@ -338,7 +384,7 @@ class GenerateExam extends Component {
     }
 
     generateExam = async () => {
-        if (this.titlesValidation()) {
+        if (this.titlesValidation(true)) {
             $("*").css("cursor", "progress");
             $(".newLoading").css("display", "flex")
 
@@ -902,7 +948,7 @@ class ExamTitle extends Component {
 
     renderTitle = (title) => {
         return (
-            <p className="pointer" id={title} onClick={() => this.toggleState()}>{title}: {this.state.title}</p>
+            <p id={this.props.title} className="pointer" id={title} onClick={() => this.toggleState()}>{title}: {this.state.title}</p>
         )
     }
 
@@ -917,8 +963,8 @@ class ExamTitle extends Component {
         }
         return (
             <form onSubmit={this.addTitle}>
-                <input autoFocus onFocus={(e) => { e.target.select() }} type={type} value={this.state.title} onChange={(e) => this.setState({ title: e.target.value })} />
-                <input type="submit" value="Edit" />
+                <input className = "pointerInput" autoFocus onFocus={(e) => { e.target.select() }} type={type} value={this.state.title} onChange={(e) => this.setState({ title: e.target.value })} />
+                <input className = "pointerButton" type="submit" value="Edit" />
             </form>
         )
     }

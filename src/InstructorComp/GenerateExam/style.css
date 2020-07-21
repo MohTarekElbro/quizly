@@ -284,4 +284,17 @@ input[type="number"] {
   font-size: 20px;
   cursor: pointer;
 }
+
+.pointerInput {
+  height: 30px;
+  margin-bottom: 10px;
+  padding: 5px;
+  font-size: 17px;
+}
+
+.pointerButton {
+  margin-left: 10px;
+  height: 30px;
+  width: 70px;
+}
 /*# sourceMappingURL=style.css.map */

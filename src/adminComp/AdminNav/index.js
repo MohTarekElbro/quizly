@@ -123,6 +123,29 @@ class AmdinNav extends Component {
             }
             this.send();
         })
+        socket.on('frontRequestDomain', async () => {
+            try {
+                console.log("frontRequestDomain")
+                let notiNum = 0
+                let api = await fetch('https://quizly-app.herokuapp.com/Admin/ListMyNotification/' + localStorage.getItem('adminEmail') + '/' + count + '/' + version, requestOptions)
+                const data = await api.json();
+                console.log(data)
+                data.map((noti) => {
+                    if (noti.Seen == false) {
+                        notiNum = notiNum + 1
+                    }
+                })
+                this.setState({
+                    Requests: data,
+                    Notifications: notiNum
+
+                })
+            }
+            catch (e) {
+                console.log(e);
+            }
+            this.send();
+        })
     }
 
     handleScroll = async (event) => {
@@ -224,7 +247,7 @@ class AmdinNav extends Component {
                 headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") }
             };
             let api;
-            var url = "https://quizly-app.herokuapp.com/Admin/SeenNotification/" + notify;
+            var url = "https://quizly-app.herokuapp.com/Admin/SeenNotification/" + notify._id;
             console.log("URL: ", url)
 
             try {
@@ -249,8 +272,14 @@ class AmdinNav extends Component {
                 console.log(e);
             }
         }
-        this.props.history.push('/adminHome')
-        this.props.history.push('/adminHome/adminInstractors')
+        if(notify.Discription.includes("Domain")){
+
+        }
+        else{
+            this.props.history.push('/adminHome')
+            this.props.history.push('/adminHome/adminInstractors')
+        }
+        
 
     }
 
@@ -300,7 +329,7 @@ class AmdinNav extends Component {
             }
 
             return (
-                <a className={className} key={index} onClick={() => { this.seeNotification(request._id, request.Seen) }}>
+                <a className={className} key={index} onClick={() => { this.seeNotification(request, request.Seen) }}>
                     <div className="mr-3">
                         <div className="icon-circle bg-success">
                             <i className="fas fa-envelope-open-text"></i>
@@ -308,7 +337,7 @@ class AmdinNav extends Component {
                     </div>
                     <div>
                         <div className="small text-gray-500">{output}</div>
-                        {request.Sender_email}  has request to join quizly
+                        {request.Discription}
                     </div>
                 </a>
             )
