@@ -55,7 +55,7 @@ class GenerteQuestions extends Component {
 
 
     componentDidMount = async () => {
-        
+
         $(".selectdiv").css({
             "background-color": "white",
             "color": "#4E73DF"
@@ -184,45 +184,47 @@ class GenerteQuestions extends Component {
     uploadImage = async (e) => {
         let file = this.txtFile.files[0]
         // console.log(file.name)
-        if (file.name.includes(".txt")) {
-            this.setState({
-                fileName: <div style = {{"position":"absolute" , "right" : "60%" , "top" : "-15px"}}>
-                    <Ring size = "30" color="black" />
-                </div>
-            })
-            $('.saveImg').css('display', 'block')
-            let formData = new FormData()
-            formData.append('resource', file)
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Authorization': localStorage.getItem("token") },
-                body: formData
-            };
-            let api;
-
-            try {
-                api = await fetch('https://quizly-app.herokuapp.com/upload/resources', requestOptions)
-                let data = await api.json();
-                // console.log(data.path)
-
+        if (file) {
+            if (file.name.includes(".txt")) {
                 this.setState({
-                    filePath: data.path,
-                    fileName:file.name
+                    fileName: <div style={{ "position": "absolute", "right": "60%", "top": "-15px" }}>
+                        <Ring size="30" color="black" />
+                    </div>
                 })
-            }
-            catch (e) {
-                console.log(e.message);
-            }
-        }
-        else {
-            $.alert({
-                title: 'Error!',
-                content: 'You must upload "txt" file',
-                buttons: {
-                    okay: function () { },
+                $('.saveImg').css('display', 'block')
+                let formData = new FormData()
+                formData.append('resource', file)
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 'Authorization': localStorage.getItem("token") },
+                    body: formData
+                };
+                let api;
 
+                try {
+                    api = await fetch('https://quizly-app.herokuapp.com/upload/resources', requestOptions)
+                    let data = await api.json();
+                    // console.log(data.path)
+
+                    this.setState({
+                        filePath: data.path,
+                        fileName: file.name
+                    })
                 }
-            });
+                catch (e) {
+                    console.log(e.message);
+                }
+            }
+            else {
+                $.alert({
+                    title: 'Error!',
+                    content: 'You must upload "txt" file',
+                    buttons: {
+                        okay: function () { },
+
+                    }
+                });
+            }
         }
 
     }
@@ -743,7 +745,7 @@ class GenerteQuestions extends Component {
                                 <i className="fas fa-upload"></i> Upload Txt File
                             </label>
 
-                            <p className="" style = {{"position":"relative"}} > {this.state.fileName}</p>
+                            <p className="" style={{ "position": "relative" }} > {this.state.fileName}</p>
                         </div>
 
                         <div className="generateQuestionsButton">

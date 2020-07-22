@@ -107,7 +107,7 @@ class InstructorRequests extends Component {
     AddNewDomain = async () => {
         console.log(this.state.domainName, this.state.description, this.state.filePath)
         if (this.state.domainName == "") {
-            console.log("this.state.domainName: " , this.state.domainName)
+            console.log("this.state.domainName: ", this.state.domainName)
             $.alert({
                 title: 'Error!',
                 content: 'You must enter your domain name',
@@ -118,7 +118,7 @@ class InstructorRequests extends Component {
             });
         }
         else if (this.state.description == "") {
-            console.log("this.state.description: " , this.state.description)
+            console.log("this.state.description: ", this.state.description)
 
             $.alert({
                 title: 'Error!',
@@ -166,7 +166,7 @@ class InstructorRequests extends Component {
                     content: 'your request has been sent',
                     buttons: {
                         okay: function () { },
-    
+
                     }
                 });
                 console.log(data)
@@ -181,21 +181,23 @@ class InstructorRequests extends Component {
     uploadImage = async (e) => {
         let file = this.txtFile.files[0]
         // console.log(file.name)
-        if (file.name.includes(".pdf")) {
-            this.setState({
-                fileName: file.name
-            })
-            $('.saveImg').css('display', 'block')
-        }
-        else {
-            $.alert({
-                title: 'Error!',
-                content: 'You must upload "pdf" file',
-                buttons: {
-                    okay: function () { },
+        if (file) {
+            if (file.name.includes(".pdf")) {
+                this.setState({
+                    fileName: file.name
+                })
+                $('.saveImg').css('display', 'block')
+            }
+            else {
+                $.alert({
+                    title: 'Error!',
+                    content: 'You must upload "pdf" file',
+                    buttons: {
+                        okay: function () { },
 
-                }
-            });
+                    }
+                });
+            }
         }
     }
 
