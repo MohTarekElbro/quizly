@@ -273,7 +273,12 @@ class AmdinNav extends Component {
             }
         }
         if(notify.Discription.includes("Domain")){
-
+            this.props.history.push('/adminHome')
+            this.props.history.push('/adminHome/adminDomains')
+        }
+        else if (notify.Discription.includes("Feedback")){
+            this.props.history.push('/adminHome')
+            this.props.history.push('/adminHome/adminFeedback')
         }
         else{
             this.props.history.push('/adminHome')

@@ -8,6 +8,7 @@ import { read_cookie } from 'sfcookies'
 import QuestionBank from '../../components/Questions'
 import AdminFeedback from '../AdminFeedback'
 import { Default } from 'react-spinners-css';
+import AdminDomains from '../AdminDomains'
 
 
 class AdminHome extends Component {
@@ -15,7 +16,7 @@ class AdminHome extends Component {
     state = {
         token: "loading"
     }
-    componentWillMount = async() => {
+    componentWillMount = async () => {
 
         if (localStorage.getItem("token")) {
             window.addEventListener('scroll', this.handleScroll);
@@ -32,24 +33,24 @@ class AdminHome extends Component {
                 const data = await api.json();
                 if (data.type == "admin") {
                     this.setState({
-                        token:"true"
+                        token: "true"
                     })
                 }
-                else{
+                else {
                     this.setState({
-                        token:"false"
+                        token: "false"
                     })
                 }
 
             }
             catch (e) {
-                
+
                 console.log("Error: ", e);
             }
         }
-        else{
+        else {
             this.setState({
-                token:"false"
+                token: "false"
             })
         }
     }
@@ -65,6 +66,7 @@ class AdminHome extends Component {
                         <div id="content">
                             <AdminNav />
                             <div class="container-fluid">
+                                <Route path='/adminHome/adminDomains' component={AdminDomains} />
                                 <Route path='/adminHome/adminFeedback' component={AdminFeedback} />
                                 <Route path='/adminHome/adminProfile' component={AdminProfile} />
                                 <Route path='/adminHome/adminInstractors' component={AdminInstractors} />
@@ -97,8 +99,8 @@ class AdminHome extends Component {
                 </div>
             )
         }
-        else{
-            return(
+        else {
+            return (
                 <div className="loading">
                     <div>
                         {/* <h2>Wait for generating questions...</h2> */}

@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { bake_cookie, read_cookie } from 'sfcookies'
 import loadjs from 'loadjs'
+import socketIOClient from "socket.io-client";
+
+import { Socket } from 'socket.io-client'
 
 class AdminFeedback extends Component {
     state = {
@@ -9,16 +12,74 @@ class AdminFeedback extends Component {
         loadjs,
         bottom: 0,
         height: 0,
-        count: 10,
+        count: 100,
         version: 0,
         emailFeedbacks: ""
     }
 
+    seeNotification = async (notify, ifSeen) => {
+        if (ifSeen == false) {
+            this.setState({
+                Notifications: this.state.Notifications - 1
+            })
+            const requestOptions = {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") }
+            };
+            let api;
+            var url = "https://quizly-app.herokuapp.com/Admin/SeenNotification/" + notify._id;
+            console.log("URL: ", url)
+
+            try {
+                api = await fetch(url, requestOptions)
+                const data = await api.json();
+                console.log("SeenNotify: ", data)
+                let i = 0;
+                var { Requests } = this.state
+                Requests.map((request, index) => {
+                    if (request._id == data._id) {
+                        i = index;
+                    }
+                })
+                Requests[i] = data
+                this.setState({
+                    Requests: Requests
+                })
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+    }
+
     componentDidMount = async () => {
+        const socket = socketIOClient("https://quizly-app.herokuapp.com")
+        socket.on('frontRequestDomain' , this.Refresh())
+
         var { count } = this.state
         var { emailFeedbacks } = this.state
         console.log("email: ", emailFeedbacks)
         window.addEventListener('scroll', this.handleScroll);
+        const requestOptions1 = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") }
+        };
+        let api1;
+        let notifications = [];
+        try {
+            api1 = await fetch('https://quizly-app.herokuapp.com/Admin/ListMyNotification/' + localStorage.getItem('adminEmail') + '/' + 100 + '/' + 0, requestOptions1)
+
+            notifications = await api1.json();
+
+            this.setState({
+                Notifications: notifications
+
+            })
+        }
+        catch (e) {
+            console.log(e);
+        }
+
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") },
@@ -34,6 +95,14 @@ class AdminFeedback extends Component {
         try {
             api = await fetch('https://quizly-app.herokuapp.com/admin/set/feedbacks/' + count + '/0', requestOptions)
             const data = await api.json();
+            console.log(data)
+            data.map((ins) => {
+                notifications.map((noti) => {
+                    if (ins.creator.Email == noti.Sender_email) {
+                        this.seeNotification(noti, noti.Seen)
+                    }
+                })
+            })
             this.setState({
                 Feedbacks: data
             })
@@ -78,7 +147,7 @@ class AdminFeedback extends Component {
                             <p className="center">Email: {Feedback.creator.Email} </p>
                             <p>Feedback: {Feedback.feedback} </p>
                         </div>
-                        
+
                     </div>
                 )
             })
@@ -167,7 +236,7 @@ class AdminFeedback extends Component {
         e.preventDefault()
         var { count } = this.state
         var { emailFeedbacks } = this.state
-        console.log("emailFeedbacks: " , emailFeedbacks)
+        console.log("emailFeedbacks: ", emailFeedbacks)
         window.addEventListener('scroll', this.handleScroll);
         const requestOptions = {
             method: 'POST',
@@ -206,7 +275,7 @@ class AdminFeedback extends Component {
             <div className="paddingTop card shadow mb-4" style={{ "margin-top": "70px" }}>
                 <div className="card-header py-3">
                     <h6 className="m-0 font-weight-bold text-primary requests1">Your FeedBacks</h6>
-                    <button onClick={this.Refresh} className="btn btn-primary btn-icon-split btn-sm requests2" >
+                    <button onClick={()=>this.Refresh()} className="btn btn-primary btn-icon-split btn-sm requests2" >
                         <span className="icon text-white-50">
                             <i className="fas fa-redo-alt"></i>
                         </span>
