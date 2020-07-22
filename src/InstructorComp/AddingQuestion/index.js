@@ -12,7 +12,7 @@ class AddingQuestion extends Component {
 
     state = {
         QuestionType: "MCQ",
-        public: "",
+        public: "none",
         numOfDis: 1,
         distructorsValue: [],
         state: 'true',
@@ -196,7 +196,7 @@ class AddingQuestion extends Component {
                     })
                 }
             }
-            else{
+            else {
                 this.setState({
                     keyword: Question[1],
                     Question: Question[0],
@@ -657,7 +657,7 @@ class AddingQuestion extends Component {
         var { distructorsValue } = this.state
         var { DomainName } = this.state
         var { QuestionType } = this.state
-        // console.log(DomainName)
+        console.log(Publication)
         if (Question == "") {
             $.alert({
                 title: 'Error!',
@@ -677,7 +677,7 @@ class AddingQuestion extends Component {
                 }
             });
         }
-        else if (Publication != false && Publication != true) {
+        else if (Publication == "none") {
             $.alert({
                 title: 'Error!',
                 content: 'Choose if public or private!',
@@ -867,7 +867,7 @@ class AddingQuestion extends Component {
             else if (this.props.QuestionType == "trueorfalse") {
                 this.props.editRenderdQuestion(this.props.index, this.state.Question, this.state.keyword, this.state.distructorsValue, this.state.public, this.state.level, this.state.state)
             }
-            else{
+            else {
                 this.props.editRenderdQuestion(this.props.index, this.state.Question, this.state.keyword, this.state.public, this.state.level)
             }
             $("#closeModal").click()
@@ -965,7 +965,29 @@ class AddingQuestion extends Component {
                         useBootstrap: false,
                         content: "Question Added",
                         buttons: {
-                            okay: function () { },
+                            okay: () => {
+                                this.setState({
+                                    QuestionType: "MCQ",
+                                    public: "none",
+                                    numOfDis: 1,
+                                    distructorsValue: [],
+                                    state: 'true',
+                                    level: "",
+                                    domains: [],
+                                    DomainName: "SW",
+                                    keyword: "",
+                                    Question: "",
+                                    random: 0,
+
+                                    editedDistructors: {},
+                                    existedLength: 0,
+                                    existedDistructors: [],
+                                    oldDistructors: "",
+                                    newDistructors: "",
+                                    addNewDistructors: [],
+                                    removeOldDistructors: [],
+                                })
+                            },
                         }
                     });
                 }

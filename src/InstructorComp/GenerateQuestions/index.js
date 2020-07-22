@@ -697,7 +697,7 @@ class GenerteQuestions extends Component {
 
 
 
-                            <div className=" levels" style={this.props.generateQuestions || this.state.QuestionType != "MCQ" ? { "width": "100%" } : {}}>
+                            <div className=" levels" style={this.state.QuestionType == "MCQ" ? this.props.generateQuestions ? { "width": "100%" } : {} : { 'display': "none" }}>
                                 <span style={{ "margin": "auto 0", "height": "30px" }}>Num of Answers: </span>
                                 <select data-menu id="QuestionType" className="select2" name="QuestionType" value={this.state.numOfAnswers} onChange={(e) => { this.setState({ numOfAnswers: e.target.value }) }} >
                                     <option value={2}>{2}</option>

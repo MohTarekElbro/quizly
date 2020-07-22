@@ -17,8 +17,6 @@ class AdminDomains extends Component {
         pageContent: "listRequests",
         domainName: "",
         description: "",
-        fileName: "",
-        filePath: "",
         oldDomains: [],
         Notifications: []
     }
@@ -133,7 +131,7 @@ class AdminDomains extends Component {
 
 
     AddNewDomain = async () => {
-        console.log(this.state.domainName, this.state.description, this.state.filePath)
+        // console.log(this.state.domainName, this.state.description, this.state.filePath)
         if (this.state.domainName == "") {
             console.log("this.state.domainName: ", this.state.domainName)
             $.alert({
@@ -157,41 +155,30 @@ class AdminDomains extends Component {
                 }
             });
         }
-        else if (this.state.fileName == "") {
-            $.alert({
-                title: 'Error!',
-                content: 'You must upload your pdf file',
-                buttons: {
-                    okay: function () { },
 
-                }
-            });
-        }
         else {
-            let file = this.txtFile.files[0]
-            let formData = new FormData()
-            formData.append('material', file)
-            formData.append("Requested_domain", this.state.domainName)
-            formData.append("description", this.state.description)
+           
             const requestOptions = {
                 method: 'post',
-                headers: { 'Authorization': localStorage.getItem('token') },
-                body: formData
+                headers: {'Content-Type': 'application/json', 'Authorization': localStorage.getItem('token') },
+                body: JSON.stringify({
+                    "domain_name": this.state.domainName,
+                    "description": this.state.description
+                })
             };
             let api;
 
             try {
-                api = await fetch('https://quizly-app.herokuapp.com/admin/domainrequests/', requestOptions)
+                api = await fetch('https://quizly-app.herokuapp.com/admin/domains/add', requestOptions)
                 const data = await api.json();
                 this.setState({
                     domainName: "",
                     description: "",
-                    fileName: "",
-                    filePath: ""
+                    
                 })
                 $.alert({
                     title: 'Success!',
-                    content: 'your request has been sent',
+                    content: 'Domain Added!',
                     buttons: {
                         okay: function () { },
 
@@ -203,27 +190,6 @@ class AdminDomains extends Component {
             catch (e) {
                 console.log(e);
             }
-        }
-    }
-
-    uploadImage = async (e) => {
-        let file = this.txtFile.files[0]
-        // console.log(file.name)
-        if (file.name.includes(".pdf")) {
-            this.setState({
-                fileName: file.name
-            })
-            $('.saveImg').css('display', 'block')
-        }
-        else {
-            $.alert({
-                title: 'Error!',
-                content: 'You must upload "pdf" file',
-                buttons: {
-                    okay: function () { },
-
-                }
-            });
         }
     }
 
@@ -245,14 +211,6 @@ class AdminDomains extends Component {
                             aria-label="Search" aria-describedby="basic-addon2" value={this.state.domainName} onChange={(e) => { this.setState({ domainName: e.target.value }) }} />
                     </div>
 
-                    <div className="uploadTxtFile  optionItem" id="uploadInput">
-                        <label className="uploadFile" style={{ "marginTop": "0px" }}>
-                            <input type="file" name='txtFile' ref={(txtFile) => { this.txtFile = txtFile }} onChange={() => this.uploadImage()} className="fileInput form-control" />
-                            <i className="fas fa-upload"></i> Upload PDF file
-                            </label>
-
-                        <p className="" > {this.state.fileName}</p>
-                    </div>
 
                     <div class="row">
                         <div class="col-sm-12 form-group">
@@ -418,7 +376,7 @@ class AdminDomains extends Component {
 
                         </div>
                         <div className="listData ">
-                            <p className="center">Email: {Domain.requester} </p>
+                            <p className="center">Email: {Domain.requester.Email} </p>
                             <p className="center">Domain: {Domain.Requested_domain} </p>
                             <p className="center">Description: {Domain.description} </p>
                         </div>

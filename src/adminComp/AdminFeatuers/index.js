@@ -128,6 +128,12 @@ class AmdinFeatuers extends Component {
                         <span>Feedback</span>
                     </Link>
                 </li>
+                <li className="nav-item">
+                    <Link className="nav-link collapsed" to="/adminHome/adminInstractors" >
+                        <i className="fas fa-comments"></i>
+                        <span>Instructors</span>
+                    </Link>
+                </li>
                 
                 <li className="nav-item">
                     <Link className="nav-link collapsed" to="/adminHome/adminDomains" >
