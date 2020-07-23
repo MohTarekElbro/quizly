@@ -101,7 +101,7 @@ class InstructorNav extends Component {
 
 
     componentDidMount = async () => {
-        this.notificationsList.addEventListener('scroll', this.handleScroll);
+        // this.notificationsList.addEventListener('scroll', this.handleScroll);
         var { version } = this.state
         var { count } = this.state
         // this.send();
@@ -219,7 +219,7 @@ class InstructorNav extends Component {
                 })
                 Requests[i] = data
                 this.setState({
-                    Requests: Requests
+                    Requests: []
                 })
 
 
