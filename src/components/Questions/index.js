@@ -85,7 +85,6 @@ class QuestionBank extends Component {
                 this.setState({
                     Questions: [],
                     loadjs,
-                    domains: [],
                     search: "",
                     domainName: "all",
                     QuestionType: "all",
@@ -105,7 +104,6 @@ class QuestionBank extends Component {
                 this.setState({
                     Questions: [],
                     loadjs,
-                    domains: [],
                     search: "",
                     domainName: "all",
                     QuestionType: "all",
@@ -150,6 +148,7 @@ class QuestionBank extends Component {
         try {
             api1 = await fetch('https://quizly-app.herokuapp.com/domain', requestOptions1)
             let data = await api1.json();
+            console.log("DATAAAAAAAAAaa@@: " , data)
             this.setState({
                 domains: data
             })
