@@ -108,7 +108,11 @@ class AddingQuestion extends Component {
                 level: Question.Level,
                 DomainName: Question.domain.domain_name,
                 keyword: Question.keyword,
-                random: random
+                random: random, 
+                oldDistructors: "",
+                newDistructors: "",
+                addNewDistructors: [],
+                removeOldDistructors: [],
             })
             // $("input[type=radio]").css("opacity" , "0")
         }
@@ -207,7 +211,11 @@ class AddingQuestion extends Component {
                 public: false,
                 level: this.props.Level,
                 DomainName: this.props.domain,
-                random: random
+                random: random,
+                oldDistructors: "",
+                newDistructors: "",
+                addNewDistructors: [],
+                removeOldDistructors: [],
             })
 
         }
@@ -289,6 +297,7 @@ class AddingQuestion extends Component {
     }
 
     removeDistructor = (i) => {
+        console.log("d5lt hna kam mraaaaaa?!!!")
         var { distructorsValue } = this.state
         if (this.props.Question) {
             let { existedDistructors } = this.state

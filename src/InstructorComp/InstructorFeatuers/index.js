@@ -212,7 +212,6 @@ class InstructorFeatuers extends Component {
                         <i className="fas fa-fw fa-wrench"></i>
                         <span>Domains</span>
                     </Link>
-
                 </li>
 
                 <li className="nav-item">

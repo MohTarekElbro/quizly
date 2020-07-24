@@ -51,7 +51,6 @@ class SignUp extends Component {
         }
         else {
             $(".newLoading").css("display", "flex")
-            const socket = socketIOClient("https://quizly-app.herokuapp.com")
             // e.preventDefault()
             let file = this.cardPic.files[0]
             let formData = new FormData()
@@ -69,7 +68,7 @@ class SignUp extends Component {
             let api;
 
             try {
-
+                // console.log(this.state.firstName,this.state.lastName,this.state.email,this.state.address,this.state.age,file)
                 api = await fetch('https://quizly-app.herokuapp.com/instructor/signup', requestOptions)
                 console.log(api.status)
                 if (api.status == 200) {
