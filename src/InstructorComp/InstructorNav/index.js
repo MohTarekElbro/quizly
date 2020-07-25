@@ -268,6 +268,7 @@ class InstructorNav extends Component {
                 let diff = parseInt(Difference)
                 output = diff + "d"
             }
+            console.log(request)
 
             return (
                 <a className={className} key={index} onClick={() => { this.seeNotification(request._id, request.Seen) }}>
@@ -278,7 +279,7 @@ class InstructorNav extends Component {
                     </div>
                     <div>
                         <div className="small text-gray-500">{output}</div>
-                        {request.Sender_email}  has request to join quizly
+                        {request.Discription} 
                     </div>
                 </a>
             )
@@ -306,14 +307,16 @@ class InstructorNav extends Component {
                     <li className="nav-item dropdown no-arrow mx-1">
                         <a className="nav-link noti dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i className="fas fa-bell fa-fw"></i>
-                            <span className="badge badge-danger badge-counter requests9">{this.state.Notifications == 0 ? "" : this.state.Notifications + "+"}</span>
+                            <span className="badge badge-danger badge-counter requests9"></span>
+
+                            {/* <span className="badge badge-danger badge-counter requests9">{this.state.Notifications == 0 ? "" : this.state.Notifications + "+"}</span> */}
                         </a>
                         <div className="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                             <h6 className="dropdown-header">
                                 Alerts Center
                             </h6>
                             <div className="notificationsList" ref={(notificationsList) => { this.notificationsList = notificationsList }} style={{ "height": this.state.height * 0.6 }}>
-                                {NotificationsList}
+                                
                             </div>
                             <Link className="dropdown-item text-center small text-gray-500" to="/instructorHome/instructorInstructors">Show All Alerts</Link>
                         </div>
