@@ -9,7 +9,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "autosize": "^4.0.2",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "cssload": "^1.0.0-beta.10",
     "filter": "^0.1.1",
     "firebase-tools": "^8.2.0",
