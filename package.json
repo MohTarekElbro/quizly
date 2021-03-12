@@ -16,7 +16,7 @@
     "history": "^4.10.1",
     "jquery": "^3.4.1",
     "jquery-confirm": "^3.3.4",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.3.1",
     "kendo-ui-react-jquery-slider": "^1.0.2",
     "loadjs": "^4.2.0",
     "lodash": "^4.17.15",
